@@ -13,7 +13,7 @@
       </p>
     </div>
 
-    <form class="login-form">
+    <form class="login-form" (ngSubmit)="login()">
 
       <mat-form-field appearance="outline">
         <mat-label>Correo electrónico</mat-label>
@@ -21,6 +21,8 @@
         <input
           matInput
           type="email"
+          name="email"
+          [(ngModel)]="email"
           placeholder="ejemplo@correo.com"
         />
 
@@ -31,11 +33,13 @@
 
         <mat-label>Contraseña</mat-label>
 
-        <input
-          matInput
-          type="password"
-          placeholder="********"
-        />
+          <input
+            matInput
+            type="password"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="********"
+          />
 
         <mat-icon matSuffix>visibility</mat-icon>
 
@@ -44,10 +48,9 @@
       <button
         mat-raised-button
         color="primary"
-        class="login-button">
-
+        class="login-button"
+        type="submit">
         Iniciar sesión
-
       </button>
 
     </form>
