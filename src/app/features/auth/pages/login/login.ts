@@ -10,8 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../services/auth.services';
 import { Router } from '@angular/router';
 
-
-
 @Component({
   selector: 'app-login',
   imports: [
@@ -32,20 +30,60 @@ export class Login {
   email = '';
   password = '';
 
+  loading = false;
+  errorMessage = '';
 
   login(): void {
-  this.authService.login({
-    email: this.email,
-    password: this.password,
-  }).subscribe({
-    next: (response) => {
-      console.log('Login exitoso:', response);
+    this.errorMessage = '';
 
-      this.router.navigate(['/home']);
-    },
-    error: (error) => {
-      console.error('Error de login:', error);
-    },
-  });
-}
+    // Validaciones
+    if (!this.email.trim()) {
+      this.errorMessage = 'El correo electrónico es obligatorio.';
+      return;
+    }
+
+    if (!this.password.trim()) {
+      this.errorMessage = 'La contraseña es obligatoria.';
+      return;
+    }
+
+    if (!this.isValidEmail(this.email)) {
+      this.errorMessage = 'Ingresá un correo electrónico válido.';
+      return;
+    }
+
+    this.loading = true;
+
+    this.authService.login({
+      email: this.email,
+      password: this.password,
+    }).subscribe({
+      next: (response) => {
+        console.log('Login exitoso:', response);
+
+        this.loading = false;
+
+        this.router.navigate(['/home']);
+      },
+
+      error: (error) => {
+        console.error('Error de login:', error);
+
+        this.loading = false;
+
+        if (error.status === 401) {
+          this.errorMessage = 'El correo o la contraseña son incorrectos.';
+        } else if (error.status === 400) {
+          this.errorMessage = 'Los datos ingresados no son válidos.';
+        } else {
+          this.errorMessage =
+            'No se pudo iniciar sesión. Intentá nuevamente.';
+        }
+      },
+    });
+  }
+
+  private isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
 }
