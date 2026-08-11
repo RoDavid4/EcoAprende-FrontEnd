@@ -35,5 +35,9 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(response.user));
       }),
     );
+
+}
+getProfile(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/users/profile`);
 }
 }
