@@ -1,0 +1,62 @@
+@if (isLoading) {
+  <div class="loading-box">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+} @else {
+  <div class="grid-container">
+    <div class="card create-card" (click)="onCreate()">
+      <div class="plus-circle">
+        <mat-icon>add</mat-icon>
+      </div>
+      <span class="create-title">Crear Nueva Aula</span>
+      <span class="create-sub"
+        >Configura un nuevo entorno para que tus estudiantes aprendan y
+        exploren.</span
+      >
+    </div>
+
+    @for (item of classrooms; track item.id) {
+      <div class="card class-card">
+        <h3 class="class-title">{{ item.name }}</h3>
+
+        <h3 class="class-description">{{ item.description }}</h3>
+
+        <div class="students-info">
+          <mat-icon>group</mat-icon>
+          <span>{{ item.studentsCount }} Estudiantes</span>
+        </div>
+
+        <div class="code-box">
+          <div class="code-info">
+            <span class="code-label">Código de Acceso</span>
+            <span class="code-value">{{ item.code }}</span>
+          </div>
+          <button
+            mat-icon-button
+            (click)="copyCode(item.code, $event)"
+            title="Copiar código"
+          >
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        </div>
+
+        <div class="card-actions">
+          <button
+            matButton="outlined"
+            class="btn-card"
+            (click)="onEdit(item, $event)"
+          >
+            Editar
+          </button>
+          <button
+            matButton="outlined"
+            class="btn-card"
+            (click)="onGoToRoster(item.id!, $event)"
+          >
+            Listar
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+}

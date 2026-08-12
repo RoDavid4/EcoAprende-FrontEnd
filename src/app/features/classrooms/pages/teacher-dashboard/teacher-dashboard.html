@@ -1,0 +1,18 @@
+<div class="dashboard-page">
+  <header class="page-header">
+    <div>
+      <h1 class="title">Mis Aulas</h1>
+      <p class="subtitle">
+        Gestioná tus aulas y seguí el progreso de tus estudiantes.
+      </p>
+    </div>
+  </header>
+
+  <app-classroom-list
+    [classrooms]="classrooms"
+    [isLoading]="isLoading"
+    (createRequested)="openCreateModal()"
+    (editRequested)="openEditModal($event)"
+    (rosterRequested)="goToRoster($event)"
+  ></app-classroom-list>
+</div>

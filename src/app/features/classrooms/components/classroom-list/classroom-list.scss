@@ -1,0 +1,158 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.loading-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.create-card {
+  border: 2px dashed #4caf50;
+  background-color: #f9fbf9;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  min-height: 220px;
+
+  .plus-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  .create-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 0.25rem;
+  }
+
+  .create-sub {
+    font-size: 0.85rem;
+    color: #666;
+    max-width: 200px;
+  }
+
+  &:hover {
+    background-color: #f1f8e9;
+  }
+}
+
+.class-card {
+  .class-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: var(--eco-primary);
+  }
+
+  .class-description {
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0 0 0.5rem 0;
+    color: #333;
+  }
+
+  .students-info {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .code-box {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+
+    .code-info {
+      display: flex;
+      flex-direction: column;
+
+      .code-label {
+        font-size: 0.7rem;
+        color: #777;
+        text-transform: uppercase;
+      }
+
+      .code-value {
+        font-family: monospace;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #222;
+      }
+    }
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+
+    button {
+      flex: 1;
+    }
+    .btn-card {
+      background-color: #ffffff;
+      color: var(--eco-primary);
+      border: inline;
+      border-color: var(--eco-primary);
+      border-radius: 10px !important;
+
+      &:hover {
+        background-color: var(--eco-primary);
+        color: #ffffff;
+        border-color: #ffffff;
+      }
+    }
+  }
+}
