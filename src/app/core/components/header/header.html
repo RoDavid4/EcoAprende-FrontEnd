@@ -1,0 +1,85 @@
+<header class="eco-header">
+  <!-- Logo y Nombre (Ruta directa para evitar bucle) -->
+  <div class="brand" [routerLink]="['/classrooms/teacher']">
+    <div class="logo-box">
+      <mat-icon>eco</mat-icon>
+    </div>
+    <span class="brand-title">EcoAprende</span>
+  </div>
+
+  <!-- Navegación Escritorio -->
+  <nav class="nav-menu desktop-only">
+    @for (item of navItems; track item.route) {
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ item.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="user-actions desktop-only">
+    <button mat-flat-button class="btn-action" (click)="onPrimaryAction()">
+      <mat-icon>add</mat-icon>
+      {{ userRole === "STUDENT" ? "Unirse a Aula" : "Crear Aula" }}
+    </button>
+
+    <div
+      class="profile-info"
+      (click)="toggleRoleSimulated()"
+      title="Cambiar rol"
+    >
+      <span class="user-name">{{ userName }}</span>
+      <span class="user-badge">{{
+        userRole === "STUDENT" ? "Estudiante" : "Docente"
+      }}</span>
+    </div>
+  </div>
+
+  <button
+    mat-icon-button
+    class="mobile-toggle"
+    (click)="toggleMobileMenu()"
+    aria-label="Abrir menú"
+  >
+    <mat-icon>{{ isMobileMenuOpen ? "close" : "menu" }}</mat-icon>
+  </button>
+</header>
+
+<!-- Menú Desplegable Móvil -->
+@if (isMobileMenuOpen) {
+  <div class="mobile-menu">
+    <nav class="mobile-nav">
+      @for (item of navItems; track item.route) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+        >
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="mobile-actions">
+      <button
+        mat-flat-button
+        class="btn-action full-width"
+        (click)="onPrimaryAction(); closeMobileMenu()"
+      >
+        <mat-icon>add</mat-icon>
+        {{ userRole === "STUDENT" ? "Unirse a Aula" : "Crear Aula" }}
+      </button>
+
+      <div class="profile-info-mobile" (click)="toggleRoleSimulated()">
+        <span class="user-name">{{ userName }}</span>
+        <span class="user-badge">{{
+          userRole === "STUDENT" ? "Estudiante" : "Docente"
+        }}</span>
+      </div>
+    </div>
+  </div>
+}
