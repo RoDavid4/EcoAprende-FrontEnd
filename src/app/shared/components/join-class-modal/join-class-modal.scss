@@ -1,0 +1,144 @@
+.eco-dialog-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--eco-surface);
+  border-radius: var(--eco-border-radius);
+  overflow: hidden;
+
+  .dialog-header {
+    background-color: var(--eco-primary);
+    height: 110px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btn-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        color: #ffffff;
+      }
+    }
+
+    .icon-circle {
+      width: 52px;
+      height: 52px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+      .eco-leaf-icon {
+        color: var(--eco-primary);
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+
+  .dialog-body {
+    padding: 24px;
+    text-align: center;
+
+    .title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--eco-text-main);
+      margin: 0 0 6px 0;
+    }
+
+    .subtitle {
+      font-size: 0.82rem;
+      color: var(--eco-text-muted);
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      text-align: left;
+      margin-bottom: 16px;
+
+      label {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--eco-text-main);
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .hint-text {
+        font-size: 0.72rem;
+        color: var(--eco-text-muted);
+        display: block;
+        margin-top: -12px;
+      }
+    }
+
+    .custom-field {
+      width: 100%;
+
+      ::ng-deep .mdc-text-field--outlined {
+        --mdc-outlined-text-field-container-shape: 10px;
+        background-color: var(--eco-background);
+      }
+
+      input {
+        letter-spacing: 3px;
+        font-weight: 500;
+        color: var(--eco-primary);
+        text-align: center;
+      }
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 46px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--eco-primary) !important;
+      color: #ffffff !important;
+      border-radius: 10px !important;
+
+      &:disabled {
+        opacity: 0.6;
+      }
+    }
+
+    .alert {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      margin-bottom: 14px;
+      text-align: left;
+
+      &.error {
+        background-color: #fde8e8;
+        color: #9b1c1c;
+      }
+      &.success {
+        background-color: #def7ec;
+        color: #03543f;
+      }
+    }
+  }
+}

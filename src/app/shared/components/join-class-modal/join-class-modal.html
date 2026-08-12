@@ -1,0 +1,64 @@
+<div class="eco-dialog-container">
+  <div class="dialog-header">
+    <button class="btn-close" (click)="onCancel()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+    <div class="icon-circle">
+      <mat-icon class="eco-leaf-icon">eco</mat-icon>
+    </div>
+  </div>
+
+  <div class="dialog-body">
+    <h2 class="title">Unirse a un Aula</h2>
+    <p class="subtitle">
+      Ingresa el código proporcionado por tu profesor para comenzar tu
+      experiencia ecológica.
+    </p>
+
+    <form [formGroup]="joinForm" (ngSubmit)="submitCode()">
+      <div class="input-group">
+        <label for="classCode">Código del Aula</label>
+        <mat-form-field appearance="outline" class="full-width custom-field">
+          <input
+            id="classCode"
+            matInput
+            formControlName="code"
+            placeholder="A1B2C3"
+            maxlength="6"
+            autocomplete="off"
+          />
+        </mat-form-field>
+        <span class="hint-text"
+          >Pídele a tu profesor el código único de 6 caracteres.</span
+        >
+      </div>
+
+      @if (errorMessage) {
+        <div class="alert error">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+
+      @if (successMessage) {
+        <div class="alert success">
+          <mat-icon>check_circle_outline</mat-icon>
+          <span>{{ successMessage }}</span>
+        </div>
+      }
+
+      <button
+        mat-flat-button
+        class="submit-btn"
+        type="submit"
+        [disabled]="joinForm.invalid || isLoading"
+      >
+        @if (isLoading) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          <span>Unirse al Aula &rarr;</span>
+        }
+      </button>
+    </form>
+  </div>
+</div>
