@@ -1,23 +1,25 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../auth/services/auth.services';  
+import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
+import { AuthService } from '../auth/services/auth.services';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
 export class Home {
   private authService = inject(AuthService);
+  private router = inject(Router);
 
-  ngOnInit(): void {
-    this.authService.getProfile().subscribe({
-      next: (response) => {
-        console.log('Perfil autenticado:', response);
-      },
-      error: (error) => {
-        console.error('Error al obtener perfil:', error);
-      },
-    });
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

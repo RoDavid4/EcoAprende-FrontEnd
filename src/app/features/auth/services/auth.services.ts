@@ -50,9 +50,26 @@ response.access_token
 
 }
 
+register(data: {
+  fullName: string;
+  email: string;
+  password: string;
+}): Observable<any> {
+  return this.http.post(
+    `${this.apiUrl}/auth/register`,
+    data
+  );
+}
+
 getProfile(): Observable<any> {
 return this.http.get<any>(
 `${this.apiUrl}/users/profile`
 );
 }
+
+logout(): void {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('user');
+}
+
 }
