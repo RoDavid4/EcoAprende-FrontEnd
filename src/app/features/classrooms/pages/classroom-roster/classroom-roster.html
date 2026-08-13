@@ -1,0 +1,117 @@
+<div class="roster-page">
+  <div class="header-actions">
+    <a [routerLink]="['/classrooms/profesor']" class="back-link">
+      <mat-icon>arrow_back</mat-icon>
+      Volver a Mis Aulas
+    </a>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-box">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else if (roster) {
+    <div class="class-hero-card">
+      <div class="hero-main-content">
+        <div class="badges-row">
+          <span class="badge active-badge">
+            <span class="dot"></span> Clase Activa
+          </span>
+          <span class="students-count-tag">
+            <mat-icon>people_outline</mat-icon>
+            {{ roster.students.length }} Estudiantes
+          </span>
+        </div>
+
+        <h1 class="class-title">{{ roster.classroomName }}</h1>
+        <p class="class-description">
+          Gestiona a tus estudiantes, sigue su progreso en el aprendizaje
+          ambiental y administra el acceso a la clase.
+        </p>
+      </div>
+
+      <div class="code-box-card">
+        <div class="code-info">
+          <span class="code-label">Código de Acceso</span>
+          <span class="code-value">{{ roster.code }}</span>
+        </div>
+        <button
+          mat-icon-button
+          class="btn-copy-code"
+          (click)="copyCode(roster.code)"
+          title="Copiar código"
+        >
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="roster-section">
+      <div class="section-header">
+        <h2 class="section-title">Lista de Estudiantes</h2>
+      </div>
+
+      <div class="table-container">
+        <table
+          mat-table
+          [dataSource]="roster.students"
+          class="custom-roster-table"
+        >
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>ESTUDIANTE</th>
+            <td mat-cell *matCellDef="let student">
+              <div class="student-profile">
+                <div class="avatar-circle">
+                  {{ student.name.charAt(0) }}
+                </div>
+                <div class="student-details">
+                  <span class="student-name">{{ student.name }}</span>
+                  <span class="student-email">{{ student.email }}</span>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>CORREO</th>
+            <td mat-cell *matCellDef="let student" class="email-cell">
+              {{ student.email }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="joinedAt">
+            <th mat-header-cell *matHeaderCellDef>FECHA DE INSCRIPCIÓN</th>
+            <td mat-cell *matCellDef="let student" class="date-cell">
+              {{ student.joinedAt | date: "mediumDate" }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="text-right">
+              ACCIONES
+            </th>
+            <td mat-cell *matCellDef="let student" class="text-right">
+              <button
+                mat-icon-button
+                class="btn-delete"
+                (click)="removeStudent(student)"
+                title="Remover de la clase"
+              >
+                <mat-icon>person_remove</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+
+        @if (roster.students.length === 0) {
+          <div class="empty-roster">
+            <p>Aún no hay estudiantes inscritos en esta clase.</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
