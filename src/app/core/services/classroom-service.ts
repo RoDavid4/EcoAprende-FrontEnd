@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Classroom } from '../models/classroom.model';
+import { ClassroomRosterModel, Student } from '../models/student.model';
 
 @Injectable({
   providedIn: 'root',
@@ -77,5 +78,66 @@ export class ClassroomService {
 
   private generateRandomCode(): string {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
+  }
+
+  //Lista de estudiantes
+  getRosterByClassroomId(
+    classroomId: string,
+  ): Observable<ClassroomRosterModel> {
+    const classroom = this.mockClassrooms.find((c) => c.id === classroomId);
+
+    const mockStudentsMap: Record<string, Student[]> = {
+      '1': [
+        {
+          id: '101',
+          name: 'Carlos Mendoza',
+          email: 'carlos.mendoza@eco.edu',
+          joinedAt: '2026-02-10',
+        },
+        {
+          id: '102',
+          name: 'Sofía Torres',
+          email: 'sofia.torres@eco.edu',
+          joinedAt: '2026-02-12',
+        },
+      ],
+      '2': [
+        {
+          id: '201',
+          name: 'Mateo Rossi',
+          email: 'mateo.rossi@eco.edu',
+          joinedAt: '2026-02-15',
+        },
+        {
+          id: '202',
+          name: 'Lucía Fernández',
+          email: 'lucia.f@eco.edu',
+          joinedAt: '2026-02-18',
+        },
+        {
+          id: '203',
+          name: 'Gabriel Silva',
+          email: 'gabriel.s@eco.edu',
+          joinedAt: '2026-02-20',
+        },
+      ],
+    };
+
+    const students = mockStudentsMap[classroomId] || [];
+
+    return of({
+      classroomId,
+      classroomName: classroom ? classroom.name : 'Aula Desconocida',
+      code: classroom ? classroom.code : 'CODE00',
+      studentsCount: students.length,
+      students: students,
+    });
+  }
+
+  removeStudentFromClassroom(
+    classroomId: string,
+    studentId: string,
+  ): Observable<boolean> {
+    return of(true);
   }
 }
