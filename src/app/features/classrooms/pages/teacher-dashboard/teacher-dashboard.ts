@@ -72,6 +72,6 @@ export class TeacherDashboard implements OnInit {
   }
 
   goToRoster(classroomId: string): void {
-    this.router.navigate(['/estudiantes', classroomId]);
+    this.router.navigate(['/classrooms', classroomId, 'lista']);
   }
 }
