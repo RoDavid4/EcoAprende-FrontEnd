@@ -4,16 +4,16 @@ import { TeacherDashboard } from './features/classrooms/pages/teacher-dashboard/
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'classrooms/teacher',
+    redirectTo: 'classrooms/profesor',
     pathMatch: 'full',
   },
   {
-    path: 'classrooms/teacher',
+    path: 'classrooms/profesor',
     component: TeacherDashboard,
   },
 
   {
     path: '**',
-    redirectTo: 'classrooms/teacher',
+    redirectTo: 'classrooms/profesor',
   },
 ];

@@ -82,7 +82,7 @@ export class Header {
     const items = [
       {
         label: 'Inicio',
-        route: '/classrooms/teacher',
+        route: '/classrooms/profesor',
         roles: ['STUDENT', 'TEACHER'],
       },
     ];
@@ -106,7 +106,7 @@ export class Header {
       items.push(
         {
           label: 'Gestión de Aulas',
-          route: '/classrooms/teacher',
+          route: '/classrooms/profesor',
           roles: ['TEACHER'],
         },
         {
