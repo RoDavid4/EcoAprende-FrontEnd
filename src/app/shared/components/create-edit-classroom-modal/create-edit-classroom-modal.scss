@@ -31,10 +31,18 @@
     gap: 12px;
     margin-top: 10px;
 
-    .eco-btn {
-      background-color: var(--eco-primary) !important;
-      color: #fff !important;
-      border-radius: 8px !important;
+    .btn-modal {
+      background-color: #ffffff;
+      color: var(--eco-primary);
+      border: inline !important;
+      border-color: var(--eco-primary);
+      border-radius: 10px !important;
+
+      &:hover {
+        background-color: var(--eco-primary);
+        color: #ffffff;
+        border-color: #ffffff;
+      }
     }
   }
 }

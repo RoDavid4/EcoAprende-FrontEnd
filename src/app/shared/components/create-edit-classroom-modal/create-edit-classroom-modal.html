@@ -26,10 +26,17 @@
     </mat-form-field>
 
     <div class="dialog-actions">
-      <button mat-button type="button" (click)="close()">Cancelar</button>
       <button
-        mat-flat-button
-        class="eco-btn"
+        matButton="outlined"
+        class="btn-modal"
+        type="button"
+        (click)="close()"
+      >
+        Cancelar
+      </button>
+      <button
+        matButton="outlined"
+        class="btn-modal"
         type="submit"
         [disabled]="form.invalid || isLoading"
       >

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { TeacherDashboard } from './features/classrooms/pages/teacher-dashboard/teacher-dashboard';
+import { ClassroomRoster } from './features/classrooms/pages/classroom-roster/classroom-roster';
 
 export const routes: Routes = [
   {
@@ -10,6 +11,10 @@ export const routes: Routes = [
   {
     path: 'classrooms/profesor',
     component: TeacherDashboard,
+  },
+  {
+    path: 'classrooms/:id/lista',
+    component: ClassroomRoster,
   },
 
   {
