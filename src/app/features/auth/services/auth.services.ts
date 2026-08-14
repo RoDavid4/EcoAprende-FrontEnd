@@ -61,6 +61,24 @@ register(data: {
   );
 }
 
+//RESETEO DEL PASSWORD 
+forgotPassword(email: string): Observable<any> {
+  return this.http.post(
+    `${this.apiUrl}/auth/forgot-password`,
+    { email }
+  );
+}
+
+resetPassword(data: {
+  token: string;
+  newPassword: string;
+}): Observable<any> {
+  return this.http.post(
+    `${this.apiUrl}/auth/reset-password`,
+    data
+  );
+}
+
 getProfile(): Observable<any> {
 return this.http.get<any>(
 `${this.apiUrl}/users/profile`
