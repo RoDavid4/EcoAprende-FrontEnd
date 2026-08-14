@@ -2,15 +2,9 @@
   <mat-card class="register-card">
 
     <div class="register-header">
-      <div class="logo">
-        🌱
-      </div>
-
+      <div class="logo">🌱</div>
       <h1>Crear cuenta</h1>
-
-      <p>
-        Únete a EcoAprende y comienza a aprender jugando.
-      </p>
+      <p>Únete a EcoAprende y comienza a aprender jugando.</p>
     </div>
 
     <form class="register-form" (ngSubmit)="register()">
@@ -18,7 +12,6 @@
       <!-- Nombre -->
       <mat-form-field appearance="outline">
         <mat-label>Nombre completo</mat-label>
-
         <input
           matInput
           type="text"
@@ -27,14 +20,12 @@
           placeholder="Tu nombre completo"
           required
         />
-
         <mat-icon matSuffix>person</mat-icon>
       </mat-form-field>
 
       <!-- Email -->
       <mat-form-field appearance="outline">
         <mat-label>Correo electrónico</mat-label>
-
         <input
           matInput
           type="email"
@@ -43,14 +34,12 @@
           placeholder="ejemplo@correo.com"
           required
         />
-
         <mat-icon matSuffix>mail</mat-icon>
       </mat-form-field>
 
       <!-- Contraseña -->
       <mat-form-field appearance="outline">
         <mat-label>Contraseña</mat-label>
-
         <input
           matInput
           type="password"
@@ -59,14 +48,12 @@
           placeholder="Mínimo 6 caracteres"
           required
         />
-
         <mat-icon matSuffix>lock</mat-icon>
       </mat-form-field>
 
       <!-- Confirmar contraseña -->
       <mat-form-field appearance="outline">
         <mat-label>Confirmar contraseña</mat-label>
-
         <input
           matInput
           type="password"
@@ -75,7 +62,6 @@
           placeholder="Repetí tu contraseña"
           required
         />
-
         <mat-icon matSuffix>lock</mat-icon>
       </mat-form-field>
 
@@ -96,7 +82,6 @@
       <!-- Botón -->
       <button
         mat-raised-button
-        color="primary"
         class="register-button"
         type="submit"
         [disabled]="loading"
@@ -111,9 +96,7 @@
     </form>
 
     <div class="register-links">
-      <a routerLink="/login">
-        ¿Ya tenés una cuenta? Iniciar sesión
-      </a>
+      <a routerLink="/login">¿Ya tenés una cuenta? Iniciar sesión</a>
     </div>
 
   </mat-card>
