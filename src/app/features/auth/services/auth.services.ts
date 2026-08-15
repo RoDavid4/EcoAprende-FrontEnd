@@ -79,10 +79,30 @@ resetPassword(data: {
   );
 }
 
+//FUNCIONALIDADES DEL PERFIL
 getProfile(): Observable<any> {
 return this.http.get<any>(
 `${this.apiUrl}/users/profile`
 );
+}
+
+updateProfile(data: {
+  fullName: string;
+}): Observable<any> {
+  return this.http.patch(
+    `${this.apiUrl}/users/profile`,
+    data
+  );
+}
+
+changePassword(data: {
+  currentPassword: string;
+  newPassword: string;
+}): Observable<any> {
+  return this.http.post(
+    `${this.apiUrl}/users/change-password`,
+    data
+  );
 }
 
 logout(): void {

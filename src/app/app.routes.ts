@@ -5,6 +5,7 @@ import { authGuard } from './core/guards/auth-guard';
 import { Register } from './features/register/register';
 import { ForgotPassword } from './features/forgot-password/forgot-password';
 import { ResetPassword } from './features/reset-password/reset-password';
+import { Profile } from './features/profile/profile';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,11 @@ export const routes: Routes = [
   {
   path: 'register',
   component: Register,
+},
+{
+  path: 'profile',
+  component: Profile,
+  canActivate: [authGuard],
 },
 {
     path: 'forgot-password',
