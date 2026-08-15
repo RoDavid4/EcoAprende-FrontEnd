@@ -1,0 +1,71 @@
+<div class="login-container">
+  <mat-card class="login-card">
+
+    <div class="login-header">
+      <div class="logo">🌱</div>
+      <h1>EcoAprende</h1>
+      <p>Ingresá a tu cuenta para continuar aprendiendo.</p>
+    </div>
+
+    <form class="login-form" (ngSubmit)="login()">
+
+      <!-- Email -->
+      <mat-form-field appearance="outline">
+        <mat-label>Correo electrónico</mat-label>
+        <input
+          matInput
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="ejemplo@correo.com"
+          required
+        />
+        <mat-icon matSuffix>mail</mat-icon>
+      </mat-form-field>
+
+      <!-- Contraseña -->
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="********"
+          required
+        />
+        <mat-icon matSuffix>visibility</mat-icon>
+      </mat-form-field>
+
+      <!-- Error -->
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <!-- Botón -->
+      <button
+        mat-raised-button
+        class="login-button"
+        type="submit"
+        [disabled]="loading"
+      >
+        @if (loading) {
+          Iniciando sesión...
+        } @else {
+          Iniciar sesión
+        }
+      </button>
+
+    </form>
+
+    <div class="login-links">
+      <a routerLink="/forgot-password">
+        ¿Olvidaste tu contraseña?
+      </a>
+      <a routerLink="/register">Crear una cuenta</a>
+    </div>
+
+  </mat-card>
+</div>

@@ -1,0 +1,199 @@
+// ==========================================
+// Variables del Design System Eco-Modern
+// ==========================================
+$primary: #012d1d;
+$primary-container: #1b4332;
+$secondary: #0e6c4a;
+$surface: #f9faf6;
+$surface-container-low: #f3f4f1;
+$on-surface: #1a1c1a;
+$on-surface-variant: #414844;
+$outline-variant: #c1c8c2;
+$error-container: #ffdad6;
+$error: #ba1a1a;
+
+// ==========================================
+// Estructura Principal
+// ==========================================
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: $surface;
+  // Fondo ambiental orgánico sutil
+  background-image: radial-gradient(circle at 15% 15%, rgba(160, 244, 200, 0.08) 0%, transparent 45%),
+                    radial-gradient(circle at 85% 85%, rgba(27, 67, 50, 0.04) 0%, transparent 45%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 2.5rem 2rem;
+  background-color: #ffffff !important;
+  border-radius: 16px !important; // Tarjeta grande con radio de 16px[cite: 1]
+  box-shadow: 0 12px 32px rgba(27, 67, 50, 0.08) !important; // Sombra ambiental suave[cite: 1]
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(27, 67, 50, 0.12) !important;
+  }
+}
+
+// ==========================================
+// Encabezado y Logo Animado
+// ==========================================
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .logo {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(160, 244, 200, 0.2);
+    border-radius: 50%;
+    
+    // Animación de brote orgánico
+    animation: eco-sprout 1.2s ease-out forwards;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: $primary;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    margin-top: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    color: $on-surface-variant;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+}
+
+// ==========================================
+// Formulario e Inputs
+// ==========================================
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+mat-form-field {
+  width: 100%;
+
+  // Ajustes para Angular Material MDC
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: $surface-container-low !important;
+    border-radius: 8px !important;
+  }
+
+  ::ng-deep .mdc-notched-outline__leading,
+  ::ng-deep .mdc-notched-outline__notch,
+  ::ng-deep .mdc-notched-outline__trailing {
+    border-color: $outline-variant !important;
+  }
+
+  &.mat-focused {
+    ::ng-deep .mdc-notched-outline__leading,
+    ::ng-deep .mdc-notched-outline__notch,
+    ::ng-deep .mdc-notched-outline__trailing {
+      border-color: $secondary !important;
+      border-width: 2px !important;
+    }
+  }
+
+  mat-icon {
+    color: $on-surface-variant;
+  }
+}
+
+// ==========================================
+// Botón de Acción Principal
+// ==========================================
+.login-button {
+  width: 100%;
+  height: 48px;
+  margin-top: 0.5rem;
+  background-color: $primary !important;
+  color: #ffffff !important;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px !important; // UI estándar de 8px[cite: 1]
+  box-shadow: 0 4px 12px rgba(1, 45, 29, 0.15) !important;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+
+  &:hover:not([disabled]) {
+    transform: scale(1.02); // Efecto vivo al interactuar[cite: 1]
+    background-color: $primary-container !important;
+  }
+}
+
+// ==========================================
+// Mensajes de Error y Enlaces
+// ==========================================
+.error-message {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background-color: $error-container;
+  color: $error;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.login-links {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  a {
+    text-decoration: none;
+    color: $secondary;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: $primary;
+      text-decoration: underline;
+    }
+  }
+}
+
+// ==========================================
+// Keyframes de Animación
+// ==========================================
+@keyframes eco-sprout {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-15deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1) rotate(10deg);
+  }
+  80% {
+    transform: scale(0.95) rotate(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}

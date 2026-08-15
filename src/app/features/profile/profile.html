@@ -1,0 +1,206 @@
+<div class="profile-page">
+
+  <div class="profile-container">
+
+    <div class="profile-header">
+      <div class="profile-icon">
+        <mat-icon>person</mat-icon>
+      </div>
+
+      <div>
+        <h1>Mi perfil</h1>
+        <p>Administrá tu información personal y tu contraseña.</p>
+      </div>
+    </div>
+
+    @if (loading) {
+      <div class="loading">
+        <p>Cargando perfil...</p>
+      </div>
+    }
+
+    @if (!loading) {
+
+      <!-- Información personal -->
+      <mat-card class="profile-card">
+
+        <div class="card-header">
+          <div>
+            <h2>Información personal</h2>
+            <p>Actualizá los datos de tu cuenta.</p>
+          </div>
+
+          <mat-icon>person_outline</mat-icon>
+        </div>
+
+        <div class="profile-form">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre completo</mat-label>
+
+            <input
+              matInput
+              type="text"
+              name="fullName"
+              [(ngModel)]="fullName"
+            />
+
+            <mat-icon matSuffix>badge</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Correo electrónico</mat-label>
+
+            <input
+              matInput
+              type="email"
+              [value]="email"
+              disabled
+            />
+
+            <mat-icon matSuffix>mail</mat-icon>
+          </mat-form-field>
+
+          <div class="role-container">
+
+            <span class="role-label">Rol</span>
+
+            <span class="role-badge">
+              {{ role }}
+            </span>
+
+          </div>
+
+          @if (profileError) {
+            <div class="message error">
+              <mat-icon>error_outline</mat-icon>
+              <span>{{ profileError }}</span>
+            </div>
+          }
+
+          @if (profileMessage) {
+            <div class="message success">
+              <mat-icon>check_circle_outline</mat-icon>
+              <span>{{ profileMessage }}</span>
+            </div>
+          }
+
+          <button
+            mat-raised-button
+            color="primary"
+            class="save-button"
+            type="button"
+            (click)="updateProfile()"
+            [disabled]="savingProfile">
+
+            @if (savingProfile) {
+              Guardando...
+            } @else {
+              Guardar cambios
+            }
+
+          </button>
+
+        </div>
+
+      </mat-card>
+
+
+      <!-- Cambiar contraseña -->
+      <mat-card class="profile-card">
+
+        <div class="card-header">
+          <div>
+            <h2>Cambiar contraseña</h2>
+            <p>
+              Utilizá una contraseña segura de al menos 6 caracteres.
+            </p>
+          </div>
+
+          <mat-icon>lock_outline</mat-icon>
+        </div>
+
+        <div class="profile-form">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Contraseña actual</mat-label>
+
+            <input
+              matInput
+              type="password"
+              name="currentPassword"
+              [(ngModel)]="currentPassword"
+            />
+
+            <mat-icon matSuffix>lock</mat-icon>
+          </mat-form-field>
+
+
+          <mat-form-field appearance="outline">
+            <mat-label>Nueva contraseña</mat-label>
+
+            <input
+              matInput
+              type="password"
+              name="newPassword"
+              [(ngModel)]="newPassword"
+            />
+
+            <mat-icon matSuffix>lock_reset</mat-icon>
+          </mat-form-field>
+
+
+          <mat-form-field appearance="outline">
+            <mat-label>Confirmar nueva contraseña</mat-label>
+
+            <input
+              matInput
+              type="password"
+              name="confirmPassword"
+              [(ngModel)]="confirmPassword"
+            />
+
+            <mat-icon matSuffix>lock_outline</mat-icon>
+          </mat-form-field>
+
+
+          @if (passwordError) {
+            <div class="message error">
+              <mat-icon>error_outline</mat-icon>
+              <span>{{ passwordError }}</span>
+            </div>
+          }
+
+          @if (passwordMessage) {
+            <div class="message success">
+              <mat-icon>check_circle_outline</mat-icon>
+              <span>{{ passwordMessage }}</span>
+            </div>
+          }
+
+
+          <button
+            mat-raised-button
+            color="primary"
+            class="save-button"
+            type="button"
+            (click)="changePassword()"
+            [disabled]="savingPassword">
+
+            @if (savingPassword) {
+              Actualizando...
+            } @else {
+              Cambiar contraseña
+            }
+
+          </button>
+
+        </div>
+
+      </mat-card>
+
+    }
+
+  </div>
+
+</div>
