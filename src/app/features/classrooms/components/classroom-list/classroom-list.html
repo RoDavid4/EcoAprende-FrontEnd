@@ -4,16 +4,18 @@
   </div>
 } @else {
   <div class="grid-container">
-    <div class="card create-card" (click)="onCreate()">
-      <div class="plus-circle">
-        <mat-icon>add</mat-icon>
+    @if (userRole === "TEACHER") {
+      <div class="card create-card" (click)="onCreate()">
+        <div class="plus-circle">
+          <mat-icon>add</mat-icon>
+        </div>
+        <span class="create-title">Crear Nueva Aula</span>
+        <span class="create-sub"
+          >Configura un nuevo entorno para que tus estudiantes aprendan y
+          exploren.</span
+        >
       </div>
-      <span class="create-title">Crear Nueva Aula</span>
-      <span class="create-sub"
-        >Configura un nuevo entorno para que tus estudiantes aprendan y
-        exploren.</span
-      >
-    </div>
+    }
 
     @for (item of classrooms; track item.id) {
       <div class="card class-card">
@@ -39,23 +41,26 @@
             <mat-icon>content_copy</mat-icon>
           </button>
         </div>
-
-        <div class="card-actions">
-          <button
-            matButton="outlined"
-            class="btn-card"
-            (click)="onEdit(item, $event)"
-          >
-            Editar
-          </button>
-          <button
-            matButton="outlined"
-            class="btn-card"
-            (click)="onGoToRoster(item.id!, $event)"
-          >
-            Listar
-          </button>
-        </div>
+        @if (userRole === "TEACHER") {
+          <div class="card-actions">
+            <button
+              matButton="outlined"
+              class="btn-card"
+              (click)="onEdit(item, $event)"
+            >
+              Editar
+            </button>
+            <button
+              matButton="outlined"
+              class="btn-card"
+              (click)="onGoToRoster(item.id!, $event)"
+            >
+              Listar
+            </button>
+          </div>
+        } @else {
+          <button matButton="outlined" class="btn-card">Entrar a clase</button>
+        }
       </div>
     }
   </div>

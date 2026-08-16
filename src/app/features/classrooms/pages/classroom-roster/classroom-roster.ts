@@ -29,6 +29,7 @@ export class ClassroomRoster implements OnInit {
   roster: ClassroomRosterModel | null = null;
   isLoading = true;
   displayedColumns: string[] = ['name', 'email', 'joinedAt', 'actions'];
+  students: Student[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -39,22 +40,41 @@ export class ClassroomRoster implements OnInit {
     this.classroomId = this.route.snapshot.paramMap.get('id');
     if (this.classroomId) {
       this.loadRoster(this.classroomId);
+    } else {
+      console.error('No se encontró ningún parámetro "id" en la ruta activa.');
+      this.isLoading = false;
     }
   }
 
   loadRoster(id: string): void {
     this.isLoading = true;
-    this.classroomService.getRosterByClassroomId(id).subscribe({
-      next: (data) => {
-        this.roster = data;
+    this.classroomService.getClassroomById(id).subscribe({
+      next: (data: any) => {
+        console.log('Respuesta completa:', data);
+
+        this.roster = {
+          classroomId: data.id,
+          classroomName: data.name,
+          code: data.code,
+          students: (data.students || []).map((s: any) => ({
+            id: s.id,
+            fullName: s.fullName,
+            email: s.email,
+            joinedAt: s.ClassroomStudent?.joinedAt || new Date(),
+          })),
+          studentsCount: data.students?.length || 0,
+        };
         this.isLoading = false;
       },
-      error: () => (this.isLoading = false),
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Error al cargar nómina:', error);
+      },
     });
   }
 
   removeStudent(student: Student): void {
-    if (confirm(`¿Estás seguro de remover a ${student.name} del aula?`)) {
+    if (confirm(`¿Estás seguro de remover a ${student.fullName} del aula?`)) {
       this.classroomService
         .removeStudentFromClassroom(this.classroomId!, student.id)
         .subscribe(() => {

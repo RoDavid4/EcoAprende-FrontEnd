@@ -19,6 +19,7 @@ import { Classroom } from '../../../../core/models/classroom.model';
 export class ClassroomList {
   @Input() classrooms: Classroom[] = [];
   @Input() isLoading = false;
+  @Input() userRole: string = 'STUDENT';
 
   // Eventos para avisar a la página principal
   @Output() createRequested = new EventEmitter<void>();
