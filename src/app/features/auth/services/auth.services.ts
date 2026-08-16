@@ -93,4 +93,9 @@ export class AuthService {
     //user cerro sesion
     this.currentUserSubject.next(null);
   }
+
+  //obtener usuario actual
+  getCurrentUser(): LoginResponse['user'] | null {
+    return this.currentUserSubject.value;
+  }
 }
