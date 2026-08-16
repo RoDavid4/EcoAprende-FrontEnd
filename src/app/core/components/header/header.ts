@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { JoinClassModal } from '../../../shared/components/join-class-modal/join-class-modal';
 import { CreateEditClassroomModal } from '../../../shared/components/create-edit-classroom-modal/create-edit-classroom-modal';
-import { Auth } from '../../services/auth';
+import { AuthMock } from '../../services/auth-mock';
 
 @Component({
   selector: 'app-header',
@@ -22,22 +22,22 @@ import { Auth } from '../../services/auth';
   styleUrl: './header.scss',
 })
 export class Header implements OnInit {
-  userRole: 'STUDENT' | 'TEACHER' | 'ADMIN' = 'STUDENT';
+  userRole: 'STUDENT' | 'TEACHER' | 'ADMIN' = 'TEACHER';
   userName = '';
   isMobileMenuOpen = false;
 
   constructor(
     private dialog: MatDialog,
-    private authService: Auth,
+    private authService: AuthMock,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
-        this.userName = user.name;
-        this.userRole = user.role;
-        console.log('Header: Usuario cargado:', user);
+        this.userName = user.fullName || 'Usuario';
+        this.userRole = user.role as 'STUDENT' | 'TEACHER' | 'ADMIN';
+        console.log('Header:', user);
       }
     });
   }
@@ -89,7 +89,6 @@ export class Header implements OnInit {
   }
 
   toggleRoleSimulated(): void {
-    // Función rápida para probar cómo cambia la vista
     const roles: ('STUDENT' | 'TEACHER' | 'ADMIN')[] = [
       'STUDENT',
       'TEACHER',
@@ -97,7 +96,6 @@ export class Header implements OnInit {
     ];
     const currentIndex = roles.indexOf(this.userRole);
     const nextIndex = (currentIndex + 1) % roles.length;
-    this.authService.setRole(roles[nextIndex]);
     const newRole = roles[nextIndex];
 
     this.authService.setRole(newRole);
@@ -107,7 +105,7 @@ export class Header implements OnInit {
       TEACHER: 'Prof. García',
       ADMIN: 'Admin Eco',
     };
-    this.userName = names[this.userRole];
+    this.userName = names[newRole];
     this.userRole = newRole;
 
     this.redirectByRole(newRole);
