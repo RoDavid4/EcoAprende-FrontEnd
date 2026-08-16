@@ -116,7 +116,7 @@ export class Header implements OnInit {
       items.push(
         {
           label: 'Mis Aulas',
-          route: '/classrooms/student',
+          route: '/classrooms',
         },
         // {
         //   label: 'Misiones Eco',
@@ -128,7 +128,7 @@ export class Header implements OnInit {
     if (this.userRole === 'TEACHER' || this.userRole === 'ADMIN') {
       items.push({
         label: 'Gestión de Aulas',
-        route: '/classrooms/teacher',
+        route: '/classrooms',
       });
     }
 
