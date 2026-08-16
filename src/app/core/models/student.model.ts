@@ -1,9 +1,11 @@
 export interface Student {
   id: string;
-  name: string;
+  fullName: string;
   email: string;
   joinedAt: Date | string;
-  avatarUrl?: string;
+  ClassroomStudent?: {
+    joinedAt: string;
+  };
 }
 
 export interface ClassroomRosterModel {
