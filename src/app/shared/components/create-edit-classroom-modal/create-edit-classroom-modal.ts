@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -47,7 +47,7 @@ export class CreateEditClassroomModal {
     this.isEditMode = !!data;
     this.form = this.fb.group({
       name: [data?.name || '', [Validators.required, Validators.minLength(3)]],
-      description: [data?.description || '', [Validators.required]],
+      description: [data?.description || ''],
     });
   }
 
@@ -59,13 +59,25 @@ export class CreateEditClassroomModal {
 
     if (this.isEditMode && this.data?.id) {
       this.classroomService.updateClassroom(this.data.id, val).subscribe({
-        next: () => this.dialogRef.close(true),
-        error: () => (this.isLoading = false),
+        next: (updatedClassroom) => {
+          this.isLoading = false;
+          this.dialogRef.close(updatedClassroom || true);
+        },
+        error: (err) => {
+          console.error('Error al actualizar aula:', err);
+          this.isLoading = false;
+        },
       });
     } else {
       this.classroomService.createClassroom(val).subscribe({
-        next: () => this.dialogRef.close(true),
-        error: () => (this.isLoading = false),
+        next: (newClassroom) => {
+          this.isLoading = false;
+          this.dialogRef.close(newClassroom || true);
+        },
+        error: (err) => {
+          console.error('Error al crear aula:', err);
+          this.isLoading = false;
+        },
       });
     }
   }

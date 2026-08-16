@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ClassroomService } from '../../../core/services/classroom-service';
 
 @Component({
   selector: 'app-join-class-modal',
@@ -37,6 +38,7 @@ export class JoinClassModal {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<JoinClassModal>,
+    private classroomService: ClassroomService,
   ) {
     this.joinForm = this.fb.group({
       code: [
@@ -60,6 +62,32 @@ export class JoinClassModal {
     this.isLoading = true;
     this.errorMessage = '';
     this.successMessage = '';
+
+    const code = this.joinForm.get('code')?.value.trim();
+
+    this.classroomService.joinClassroomByCode(code).subscribe({
+      next: (classroom) => {
+        this.isLoading = false;
+        this.successMessage = '¡Te has unido al aula exitosamente!';
+
+        setTimeout(() => {
+          this.dialogRef.close(true);
+        }, 800);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        if (err.status === 404) {
+          this.errorMessage =
+            'El código ingresado no corresponde a ninguna clase activa.';
+        } else if (err.status === 409) {
+          this.errorMessage = 'Ya estás registrado en esta clase.';
+        } else {
+          this.errorMessage =
+            err.error?.message ||
+            'Ocurrió un error al intentar unirse al aula.';
+        }
+      },
+    });
   }
 
   onCancel(): void {
