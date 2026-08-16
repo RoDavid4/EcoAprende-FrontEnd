@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { JoinClassModal } from '../../../shared/components/join-class-modal/join-class-modal';
 import { CreateEditClassroomModal } from '../../../shared/components/create-edit-classroom-modal/create-edit-classroom-modal';
+import { Auth } from '../../services/auth';
 
 @Component({
   selector: 'app-header',
@@ -20,12 +21,26 @@ import { CreateEditClassroomModal } from '../../../shared/components/create-edit
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
-export class Header {
-  userRole: 'STUDENT' | 'TEACHER' = 'STUDENT';
-  userName = 'Ana Gómez';
+export class Header implements OnInit {
+  userRole: 'STUDENT' | 'TEACHER' | 'ADMIN' = 'STUDENT';
+  userName = '';
   isMobileMenuOpen = false;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private authService: Auth,
+    private router: Router,
+  ) {}
+
+  ngOnInit(): void {
+    this.authService.currentUser$.subscribe((user) => {
+      if (user) {
+        this.userName = user.name;
+        this.userRole = user.role;
+        console.log('Header: Usuario cargado:', user);
+      }
+    });
+  }
 
   toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -75,46 +90,77 @@ export class Header {
 
   toggleRoleSimulated(): void {
     // Función rápida para probar cómo cambia la vista
-    this.userRole = this.userRole === 'STUDENT' ? 'TEACHER' : 'STUDENT';
+    const roles: ('STUDENT' | 'TEACHER' | 'ADMIN')[] = [
+      'STUDENT',
+      'TEACHER',
+      'ADMIN',
+    ];
+    const currentIndex = roles.indexOf(this.userRole);
+    const nextIndex = (currentIndex + 1) % roles.length;
+    this.authService.setRole(roles[nextIndex]);
+    const newRole = roles[nextIndex];
+
+    this.authService.setRole(newRole);
+
+    const names = {
+      STUDENT: 'Ana Gómez',
+      TEACHER: 'Prof. García',
+      ADMIN: 'Admin Eco',
+    };
+    this.userName = names[this.userRole];
+    this.userRole = newRole;
+
+    this.redirectByRole(newRole);
+
+    console.log(`Rol cambiado a: ${newRole} - Redirigiendo...`);
+  }
+
+  private redirectByRole(role: 'STUDENT' | 'TEACHER' | 'ADMIN'): void {
+    const routes = {
+      STUDENT: '/classrooms/estudiante',
+      TEACHER: '/classrooms/profesor',
+      ADMIN: '/classrooms/profesor',
+    };
+
+    const targetRoute = routes[role];
+
+    if (this.router.url === targetRoute) {
+      console.log(`Ya estás en ${targetRoute}`);
+      return;
+    }
+
+    console.log(`Navegando a: ${targetRoute}`);
+    this.router.navigate([targetRoute]);
   }
 
   get navItems() {
-    const items = [
-      {
-        label: 'Inicio',
-        route: '/classrooms/profesor',
-        roles: ['STUDENT', 'TEACHER'],
-      },
-    ];
+    const items = [];
+    items.push({
+      label: 'Inicio',
+      route:
+        this.userRole === 'STUDENT'
+          ? '/classrooms/estudiante'
+          : '/classrooms/profesor',
+    });
 
     if (this.userRole === 'STUDENT') {
       items.push(
         {
           label: 'Mis Aulas',
-          route: '/classrooms/student',
-          roles: ['STUDENT'],
+          route: '/classrooms/estudiante',
         },
         {
           label: 'Misiones Eco',
           route: '/misiones',
-          roles: ['STUDENT'],
         },
       );
     }
 
-    if (this.userRole === 'TEACHER') {
-      items.push(
-        {
-          label: 'Gestión de Aulas',
-          route: '/classrooms/profesor',
-          roles: ['TEACHER'],
-        },
-        {
-          label: 'Nómina',
-          route: '/classrooms/students',
-          roles: ['TEACHER'],
-        },
-      );
+    if (this.userRole === 'TEACHER' || this.userRole === 'ADMIN') {
+      items.push({
+        label: 'Gestión de Aulas',
+        route: '/classrooms/profesor',
+      });
     }
 
     return items;

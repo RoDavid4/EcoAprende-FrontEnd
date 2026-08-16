@@ -9,8 +9,9 @@ import { Classroom } from '../../../../core/models/classroom.model';
 import { CreateEditClassroomModal } from '../../../../shared/components/create-edit-classroom-modal/create-edit-classroom-modal';
 import { ClassroomList } from '../../components/classroom-list/classroom-list';
 import { Subscription } from 'rxjs';
+
 @Component({
-  selector: 'app-teacher-dashboard',
+  selector: 'app-classroom-management',
   imports: [
     CommonModule,
     MatButtonModule,
@@ -18,10 +19,10 @@ import { Subscription } from 'rxjs';
     MatDialogModule,
     ClassroomList,
   ],
-  templateUrl: './teacher-dashboard.html',
-  styleUrl: './teacher-dashboard.scss',
+  templateUrl: './classroom-management.html',
+  styleUrl: './classroom-management.scss',
 })
-export class TeacherDashboard implements OnInit {
+export class ClassroomManagement implements OnInit {
   classrooms: Classroom[] = [];
   isLoading = true;
   private classroomSub!: Subscription;

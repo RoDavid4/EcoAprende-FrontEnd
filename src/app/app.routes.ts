@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { TeacherDashboard } from './features/classrooms/pages/teacher-dashboard/teacher-dashboard';
 import { ClassroomRoster } from './features/classrooms/pages/classroom-roster/classroom-roster';
+import { ClassroomManagement } from './features/classrooms/pages/classroom-management/classroom-management';
+import { ClassroomStudents } from './features/classrooms/pages/classroom-students/classroom-students';
 
 export const routes: Routes = [
   {
@@ -10,13 +11,16 @@ export const routes: Routes = [
   },
   {
     path: 'classrooms/profesor',
-    component: TeacherDashboard,
+    component: ClassroomManagement,
   },
   {
     path: 'classrooms/:id/lista',
     component: ClassroomRoster,
   },
-
+  {
+    path: 'classrooms/estudiante',
+    component: ClassroomStudents,
+  },
   {
     path: '**',
     redirectTo: 'classrooms/profesor',
