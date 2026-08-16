@@ -43,19 +43,22 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'classrooms/profesor',
+    path: 'classrooms/teacher',
     component: ClassroomManagement,
+    canActivate: [authGuard],
   },
   {
     path: 'classrooms/:id/lista',
     component: ClassroomRoster,
+    canActivate: [authGuard],
   },
   {
-    path: 'classrooms/estudiante',
+    path: 'classrooms/student',
     component: ClassroomStudents,
+    canActivate: [authGuard],
   },
-  // {
-  //   path: '**',
-  //   redirectTo: 'classrooms/profesor',
-  // },
+  {
+    path: '**',
+    redirectTo: 'login',
+  },
 ];

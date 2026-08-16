@@ -59,7 +59,7 @@ export class Header implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log(
-          'El estudiante se unió con éxito. Aquí puedes recargar la lista de aulas.',
+          'El student se unió con éxito. Aquí puedes recargar la lista de aulas.',
         );
       }
     });
@@ -74,7 +74,7 @@ export class Header implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log(
-          'El estudiante se unió con éxito. Aquí puedes recargar la lista de aulas.',
+          'El student se unió con éxito. Aquí puedes recargar la lista de aulas.',
         );
       }
     });
@@ -115,9 +115,9 @@ export class Header implements OnInit {
 
   private redirectByRole(role: 'STUDENT' | 'TEACHER' | 'ADMIN'): void {
     const routes = {
-      STUDENT: '/classrooms/estudiante',
-      TEACHER: '/classrooms/profesor',
-      ADMIN: '/classrooms/profesor',
+      STUDENT: '/classrooms/student',
+      TEACHER: '/classrooms/teacher',
+      ADMIN: '/classrooms/teacher',
     };
 
     const targetRoute = routes[role];
@@ -135,29 +135,26 @@ export class Header implements OnInit {
     const items = [];
     items.push({
       label: 'Inicio',
-      route:
-        this.userRole === 'STUDENT'
-          ? '/classrooms/estudiante'
-          : '/classrooms/profesor',
+      route: this.userRole === 'STUDENT' ? '/home' : '/home',
     });
 
     if (this.userRole === 'STUDENT') {
       items.push(
         {
           label: 'Mis Aulas',
-          route: '/classrooms/estudiante',
+          route: '/classrooms/student',
         },
-        {
-          label: 'Misiones Eco',
-          route: '/misiones',
-        },
+        // {
+        //   label: 'Misiones Eco',
+        //   route: '/misiones',
+        // },
       );
     }
 
     if (this.userRole === 'TEACHER' || this.userRole === 'ADMIN') {
       items.push({
         label: 'Gestión de Aulas',
-        route: '/classrooms/profesor',
+        route: '/classrooms/teacher',
       });
     }
 
