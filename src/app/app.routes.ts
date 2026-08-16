@@ -8,7 +8,6 @@ import { ResetPassword } from './features/reset-password/reset-password';
 import { Profile } from './features/profile/profile';
 import { ClassroomRoster } from './features/classrooms/pages/classroom-roster/classroom-roster';
 import { ClassroomManagement } from './features/classrooms/pages/classroom-management/classroom-management';
-import { ClassroomStudents } from './features/classrooms/pages/classroom-students/classroom-students';
 
 export const routes: Routes = [
   {
@@ -43,18 +42,13 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'classrooms/teacher',
+    path: 'classrooms',
     component: ClassroomManagement,
     canActivate: [authGuard],
   },
   {
     path: 'classrooms/:id/lista',
     component: ClassroomRoster,
-    canActivate: [authGuard],
-  },
-  {
-    path: 'classrooms/student',
-    component: ClassroomStudents,
     canActivate: [authGuard],
   },
   {
