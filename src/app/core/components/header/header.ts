@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { JoinClassModal } from '../../../shared/components/join-class-modal/join-class-modal';
 import { CreateEditClassroomModal } from '../../../shared/components/create-edit-classroom-modal/create-edit-classroom-modal';
-import { AuthMock } from '../../services/auth-mock';
+import { AuthService } from '../../../features/auth/services/auth.services';
 
 @Component({
   selector: 'app-header',
@@ -22,24 +22,41 @@ import { AuthMock } from '../../services/auth-mock';
   styleUrl: './header.scss',
 })
 export class Header implements OnInit {
-  userRole: 'STUDENT' | 'TEACHER' | 'ADMIN' = 'TEACHER';
+  userRole: 'STUDENT' | 'TEACHER' | 'ADMIN' = 'STUDENT';
   userName = '';
+  userEmail = '';
   isMobileMenuOpen = false;
 
   constructor(
     private dialog: MatDialog,
-    private authService: AuthMock,
+    private authService: AuthService,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe((user) => {
-      if (user) {
+    this.loadUserData();
+  }
+
+  loadUserData(): void {
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      try {
+        const user = JSON.parse(userJson);
         this.userName = user.fullName || 'Usuario';
-        this.userRole = user.role as 'STUDENT' | 'TEACHER' | 'ADMIN';
-        console.log('Header:', user);
+        this.userEmail = user.email || '';
+        this.userRole =
+          (user.role?.toUpperCase() as 'STUDENT' | 'TEACHER' | 'ADMIN') ||
+          'STUDENT';
+      } catch (e) {
+        console.error('Error al parsear el usuario:', e);
       }
-    });
+    }
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.userName = '';
+    this.router.navigate(['/login']);
   }
 
   toggleMobileMenu(): void {
@@ -86,49 +103,6 @@ export class Header implements OnInit {
     } else {
       this.openCreateClassroomModal();
     }
-  }
-
-  toggleRoleSimulated(): void {
-    const roles: ('STUDENT' | 'TEACHER' | 'ADMIN')[] = [
-      'STUDENT',
-      'TEACHER',
-      'ADMIN',
-    ];
-    const currentIndex = roles.indexOf(this.userRole);
-    const nextIndex = (currentIndex + 1) % roles.length;
-    const newRole = roles[nextIndex];
-
-    this.authService.setRole(newRole);
-
-    const names = {
-      STUDENT: 'Ana Gómez',
-      TEACHER: 'Prof. García',
-      ADMIN: 'Admin Eco',
-    };
-    this.userName = names[newRole];
-    this.userRole = newRole;
-
-    this.redirectByRole(newRole);
-
-    console.log(`Rol cambiado a: ${newRole} - Redirigiendo...`);
-  }
-
-  private redirectByRole(role: 'STUDENT' | 'TEACHER' | 'ADMIN'): void {
-    const routes = {
-      STUDENT: '/classrooms/student',
-      TEACHER: '/classrooms/teacher',
-      ADMIN: '/classrooms/teacher',
-    };
-
-    const targetRoute = routes[role];
-
-    if (this.router.url === targetRoute) {
-      console.log(`Ya estás en ${targetRoute}`);
-      return;
-    }
-
-    console.log(`Navegando a: ${targetRoute}`);
-    this.router.navigate([targetRoute]);
   }
 
   get navItems() {

@@ -26,16 +26,21 @@
       {{ userRole === "STUDENT" ? "Unirse a Aula" : "Crear Aula" }}
     </button>
 
-    <div
-      class="profile-info"
-      (click)="toggleRoleSimulated()"
-      title="Cambiar rol"
-    >
+    <div class="profile-info">
       <span class="user-name">{{ userName }}</span>
       <span class="user-badge">{{
         userRole === "STUDENT" ? "Estudiante" : "Docente"
       }}</span>
     </div>
+
+    <button
+      mat-icon-button
+      color="warn"
+      (click)="logout()"
+      title="Cerrar Sesión"
+    >
+      <mat-icon>logout</mat-icon>
+    </button>
   </div>
 
   <button
@@ -74,12 +79,22 @@
         {{ userRole === "STUDENT" ? "Unirse a Aula" : "Crear Aula" }}
       </button>
 
-      <div class="profile-info-mobile" (click)="toggleRoleSimulated()">
+      <div class="profile-info-mobile">
         <span class="user-name">{{ userName }}</span>
         <span class="user-badge">{{
           userRole === "STUDENT" ? "Estudiante" : "Docente"
         }}</span>
       </div>
+
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="logout(); closeMobileMenu()"
+        class="btn-logout-mobile"
+      >
+        <mat-icon>logout</mat-icon>
+        Cerrar Sesión
+      </button>
     </div>
   </div>
 }
