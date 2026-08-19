@@ -10,6 +10,7 @@ import { CreateEditClassroomModal } from '../../../../shared/components/create-e
 import { ClassroomList } from '../../components/classroom-list/classroom-list';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../auth/services/auth.services';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-classroom-management',
@@ -60,11 +61,33 @@ export class ClassroomManagement implements OnInit {
 
   loadClassrooms(): void {
     this.isLoading = true;
+
     this.classroomService.getClassrooms().subscribe({
-      next: (data) => {
-        this.classrooms = data;
-        this.isLoading = false;
-        console.log(`Aulas cargadas (${this.userRole}):`, data);
+      next: (list) => {
+        if (list.length === 0) {
+          this.classrooms = [];
+          this.isLoading = false;
+          console.log(`Aulas cargadas (${this.userRole}): []`);
+          return;
+        }
+
+        forkJoin(
+          list.map((c) => this.classroomService.getClassroomById(c.id)),
+        ).subscribe({
+          next: (details) => {
+            this.classrooms = list.map((c, i) => ({
+              ...c,
+              studentsCount: details[i]?.students?.length || 0,
+            }));
+            this.isLoading = false;
+            console.log(`Aulas cargadas (${this.userRole}):`, this.classrooms);
+          },
+          error: () => {
+            this.classrooms = list;
+            this.isLoading = false;
+            console.warn('No se pudo obtener el detalle de las aulas');
+          },
+        });
       },
       error: () => {
         this.isLoading = false;

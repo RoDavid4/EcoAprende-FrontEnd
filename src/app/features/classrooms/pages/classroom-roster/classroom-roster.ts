@@ -1,16 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ClassroomService } from '../../../../core/services/classroom-service';
 import {
   ClassroomRosterModel,
   Student,
 } from '../../../../core/models/student.model';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 
+export function paginadorEspanol(): MatPaginatorIntl {
+  const intl = new MatPaginatorIntl();
+  intl.itemsPerPageLabel = 'Estudiantes por página:';
+  intl.nextPageLabel = 'Siguiente';
+  intl.previousPageLabel = 'Anterior';
+  intl.firstPageLabel = 'Primera página';
+  intl.lastPageLabel = 'Última página';
+  intl.getRangeLabel = (page: number, pageSize: number, length: number) => {
+    if (length === 0 || pageSize === 0) return `0 de ${length}`;
+    const start = page * pageSize + 1;
+    const end = Math.min(start + pageSize - 1, length);
+    return `${start} - ${end} de ${length}`;
+  };
+  return intl;
+}
 @Component({
   selector: 'app-classroom-roster',
   imports: [
@@ -20,7 +36,9 @@ import {
     MatButtonModule,
     MatTableModule,
     MatProgressSpinnerModule,
+    MatPaginator,
   ],
+  providers: [{ provide: MatPaginatorIntl, useValue: paginadorEspanol() }],
   templateUrl: './classroom-roster.html',
   styleUrl: './classroom-roster.scss',
 })
@@ -30,6 +48,11 @@ export class ClassroomRoster implements OnInit {
   isLoading = true;
   displayedColumns: string[] = ['name', 'email', 'joinedAt', 'actions'];
   students: Student[] = [];
+  dataSource = new MatTableDataSource<Student>([]);
+  //paginador con viewChild
+  @ViewChild(MatPaginator) set paginator(p: MatPaginator | undefined) {
+    if (p) this.dataSource.paginator = p;
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -52,18 +75,22 @@ export class ClassroomRoster implements OnInit {
       next: (data: any) => {
         console.log('Respuesta completa:', data);
 
+        const students: Student[] = (data.students || []).map((s: any) => ({
+          id: s.id,
+          fullName: s.fullName,
+          email: s.email,
+          joinedAt: s.ClassroomStudent?.joinedAt ?? s.joinedAt,
+        }));
+
         this.roster = {
           classroomId: data.id,
           classroomName: data.name,
           code: data.code,
-          students: (data.students || []).map((s: any) => ({
-            id: s.id,
-            fullName: s.fullName,
-            email: s.email,
-            joinedAt: s.ClassroomStudent?.joinedAt || new Date(),
-          })),
-          studentsCount: data.students?.length || 0,
+          students,
+          studentsCount: students.length,
         };
+
+        this.dataSource.data = students;
         this.isLoading = false;
       },
       error: (error) => {
@@ -82,6 +109,9 @@ export class ClassroomRoster implements OnInit {
             this.roster.students = this.roster.students.filter(
               (s) => s.id !== student.id,
             );
+            this.roster.studentsCount = this.roster.students.length;
+
+            this.dataSource.data = [...this.roster.students];
           }
         });
     }

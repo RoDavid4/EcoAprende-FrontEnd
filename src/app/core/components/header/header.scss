@@ -153,6 +153,20 @@
         font-size: 0.8rem;
       }
     }
+
+    .btn-logout-mobile {
+      background-color: #ffffff;
+      color: var(--eco-primary);
+      border: inline;
+      border-color: var(--eco-primary);
+      border-radius: 10px !important;
+
+      &:hover {
+        background-color: var(--eco-primary);
+        color: #ffffff;
+        border-color: #ffffff;
+      }
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 <div class="classroom-page">
   <header class="page-header">
     <div>
-      @if (userRole === "TEACHER") {
+      @if (userRole === "TEACHER" || userRole === "ADMIN") {
         <h1 class="title">Gestión de Aulas</h1>
         <p class="subtitle">
           Gestioná tus aulas y seguí el progreso de tus estudiantes.

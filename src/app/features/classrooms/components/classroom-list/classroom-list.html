@@ -4,7 +4,7 @@
   </div>
 } @else {
   <div class="grid-container">
-    @if (userRole === "TEACHER") {
+    @if (userRole === "TEACHER" || userRole === "ADMIN") {
       <div class="card create-card" (click)="onCreate()">
         <div class="plus-circle">
           <mat-icon>add</mat-icon>
@@ -22,11 +22,17 @@
         <h3 class="class-title">{{ item.name }}</h3>
 
         <h3 class="class-description">{{ item.description }}</h3>
-
-        <div class="students-info">
-          <mat-icon>group</mat-icon>
-          <span>{{ item.studentsCount }} Estudiantes</span>
-        </div>
+        @if (userRole !== "STUDENT") {
+          <div class="students-info">
+            <mat-icon>group</mat-icon>
+            <span>
+              {{ item.studentsCount }}
+              {{
+                item.studentsCount === 1 ? "Estudiante" : "Estudiantes"
+              }}</span
+            >
+          </div>
+        }
 
         <div class="code-box">
           <div class="code-info">
@@ -41,7 +47,7 @@
             <mat-icon>content_copy</mat-icon>
           </button>
         </div>
-        @if (userRole === "TEACHER") {
+        @if (userRole === "TEACHER" || userRole === "ADMIN") {
           <div class="card-actions">
             <button
               matButton="outlined"
@@ -59,7 +65,11 @@
             </button>
           </div>
         } @else {
-          <button matButton="outlined" class="btn-card">Entrar a clase</button>
+          <div class="card-actions">
+            <button matButton="outlined" class="btn-card">
+              Entrar a clase
+            </button>
+          </div>
         }
       </div>
     }

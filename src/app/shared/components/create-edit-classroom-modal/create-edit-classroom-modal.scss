@@ -43,6 +43,12 @@
         color: #ffffff;
         border-color: #ffffff;
       }
+
+      &:disabled {
+        background-color: #ecebeb;
+        color: #777;
+        border-color: #ecebeb;
+      }
     }
   }
 }

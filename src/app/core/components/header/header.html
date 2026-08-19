@@ -82,13 +82,16 @@
       <div class="profile-info-mobile">
         <span class="user-name">{{ userName }}</span>
         <span class="user-badge">{{
-          userRole === "STUDENT" ? "Estudiante" : "Docente"
+          userRole === "STUDENT"
+            ? "Estudiante"
+            : userRole === "TEACHER"
+              ? "Docente"
+              : "Admin"
         }}</span>
       </div>
 
       <button
-        mat-stroked-button
-        color="warn"
+        matButton="outlined"
         (click)="logout(); closeMobileMenu()"
         class="btn-logout-mobile"
       >
