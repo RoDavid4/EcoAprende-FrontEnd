@@ -1,13 +1,160 @@
-<h1>Bienvenido a EcoAprende</h1>
+<div class="home-layout">
 
-<p>Login realizado correctamente.</p>
+  
 
 
-<button
-  mat-stroked-button
-  class="logout-button"
-  (click)="logout()"
->
-  <mat-icon>logout</mat-icon>
-  Cerrar sesión
-</button>
+  <!-- CONTENIDO -->
+  <div class="content-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="level-card">
+
+        <div class="level-header">
+
+          <div class="level-icon">
+            <mat-icon>eco</mat-icon>
+          </div>
+
+          <div>
+            <span class="level-title">
+              Seed Level
+            </span>
+
+            <span class="level-xp">
+              450 XP to Sprout
+            </span>
+          </div>
+
+        </div>
+
+        <div class="xp-bar">
+          <div class="xp-progress"></div>
+        </div>
+
+      </div>
+
+
+      <nav class="sidebar-navigation">
+
+        <a class="sidebar-link active">
+          <mat-icon>school</mat-icon>
+          <span>Cursos</span>
+        </a>
+
+        <a class="sidebar-link">
+          <mat-icon>assignment</mat-icon>
+          <span>Misiones</span>
+        </a>
+
+        <a class="sidebar-link">
+          <mat-icon>workspace_premium</mat-icon>
+          <span>Insignias</span>
+        </a>
+
+        <a
+          class="sidebar-link"
+          routerLink="/profile">
+          <mat-icon>person</mat-icon>
+          <span>Perfil</span>
+        </a>
+
+      </nav>
+
+
+      <div class="sidebar-bottom">
+
+        <a class="sidebar-link">
+          <mat-icon>settings</mat-icon>
+          <span>Configuración</span>
+        </a>
+
+        <a class="sidebar-link">
+          <mat-icon>help_outline</mat-icon>
+          <span>Ayuda</span>
+        </a>
+
+      </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+      <section class="welcome-section">
+
+        <div>
+          <span class="welcome-label">
+            ¡Hola, {{ userName }}!
+          </span>
+
+          <h1>
+            Bienvenido a EcoAprende
+          </h1>
+
+          <p>
+            Aprendé jugando y contribuí al cuidado del planeta.
+          </p>
+        </div>
+
+        <button
+          mat-flat-button
+          class="daily-button">
+
+          <mat-icon>calendar_today</mat-icon>
+          Misión diaria
+        </button>
+
+      </section>
+
+
+      <!-- CONTENIDO PROVISIONAL -->
+      <section class="home-grid">
+
+        <mat-card class="dashboard-card">
+
+          <mat-icon>school</mat-icon>
+
+          <h2>Mis cursos</h2>
+
+          <p>
+            Próximamente podrás continuar tus cursos y descubrir nuevos contenidos.
+          </p>
+
+        </mat-card>
+
+
+        <mat-card class="dashboard-card">
+
+          <mat-icon>assignment</mat-icon>
+
+          <h2>Misiones</h2>
+
+          <p>
+            Completá desafíos y conseguí experiencia para subir de nivel.
+          </p>
+
+        </mat-card>
+
+
+        <mat-card class="dashboard-card">
+
+          <mat-icon>workspace_premium</mat-icon>
+
+          <h2>Mis insignias</h2>
+
+          <p>
+            Descubrí las insignias que podés conseguir mientras aprendés.
+          </p>
+
+        </mat-card>
+
+      </section>
+
+    </main>
+
+  </div>
+
+</div>
