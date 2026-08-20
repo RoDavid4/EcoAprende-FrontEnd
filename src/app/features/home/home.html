@@ -1,14 +1,12 @@
 <div class="home-layout">
 
-  
-
-
   <!-- CONTENIDO -->
   <div class="content-layout">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
 
+      <!-- NIVEL Y XP -->
       <div class="level-card">
 
         <div class="level-header">
@@ -19,23 +17,32 @@
 
           <div>
             <span class="level-title">
-              Seed Level
+              Nivel {{ level }}
             </span>
 
             <span class="level-xp">
-              450 XP to Sprout
+              {{ totalXp }} XP
             </span>
           </div>
 
         </div>
 
         <div class="xp-bar">
-          <div class="xp-progress"></div>
+          <div
+            class="xp-progress"
+            [style.width.%]="getXpProgress()">
+          </div>
+        </div>
+
+        <div class="xp-info">
+          <span>Progreso</span>
+          <span>{{ getXpProgress() }}%</span>
         </div>
 
       </div>
 
 
+      <!-- NAVEGACIÓN -->
       <nav class="sidebar-navigation">
 
         <a class="sidebar-link active">
@@ -56,13 +63,16 @@
         <a
           class="sidebar-link"
           routerLink="/profile">
+
           <mat-icon>person</mat-icon>
           <span>Perfil</span>
+
         </a>
 
       </nav>
 
 
+      <!-- PARTE INFERIOR -->
       <div class="sidebar-bottom">
 
         <a class="sidebar-link">
@@ -83,9 +93,11 @@
     <!-- MAIN -->
     <main class="main-content">
 
+      <!-- BIENVENIDA -->
       <section class="welcome-section">
 
         <div>
+
           <span class="welcome-label">
             ¡Hola, {{ userName }}!
           </span>
@@ -97,6 +109,7 @@
           <p>
             Aprendé jugando y contribuí al cuidado del planeta.
           </p>
+
         </div>
 
         <button
@@ -104,50 +117,156 @@
           class="daily-button">
 
           <mat-icon>calendar_today</mat-icon>
+
           Misión diaria
+
         </button>
 
       </section>
 
 
-      <!-- CONTENIDO PROVISIONAL -->
+      <!-- ESTADÍSTICAS -->
+      <section class="stats-grid">
+
+        <!-- XP -->
+        <mat-card class="stat-card">
+
+          <div class="stat-icon xp-icon">
+            <mat-icon>stars</mat-icon>
+          </div>
+
+          <div class="stat-content">
+
+            <span class="stat-label">
+              Experiencia
+            </span>
+
+            <strong>
+              {{ totalXp }} XP
+            </strong>
+
+            <span class="stat-description">
+              Experiencia acumulada
+            </span>
+
+          </div>
+
+        </mat-card>
+
+
+        <!-- RACHA -->
+        <mat-card class="stat-card">
+
+  <div class="stat-icon streak">
+    <mat-icon>local_fire_department</mat-icon>
+  </div>
+
+  <div class="stat-content">
+    <span class="stat-label">Racha actual </span>
+
+    <strong>{{ currentStreak }} días</strong>
+
+    <span class="stat-description">
+      ¡Seguí aprendiendo!
+    </span>
+  </div>
+
+</mat-card>
+
+        <!-- NIVEL -->
+        <mat-card class="stat-card">
+
+          <div class="stat-icon level-stat-icon">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+
+          <div class="stat-content">
+
+            <span class="stat-label">
+              Nivel actual
+            </span>
+
+            <strong>
+              Nivel {{ level }}
+            </strong>
+
+            <span class="stat-description">
+              Seguí acumulando XP
+            </span>
+
+          </div>
+
+        </mat-card>
+
+      </section>
+
+
+      <!-- CONTENIDO -->
       <section class="home-grid">
 
+        <!-- CURSOS: LO MANEJA TU COMPAÑERA -->
         <mat-card class="dashboard-card">
 
           <mat-icon>school</mat-icon>
 
-          <h2>Mis cursos</h2>
+          <h2>
+            Mis cursos
+          </h2>
 
           <p>
-            Próximamente podrás continuar tus cursos y descubrir nuevos contenidos.
+            Próximamente podrás continuar tus cursos
+            y descubrir nuevos contenidos.
           </p>
 
         </mat-card>
 
 
+        <!-- MISIONES -->
         <mat-card class="dashboard-card">
 
           <mat-icon>assignment</mat-icon>
 
-          <h2>Misiones</h2>
+          <h2>
+            Misiones
+          </h2>
 
           <p>
-            Completá desafíos y conseguí experiencia para subir de nivel.
+            Completá desafíos y conseguí experiencia
+            para subir de nivel.
           </p>
+
+          <button
+            mat-button
+            class="card-action">
+
+            Ver misiones
+
+          </button>
 
         </mat-card>
 
 
+        <!-- INSIGNIAS -->
         <mat-card class="dashboard-card">
 
           <mat-icon>workspace_premium</mat-icon>
 
-          <h2>Mis insignias</h2>
+          <h2>
+            Mis insignias
+          </h2>
 
           <p>
-            Descubrí las insignias que podés conseguir mientras aprendés.
+            Descubrí las insignias que podés conseguir
+            mientras aprendés.
           </p>
+
+          <button
+            mat-button
+            class="card-action">
+
+            Ver insignias
+
+          </button>
 
         </mat-card>
 

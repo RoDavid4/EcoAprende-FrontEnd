@@ -8,6 +8,8 @@ import { MatCardModule } from '@angular/material/card';
 
 import { AuthService } from '../auth/services/auth.services';
 
+import { GamificationService } from '../gamification/services/gamification.service'; 
+
 @Component({
   selector: 'app-home',
   imports: [
@@ -23,9 +25,14 @@ export class Home implements OnInit {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private gamificationService = inject(GamificationService);
 
   userName = '';
   userRole = '';
+
+  totalXp = 0;
+  level = 0;
+  currentStreak = 0;
 
   ngOnInit(): void {
     const storedUser = localStorage.getItem('user');
@@ -36,8 +43,33 @@ export class Home implements OnInit {
       this.userName = user.fullName;
       this.userRole = user.role;
     }
+     this.loadGamification();
   }
 
+   loadGamification(): void {
+    this.gamificationService.getProfile().subscribe({
+      next: (data) => {
+        console.log('Perfil de gamificación:', data);
+
+        this.totalXp = data.totalXp;
+        this.level = data.level;
+        this.currentStreak = data.currentStreak;
+      },
+      error: (error) => {
+        console.error('Error al cargar gamificación:', error);
+      }
+    });
+  }
+
+
+getXpProgress(): number {
+  const xpPerLevel = 1000;
+
+  return Math.min(
+    (this.totalXp % xpPerLevel) / xpPerLevel * 100,
+    100
+  );
+}
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
