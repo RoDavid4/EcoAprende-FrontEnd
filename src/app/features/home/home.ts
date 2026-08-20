@@ -8,7 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 
 import { AuthService } from '../auth/services/auth.services';
 
-import { GamificationService } from '../gamification/services/gamification.service'; 
+import { GamificationService,LeaderboardUser } from '../gamification/services/gamification.service'; 
 
 @Component({
   selector: 'app-home',
@@ -27,6 +27,7 @@ export class Home implements OnInit {
   private router = inject(Router);
   private gamificationService = inject(GamificationService);
 
+  leaderboard: LeaderboardUser[] = [];
   userName = '';
   userRole = '';
 
@@ -44,6 +45,7 @@ export class Home implements OnInit {
       this.userRole = user.role;
     }
      this.loadGamification();
+     this.loadLeaderboard();
   }
 
    loadGamification(): void {
@@ -59,6 +61,7 @@ export class Home implements OnInit {
         console.error('Error al cargar gamificación:', error);
       }
     });
+
   }
 
 
@@ -70,6 +73,19 @@ getXpProgress(): number {
     100
   );
 }
+
+loadLeaderboard(): void {
+  this.gamificationService.getLeaderboard().subscribe({
+    next: (data) => {
+      console.log('Leaderboard:', data);
+      this.leaderboard = data;
+    },
+    error: (error) => {
+      console.error('Error al cargar leaderboard:', error);
+    }
+  });
+}
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);

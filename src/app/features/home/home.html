@@ -270,6 +270,56 @@
 
         </mat-card>
 
+        <!-- RANKING -->
+<mat-card class="dashboard-card leaderboard-card">
+
+  <div class="dashboard-card-header">
+
+    <div class="dashboard-card-icon">
+      <mat-icon>leaderboard</mat-icon>
+    </div>
+
+    <div>
+      <h2>Ranking</h2>
+      <p>Los estudiantes con más experiencia.</p>
+    </div>
+
+  </div>
+
+  <div class="leaderboard-list">
+
+    @for (student of leaderboard; track student.id; let i = $index) {
+
+      <div class="leaderboard-item">
+
+        <span class="leaderboard-position">
+          #{{ i + 1 }}
+        </span>
+
+        <div class="leaderboard-user">
+
+          <span class="leaderboard-name">
+            {{ student.fullName }}
+          </span>
+
+          <span class="leaderboard-level">
+            Nivel {{ student.level }}
+          </span>
+
+        </div>
+
+        <strong class="leaderboard-xp">
+          {{ student.totalXp }} XP
+        </strong>
+
+      </div>
+
+    }
+
+  </div>
+
+</mat-card>
+
       </section>
 
     </main>

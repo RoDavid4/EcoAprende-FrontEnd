@@ -2,11 +2,29 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface Badge {
+  id: string;
+  code: string;
+  name: string;
+  description: string;
+  iconUrl: string;
+  xpValue: number;
+  category: 'ACADEMIC' | 'COMMUNITY' | 'STREAK' | 'SPECIAL';
+  isActive: boolean;
+}
+
 export interface GamificationProfile {
   totalXp: number;
   level: number;
   currentStreak: number;
-  badges: any[];
+  badges: Badge[];
+}
+
+export interface LeaderboardUser {
+  id: string;
+  fullName: string;
+  level: number;
+  totalXp: number;
 }
 
 @Injectable({
@@ -24,9 +42,15 @@ export class GamificationService {
     );
   }
 
-  getBadges(): Observable<any[]> {
-    return this.http.get<any[]>(
+  getBadges(): Observable<Badge[]> {
+    return this.http.get<Badge[]>(
       `${this.apiUrl}/gamification/badges`
+    );
+  }
+
+  getLeaderboard(): Observable<LeaderboardUser[]> {
+    return this.http.get<LeaderboardUser[]>(
+      `${this.apiUrl}/gamification/leaderboard`
     );
   }
 }
