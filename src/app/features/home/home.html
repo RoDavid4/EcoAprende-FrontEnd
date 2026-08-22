@@ -222,28 +222,80 @@
 
 
         <!-- MISIONES -->
-        <mat-card class="dashboard-card">
+        <!-- MISIONES -->
+<mat-card class="dashboard-card missions-card">
 
-          <mat-icon>assignment</mat-icon>
+  <div class="dashboard-card-header">
 
-          <h2>
-            Misiones
-          </h2>
+    <div class="dashboard-card-icon">
+      <mat-icon>assignment</mat-icon>
+    </div>
 
-          <p>
-            Completá desafíos y conseguí experiencia
-            para subir de nivel.
-          </p>
+    <div>
+      <h2>Misiones</h2>
 
-          <button
-            mat-button
-            class="card-action">
+      <span class="dashboard-card-subtitle">
+        Desafíos disponibles
+      </span>
+    </div>
 
-            Ver misiones
+  </div>
 
-          </button>
 
-        </mat-card>
+  <div class="missions-list">
+
+    @for (mission of missions.slice(0, 3); track mission.id) {
+
+      <div class="mission-item">
+
+        <div class="mission-info">
+
+          <strong>
+            {{ mission.title }}
+          </strong>
+
+          <span>
+            {{ mission.description }}
+          </span>
+
+        </div>
+
+        <div class="mission-xp">
+          +{{ mission.pointsReward }} XP
+        </div>
+
+      </div>
+
+    }
+
+    @if (missions.length === 0) {
+
+      <div class="empty-missions">
+
+        <mat-icon>assignment_late</mat-icon>
+
+        <span>
+          No hay misiones disponibles.
+        </span>
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <button
+    mat-button
+    class="card-action">
+
+    Ver todas las misiones
+
+    <mat-icon>arrow_forward</mat-icon>
+
+  </button>
+
+</mat-card>
 
 
         <!-- INSIGNIAS -->

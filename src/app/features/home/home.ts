@@ -8,7 +8,9 @@ import { MatCardModule } from '@angular/material/card';
 
 import { AuthService } from '../auth/services/auth.services';
 
-import { GamificationService,LeaderboardUser } from '../gamification/services/gamification.service'; 
+import { GamificationService,LeaderboardUser } from '../gamification/services/gamification.service';
+import { MissionsService } from '../missions/missions.service';
+import { Mission } from '../missions/missions.service';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +26,7 @@ import { GamificationService,LeaderboardUser } from '../gamification/services/ga
 export class Home implements OnInit {
 
   private authService = inject(AuthService);
+  private missionsService = inject(MissionsService);
   private router = inject(Router);
   private gamificationService = inject(GamificationService);
 
@@ -34,9 +37,11 @@ export class Home implements OnInit {
   totalXp = 0;
   level = 0;
   currentStreak = 0;
+  missions: Mission[] = [];
 
   ngOnInit(): void {
     const storedUser = localStorage.getItem('user');
+    
 
     if (storedUser) {
       const user = JSON.parse(storedUser);
@@ -46,6 +51,7 @@ export class Home implements OnInit {
     }
      this.loadGamification();
      this.loadLeaderboard();
+     this.loadMissions();
   }
 
    loadGamification(): void {
@@ -64,6 +70,18 @@ export class Home implements OnInit {
 
   }
 
+  loadMissions(): void {
+  this.missionsService.getMissions().subscribe({
+    next: (data) => {
+      this.missions = data;
+
+      console.log('Misiones:', this.missions);
+    },
+    error: (error) => {
+      console.error('Error al cargar misiones:', error);
+    }
+  });
+}
 
 getXpProgress(): number {
   const xpPerLevel = 1000;
