@@ -299,28 +299,99 @@
 
 
         <!-- INSIGNIAS -->
-        <mat-card class="dashboard-card">
+        <mat-card class="dashboard-card badges-card">
 
-          <mat-icon>workspace_premium</mat-icon>
+  <div class="dashboard-card-header">
 
-          <h2>
-            Mis insignias
-          </h2>
+    <div class="dashboard-card-icon">
+      <mat-icon>workspace_premium</mat-icon>
+    </div>
 
-          <p>
-            Descubrí las insignias que podés conseguir
-            mientras aprendés.
-          </p>
+    <div>
+      <h2>Mis insignias</h2>
 
-          <button
-            mat-button
-            class="card-action">
+      <span class="dashboard-card-subtitle">
+        Tus logros en EcoAprende
+      </span>
+    </div>
 
-            Ver insignias
+  </div>
 
-          </button>
 
-        </mat-card>
+  <div class="badges-list">
+
+    @for (badge of badges.slice(0, 3); track badge.id) {
+
+      <div
+        class="badge-item"
+        [class.badge-locked]="!badge.isUnlocked">
+
+        <img
+          [src]="badge.iconUrl"
+          [alt]="badge.name"
+          class="badge-icon">
+
+        <div class="badge-info">
+
+          <strong>
+            {{ badge.name }}
+          </strong>
+
+          <span>
+            {{ badge.description }}
+          </span>
+
+        </div>
+
+        @if (badge.isUnlocked) {
+
+          <mat-icon class="badge-unlocked">
+            check_circle
+          </mat-icon>
+
+        } @else {
+
+          <mat-icon class="badge-locked-icon">
+            lock
+          </mat-icon>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+
+  @if (badges.length === 0) {
+
+    <div class="empty-badges">
+
+      <mat-icon>workspace_premium</mat-icon>
+
+      <span>
+        Todavía no hay insignias disponibles.
+      </span>
+
+    </div>
+
+  }
+
+
+  <button
+    mat-button
+    class="card-action">
+
+    Ver todas
+
+    <mat-icon>
+      arrow_forward
+    </mat-icon>
+
+  </button>
+
+</mat-card>
 
         <!-- RANKING -->
 <mat-card class="dashboard-card leaderboard-card">

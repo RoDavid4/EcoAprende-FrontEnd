@@ -38,6 +38,7 @@ export class Home implements OnInit {
   level = 0;
   currentStreak = 0;
   missions: Mission[] = [];
+  badges: any[] = [];
 
   ngOnInit(): void {
     const storedUser = localStorage.getItem('user');
@@ -52,6 +53,7 @@ export class Home implements OnInit {
      this.loadGamification();
      this.loadLeaderboard();
      this.loadMissions();
+     this.loadBadges();
   }
 
    loadGamification(): void {
@@ -79,6 +81,19 @@ export class Home implements OnInit {
     },
     error: (error) => {
       console.error('Error al cargar misiones:', error);
+    }
+  });
+}
+
+
+loadBadges(): void {
+  this.gamificationService.getBadges().subscribe({
+    next: (data) => {
+      console.log('Badges:', data);
+      this.badges = data;
+    },
+    error: (error) => {
+      console.error('Error al cargar badges:', error);
     }
   });
 }
