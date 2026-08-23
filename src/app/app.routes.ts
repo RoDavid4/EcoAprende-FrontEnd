@@ -11,6 +11,7 @@ import { ClassroomManagement } from './features/classrooms/pages/classroom-manag
 import { Missions } from './features/missions/missions';
 import {MissionDetail} from './features/missions/mission-detail/mission-detail';
 import { MySubmissions } from './features/missions/my-submissions/my-submissions';
+import { Gamification } from './features/gamification/gamification';
 
 export const routes: Routes = [
   {
@@ -47,6 +48,11 @@ export const routes: Routes = [
   {
     path: 'classrooms',
     component: ClassroomManagement,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'gamification',
+    component: Gamification,
     canActivate: [authGuard],
   },
   {
