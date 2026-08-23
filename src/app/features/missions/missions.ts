@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 import {
   MissionsService,
@@ -15,6 +16,7 @@ import {
     MatCardModule,
     MatIconModule,
     MatButtonModule,
+    RouterLink,
   ],
   templateUrl: './missions.html',
   styleUrl: './missions.scss',

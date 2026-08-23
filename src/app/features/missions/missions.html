@@ -1,45 +1,32 @@
 <div class="missions-page">
-
   <!-- HEADER -->
   <section class="missions-header">
-
     <div>
-      <span class="missions-label">
-        EcoAprende
-      </span>
+      <span class="missions-label"> EcoAprende </span>
 
-      <h1>
-        Misiones
-      </h1>
+      <h1>Misiones</h1>
 
-      <p>
-        Completá desafíos, aprendé y conseguí experiencia.
-      </p>
+      <p>Completá desafíos, aprendé y conseguí experiencia.</p>
     </div>
-
   </section>
-
 
   <!-- LISTA DE MISIONES -->
   <section class="missions-grid">
-
     @for (mission of missions; track mission.id) {
-
       <mat-card class="mission-card">
-
         <!-- ICONO -->
         <div class="mission-icon">
           <mat-icon>
-            {{ mission.type === 'DIGITAL' ? 'computer' : 'eco' }}
+            {{ mission.type === "DIGITAL" ? "computer" : "eco" }}
           </mat-icon>
         </div>
 
-
         <!-- CONTENIDO -->
         <div class="mission-content">
-
           <span class="mission-type">
-            {{ mission.type === 'DIGITAL' ? 'Misión digital' : 'Misión práctica' }}
+            {{
+              mission.type === "DIGITAL" ? "Misión digital" : "Misión práctica"
+            }}
           </span>
 
           <h2>
@@ -51,75 +38,46 @@
           </p>
 
           @if (mission.instructions) {
-
             <div class="mission-instructions">
-
               <mat-icon>info_outline</mat-icon>
 
               <span>
                 {{ mission.instructions }}
               </span>
-
             </div>
-
           }
-
         </div>
-
 
         <!-- FOOTER -->
         <div class="mission-footer">
-
           <div class="mission-reward">
-
             <mat-icon>stars</mat-icon>
 
-            <strong>
-              +{{ mission.pointsReward }} XP
-            </strong>
-
+            <strong> +{{ mission.pointsReward }} XP </strong>
           </div>
 
-          <button
-            mat-flat-button
-            class="mission-button">
-
+          <a
+            mat-button
+            class="mission-action"
+            [routerLink]="['/missions', mission.id]"
+          >
             Ver misión
 
-            <mat-icon>
-              arrow_forward
-            </mat-icon>
-
-          </button>
-
+            <mat-icon> arrow_forward </mat-icon>
+          </a>
         </div>
-
       </mat-card>
-
     }
-
 
     <!-- SIN MISIONES -->
     @if (missions.length === 0) {
-
       <div class="empty-missions">
+        <mat-icon> assignment </mat-icon>
 
-        <mat-icon>
-          assignment
-        </mat-icon>
+        <h2>No hay misiones disponibles</h2>
 
-        <h2>
-          No hay misiones disponibles
-        </h2>
-
-        <p>
-          En este momento no hay misiones activas para realizar.
-        </p>
-
+        <p>En este momento no hay misiones activas para realizar.</p>
       </div>
-
     }
-
   </section>
-
 </div>

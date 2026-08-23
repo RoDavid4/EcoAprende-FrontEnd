@@ -57,4 +57,19 @@ export class MissionsService {
       `${this.apiUrl}/missions/submissions/my-submissions`
     );
   }
+
+  submitMission(
+  id: string,
+  evidenceText?: string,
+  evidenceUrl?: string
+): Observable<MissionSubmission> {
+
+  return this.http.post<MissionSubmission>(
+    `${this.apiUrl}/missions/${id}/submit`,
+    {
+      evidenceText,
+      evidenceUrl
+    }
+  );
+}
 }

@@ -1,0 +1,163 @@
+<div class="mission-detail-page">
+  <button mat-button class="back-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+
+    Volver a misiones
+  </button>
+
+  @if (mission) {
+    <mat-card class="mission-detail-card">
+      <div class="mission-detail-header">
+        <div class="mission-icon">
+          <mat-icon>
+            {{ mission.type === "DIGITAL" ? "computer" : "eco" }}
+          </mat-icon>
+        </div>
+
+        <span class="mission-type">
+          {{ mission.type === "DIGITAL" ? "Digital" : "Práctica" }}
+        </span>
+      </div>
+
+      <h1>
+        {{ mission.title }}
+      </h1>
+
+      <p class="mission-description">
+        {{ mission.description }}
+      </p>
+
+      @if (mission.instructions) {
+        <section class="mission-section">
+          <h2>
+            <mat-icon>menu_book</mat-icon>
+            Instrucciones
+          </h2>
+
+          <p>
+            {{ mission.instructions }}
+          </p>
+        </section>
+      }
+
+      <div class="mission-reward">
+        <mat-icon>stars</mat-icon>
+
+        <div>
+          <span> Recompensa </span>
+
+          <strong> +{{ mission.pointsReward }} XP </strong>
+        </div>
+      </div>
+
+      @if (!submitSuccess) {
+
+  <section class="submission-section">
+
+    <div class="submission-header">
+
+      <div class="submission-icon">
+        <mat-icon>upload</mat-icon>
+      </div>
+
+      <div>
+        <h2>Entregar misión</h2>
+
+        <p>
+          Contanos qué hiciste para completar este desafío.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="form-field">
+
+      <label for="evidenceText">
+        Tu respuesta
+      </label>
+
+      <textarea
+        id="evidenceText"
+        [(ngModel)]="evidenceText"
+        placeholder="Escribí aquí tu evidencia o explicación..."
+        rows="5">
+      </textarea>
+
+    </div>
+
+
+    <div class="form-field">
+
+      <label for="evidenceUrl">
+        URL de evidencia
+        <span>(opcional)</span>
+      </label>
+
+      <input
+        id="evidenceUrl"
+        type="url"
+        [(ngModel)]="evidenceUrl"
+        placeholder="https://..." />
+
+    </div>
+
+
+    @if (submitError) {
+
+      <div class="submit-error">
+
+        <mat-icon>error_outline</mat-icon>
+
+        <span>
+          {{ submitError }}
+        </span>
+
+      </div>
+
+    }
+
+
+    <button
+      mat-flat-button
+      class="submit-button"
+      [disabled]="isSubmitting"
+      (click)="submitMission()">
+
+      @if (isSubmitting) {
+
+        <span>Enviando...</span>
+
+      } @else {
+
+        <ng-container>
+      <span>Enviar misión</span>
+    </ng-container>
+      }
+
+    </button>
+
+  </section>
+
+} @else {
+
+  <div class="submit-success">
+
+    <div class="success-icon">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+
+    <h2>
+      ¡Misión enviada!
+    </h2>
+
+    <p>
+      Tu entrega fue enviada correctamente y está pendiente de revisión.
+    </p>
+
+  </div>
+
+}
+    </mat-card>
+  }
+</div>
