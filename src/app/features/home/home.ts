@@ -8,9 +8,10 @@ import { MatCardModule } from '@angular/material/card';
 
 import { AuthService } from '../auth/services/auth.services';
 
-import { GamificationService,LeaderboardUser } from '../gamification/services/gamification.service';
+import { GamificationService,LeaderboardUser, Badge } from '../gamification/services/gamification.service';
 import { MissionsService } from '../missions/missions.service';
 import { Mission } from '../missions/missions.service';
+
 
 @Component({
   selector: 'app-home',
@@ -38,7 +39,7 @@ export class Home implements OnInit {
   level = 0;
   currentStreak = 0;
   missions: Mission[] = [];
-  badges: any[] = [];
+  badges: Badge[] = [];
 
   ngOnInit(): void {
     const storedUser = localStorage.getItem('user');
@@ -89,11 +90,12 @@ export class Home implements OnInit {
 loadBadges(): void {
   this.gamificationService.getBadges().subscribe({
     next: (data) => {
-      console.log('Badges:', data);
-      this.badges = data;
+      console.log('Insignias:', data);
+
+      this.badges = data.slice(0, 3);
     },
     error: (error) => {
-      console.error('Error al cargar badges:', error);
+      console.error('Error al cargar insignias:', error);
     }
   });
 }

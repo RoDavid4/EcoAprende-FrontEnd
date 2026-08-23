@@ -11,6 +11,7 @@ export interface Badge {
   xpValue: number;
   category: 'ACADEMIC' | 'COMMUNITY' | 'STREAK' | 'SPECIAL';
   isActive: boolean;
+  isUnlocked: boolean;
 }
 
 export interface GamificationProfile {
