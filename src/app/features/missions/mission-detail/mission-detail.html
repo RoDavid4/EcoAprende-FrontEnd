@@ -1,24 +1,41 @@
 <div class="mission-detail-page">
-  <button mat-button class="back-button" (click)="goBack()">
+
+  <!-- VOLVER -->
+  <button
+    mat-button
+    class="back-button"
+    (click)="goBack()">
+
     <mat-icon>arrow_back</mat-icon>
 
     Volver a misiones
+
   </button>
 
+
   @if (mission) {
+
     <mat-card class="mission-detail-card">
+
+      <!-- HEADER -->
       <div class="mission-detail-header">
+
         <div class="mission-icon">
+
           <mat-icon>
-            {{ mission.type === "DIGITAL" ? "computer" : "eco" }}
+            {{ mission.type === 'DIGITAL' ? 'computer' : 'eco' }}
           </mat-icon>
+
         </div>
 
         <span class="mission-type">
-          {{ mission.type === "DIGITAL" ? "Digital" : "Práctica" }}
+          {{ mission.type === 'DIGITAL' ? 'Digital' : 'Práctica' }}
         </span>
+
       </div>
 
+
+      <!-- TÍTULO -->
       <h1>
         {{ mission.title }}
       </h1>
@@ -27,137 +44,316 @@
         {{ mission.description }}
       </p>
 
+
+      <!-- INSTRUCCIONES -->
       @if (mission.instructions) {
+
         <section class="mission-section">
+
           <h2>
-            <mat-icon>menu_book</mat-icon>
+
+            <mat-icon>
+              menu_book
+            </mat-icon>
+
             Instrucciones
+
           </h2>
 
           <p>
             {{ mission.instructions }}
           </p>
+
         </section>
+
       }
 
+
+      <!-- RECOMPENSA -->
       <div class="mission-reward">
-        <mat-icon>stars</mat-icon>
+
+        <mat-icon>
+          stars
+        </mat-icon>
 
         <div>
-          <span> Recompensa </span>
 
-          <strong> +{{ mission.pointsReward }} XP </strong>
+          <span>
+            Recompensa
+          </span>
+
+          <strong>
+            +{{ mission.pointsReward }} XP
+          </strong>
+
         </div>
-      </div>
-
-      @if (!submitSuccess) {
-
-  <section class="submission-section">
-
-    <div class="submission-header">
-
-      <div class="submission-icon">
-        <mat-icon>upload</mat-icon>
-      </div>
-
-      <div>
-        <h2>Entregar misión</h2>
-
-        <p>
-          Contanos qué hiciste para completar este desafío.
-        </p>
-      </div>
-
-    </div>
-
-
-    <div class="form-field">
-
-      <label for="evidenceText">
-        Tu respuesta
-      </label>
-
-      <textarea
-        id="evidenceText"
-        [(ngModel)]="evidenceText"
-        placeholder="Escribí aquí tu evidencia o explicación..."
-        rows="5">
-      </textarea>
-
-    </div>
-
-
-    <div class="form-field">
-
-      <label for="evidenceUrl">
-        URL de evidencia
-        <span>(opcional)</span>
-      </label>
-
-      <input
-        id="evidenceUrl"
-        type="url"
-        [(ngModel)]="evidenceUrl"
-        placeholder="https://..." />
-
-    </div>
-
-
-    @if (submitError) {
-
-      <div class="submit-error">
-
-        <mat-icon>error_outline</mat-icon>
-
-        <span>
-          {{ submitError }}
-        </span>
 
       </div>
 
-    }
+
+      <!-- ================================
+           SIN ENTREGA
+      ================================= -->
+
+      @if (!mySubmission) {
+
+        <section class="submission-section">
+
+          <!-- HEADER DE ENTREGA -->
+          <div class="submission-header">
+
+            <div class="submission-icon">
+
+              <mat-icon>
+                upload
+              </mat-icon>
+
+            </div>
+
+            <div>
+
+              <h2>
+                Entregar misión
+              </h2>
+
+              <p>
+                Contanos qué hiciste para completar este desafío.
+              </p>
+
+            </div>
+
+          </div>
 
 
-    <button
-      mat-flat-button
-      class="submit-button"
-      [disabled]="isSubmitting"
-      (click)="submitMission()">
+          <!-- RESPUESTA -->
+          <div class="form-field">
 
-      @if (isSubmitting) {
+            <label for="evidenceText">
+              Tu respuesta
+            </label>
 
-        <span>Enviando...</span>
+            <textarea
+              id="evidenceText"
+              [(ngModel)]="evidenceText"
+              placeholder="Escribí aquí tu evidencia o explicación..."
+              rows="5">
+            </textarea>
 
-      } @else {
+          </div>
 
-        <ng-container>
-      <span>Enviar misión</span>
-    </ng-container>
+
+          <!-- URL -->
+          <div class="form-field">
+
+            <label for="evidenceUrl">
+
+              URL de evidencia
+
+              <span>
+                (opcional)
+              </span>
+
+            </label>
+
+            <input
+              id="evidenceUrl"
+              type="url"
+              [(ngModel)]="evidenceUrl"
+              placeholder="https://..." />
+
+          </div>
+
+
+          <!-- ERROR -->
+          @if (submitError) {
+
+            <div class="submit-error">
+
+              <mat-icon>
+                error_outline
+              </mat-icon>
+
+              <span>
+                {{ submitError }}
+              </span>
+
+            </div>
+
+          }
+
+
+          <!-- ENVIAR -->
+          <button
+            mat-flat-button
+            class="submit-button"
+            [disabled]="isSubmitting"
+            (click)="submitMission()">
+
+            @if (isSubmitting) {
+
+              <span>
+                Enviando...
+              </span>
+
+            } @else {
+
+              <span>
+                Enviar misión
+              </span>
+
+              
+
+            }
+
+          </button>
+
+        </section>
+
       }
 
-    </button>
 
-  </section>
+      <!-- ================================
+           CON ENTREGA
+      ================================= -->
 
-} @else {
+      @else {
 
-  <div class="submit-success">
 
-    <div class="success-icon">
-      <mat-icon>check_circle</mat-icon>
-    </div>
+        <!-- PENDIENTE -->
+        @if (mySubmission.status === 'PENDING') {
 
-    <h2>
-      ¡Misión enviada!
-    </h2>
+          <section class="submission-state pending">
 
-    <p>
-      Tu entrega fue enviada correctamente y está pendiente de revisión.
-    </p>
+            <div class="submission-state-icon">
 
-  </div>
+              <mat-icon>
+                schedule
+              </mat-icon>
 
-}
+            </div>
+
+            <h2>
+              ¡Misión enviada!
+            </h2>
+
+            <p>
+              Tu entrega está pendiente de revisión.
+            </p>
+
+            <span>
+              Un docente revisará tu respuesta y te dará una devolución.
+            </span>
+
+          </section>
+
+        }
+
+
+        <!-- APROBADA -->
+        @if (mySubmission.status === 'APPROVED') {
+
+          <section class="submission-state approved">
+
+            <div class="submission-state-icon">
+
+              <mat-icon>
+                check_circle
+              </mat-icon>
+
+            </div>
+
+            <h2>
+              ¡Misión aprobada!
+            </h2>
+
+            <p>
+              Tu entrega fue revisada y aprobada.
+            </p>
+
+
+            @if (mySubmission.feedback) {
+
+              <div class="submission-feedback">
+
+                <mat-icon>
+                  chat
+                </mat-icon>
+
+                <div>
+
+                  <strong>
+                    Comentarios del docente
+                  </strong>
+
+                  <p>
+                    {{ mySubmission.feedback }}
+                  </p>
+
+                </div>
+
+              </div>
+
+            }
+
+          </section>
+
+        }
+
+
+        <!-- RECHAZADA -->
+        @if (mySubmission.status === 'REJECTED') {
+
+          <section class="submission-state rejected">
+
+            <div class="submission-state-icon">
+
+              <mat-icon>
+                replay
+              </mat-icon>
+
+            </div>
+
+            <h2>
+              Entrega para revisar
+            </h2>
+
+            <p>
+              Tu entrega necesita algunos cambios.
+            </p>
+
+
+            @if (mySubmission.feedback) {
+
+              <div class="submission-feedback">
+
+                <mat-icon>
+                  chat
+                </mat-icon>
+
+                <div>
+
+                  <strong>
+                    Comentarios del docente
+                  </strong>
+
+                  <p>
+                    {{ mySubmission.feedback }}
+                  </p>
+
+                </div>
+
+              </div>
+
+            }
+
+          </section>
+
+        }
+
+      }
+
     </mat-card>
+
   }
+
 </div>

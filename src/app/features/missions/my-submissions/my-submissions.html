@@ -1,5 +1,6 @@
 <div class="submissions-page">
 
+  <!-- Volver -->
   <button
     mat-button
     class="back-button"
@@ -12,6 +13,7 @@
   </button>
 
 
+  <!-- Encabezado -->
   <div class="page-header">
 
     <div class="page-icon">
@@ -29,6 +31,7 @@
   </div>
 
 
+  <!-- Cargando -->
   @if (isLoading) {
 
     <div class="loading-state">
@@ -44,6 +47,7 @@
   }
 
 
+  <!-- Error -->
   @if (!isLoading && errorMessage) {
 
     <div class="error-state">
@@ -59,13 +63,16 @@
   }
 
 
+  <!-- Sin entregas -->
   @if (!isLoading && !errorMessage && submissions.length === 0) {
 
     <div class="empty-state">
 
       <mat-icon>assignment</mat-icon>
 
-      <h2>Todavía no entregaste ninguna misión</h2>
+      <h2>
+        Todavía no entregaste ninguna misión
+      </h2>
 
       <p>
         Completá una misión para que aparezca aquí.
@@ -85,6 +92,7 @@
   }
 
 
+  <!-- Entregas -->
   @if (!isLoading && !errorMessage && submissions.length > 0) {
 
     <div class="submissions-list">
@@ -93,12 +101,11 @@
 
         <mat-card class="submission-card">
 
+          <!-- Información principal -->
           <div class="submission-main">
 
             <div class="submission-icon">
-
               <mat-icon>assignment_turned_in</mat-icon>
-
             </div>
 
             <div class="submission-info">
@@ -108,23 +115,32 @@
               </span>
 
               <strong>
-  {{ getMissionTitle(submission.missionId) }}
-</strong>
+                {{ getMissionTitle(submission.missionId) }}
+              </strong>
 
               @if (submission.createdAt) {
 
                 <span class="submission-date">
                   Entregada el
-                  {{ submission.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                  {{ submission.createdAt | date: "dd/MM/yyyy HH:mm" }}
                 </span>
 
               }
+              @if (submission.reviewedAt) {
+
+  <span class="submission-date">
+    Revisada el
+    {{ submission.reviewedAt | date: "dd/MM/yyyy HH:mm" }}
+  </span>
+
+}
 
             </div>
 
           </div>
 
 
+          <!-- Estado -->
           <div
             class="submission-status"
             [class.pending]="submission.status === 'PENDING'"
@@ -132,28 +148,17 @@
             [class.rejected]="submission.status === 'REJECTED'">
 
             <mat-icon>
-              {{
-                submission.status === 'PENDING'
-                  ? 'schedule'
-                  : submission.status === 'APPROVED'
-                    ? 'check_circle'
-                    : 'cancel'
-              }}
+              {{ getStatusIcon(submission.status) }}
             </mat-icon>
 
             <span>
-              {{
-                submission.status === 'PENDING'
-                  ? 'Pendiente'
-                  : submission.status === 'APPROVED'
-                    ? 'Aprobada'
-                    : 'Rechazada'
-              }}
+              {{ getStatusLabel(submission.status) }}
             </span>
 
           </div>
 
 
+          <!-- Feedback -->
           @if (submission.feedback) {
 
             <div class="submission-feedback">
@@ -162,7 +167,9 @@
 
               <div>
 
-                <span>Comentarios del docente</span>
+                <span>
+                  Comentarios del docente
+                </span>
 
                 <p>
                   {{ submission.feedback }}
