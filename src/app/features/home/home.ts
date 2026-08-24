@@ -127,12 +127,39 @@ getBadgeIconUrl(iconId: string): string {
 }
 
 getXpProgress(): number {
-  const xpPerLevel = 1000;
+  const currentLevel = this.level;
+
+  const currentLevelMinXp =
+    Math.pow(currentLevel - 1, 2) * 100;
+
+  const nextLevelMinXp =
+    Math.pow(currentLevel, 2) * 100;
+
+  const xpInLevel =
+    this.totalXp - currentLevelMinXp;
+
+  const xpRequiredForLevel =
+    nextLevelMinXp - currentLevelMinXp;
+
+  if (xpRequiredForLevel <= 0) {
+    return 100;
+  }
 
   return Math.min(
-    (this.totalXp % xpPerLevel) / xpPerLevel * 100,
+    Math.max(
+      (xpInLevel / xpRequiredForLevel) * 100,
+      0
+    ),
     100
   );
+}
+
+getXpToNextLevel(): number {
+  const nextLevel = this.level + 1;
+
+  const nextLevelXp = Math.pow(nextLevel - 1, 2) * 100;
+
+  return Math.max(nextLevelXp - this.totalXp, 0);
 }
 
 loadLeaderboard(): void {

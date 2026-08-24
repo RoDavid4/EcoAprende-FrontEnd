@@ -22,8 +22,15 @@
         </div>
 
         <div class="xp-info">
-          <span>Progreso</span>
-          <span>{{ getXpProgress() }}%</span>
+          <div class="xp-progress-label">
+            <span>Progreso</span>
+
+            <span>{{ getXpProgress() }}%</span>
+          </div>
+
+          <span class="xp-next-level">
+            {{ getXpToNextLevel() }} XP para alcanzar el Nivel {{ level + 1 }}
+          </span>
         </div>
       </div>
 
@@ -51,7 +58,6 @@
 
       <!-- PARTE INFERIOR -->
       <div class="sidebar-bottom">
-
         <a class="sidebar-link">
           <mat-icon>help_outline</mat-icon>
           <span>Ayuda</span>
@@ -210,16 +216,12 @@
             @for (badge of badges; track badge.id) {
               <div class="badge-item">
                 <!-- INSIGNIA -->
-                <div
-  class="badge-icon"
-  [class.locked]="!badge.isUnlocked">
-
-  <img
-    [src]="getBadgeIconUrl(badge.iconUrl)"
-    [alt]="badge.name"
-  />
-
-</div>
+                <div class="badge-icon" [class.locked]="!badge.isUnlocked">
+                  <img
+                    [src]="getBadgeIconUrl(badge.iconUrl)"
+                    [alt]="badge.name"
+                  />
+                </div>
 
                 <!-- INFORMACIÓN -->
                 <div class="badge-info">
