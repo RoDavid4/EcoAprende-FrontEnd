@@ -1,11 +1,9 @@
 <div class="gamification-page">
-
   <!-- ================================
        HEADER
   ================================= -->
 
   <header class="gamification-header">
-
     <div class="gamification-header-icon">
       <mat-icon>emoji_events</mat-icon>
     </div>
@@ -13,153 +11,112 @@
     <div>
       <h1>Gamificación</h1>
 
-      <p>
-        Tu progreso, logros y posición dentro de EcoAprende.
-      </p>
+      <p>Tu progreso, logros y posición dentro de EcoAprende.</p>
     </div>
-
   </header>
-
 
   <!-- ================================
        ESTADÍSTICAS
   ================================= -->
 
   <section class="gamification-stats">
-
     <!-- XP -->
 
     <mat-card class="gamification-stat-card">
-
       <div class="stat-icon xp-icon">
         <mat-icon>stars</mat-icon>
       </div>
 
       <div class="stat-content">
+        <span class="stat-label"> Experiencia </span>
 
-        <span class="stat-label">
-          Experiencia
-        </span>
-
-        <strong class="stat-value">
-          {{ totalXp }} XP
-        </strong>
-
+        <strong class="stat-value"> {{ totalXp }} XP </strong>
       </div>
-
     </mat-card>
-
 
     <!-- NIVEL -->
 
     <mat-card class="gamification-stat-card">
-
       <div class="stat-icon level-icon">
         <mat-icon>military_tech</mat-icon>
       </div>
 
       <div class="stat-content">
+        <span class="stat-label"> Nivel actual </span>
 
-        <span class="stat-label">
-          Nivel actual
-        </span>
-
-        <strong class="stat-value">
-          Nivel {{ level }}
-        </strong>
-
+        <strong class="stat-value"> Nivel {{ level }} </strong>
       </div>
-
     </mat-card>
-
 
     <!-- RACHA -->
 
     <mat-card class="gamification-stat-card">
-
       <div class="stat-icon streak-icon">
         <mat-icon>local_fire_department</mat-icon>
       </div>
 
       <div class="stat-content">
-
-        <span class="stat-label">
-          Racha actual
-        </span>
+        <span class="stat-label"> Racha actual </span>
 
         <strong class="stat-value">
           {{ currentStreak }}
-          {{ currentStreak === 1 ? 'día' : 'días' }}
+          {{ currentStreak === 1 ? "día" : "días" }}
         </strong>
-
       </div>
-
     </mat-card>
-
   </section>
-
 
   <!-- ================================
        PROGRESO
   ================================= -->
 
   <mat-card class="progress-card">
-
-    <div class="section-header">
-
-      <div class="section-icon">
-        <mat-icon>trending_up</mat-icon>
-      </div>
-
-      <div>
-        <h2>Progreso de nivel</h2>
-
-        <span>
-          Seguí completando actividades para alcanzar el próximo nivel.
-        </span>
-      </div>
-
+  <div class="section-header">
+    <div class="section-icon">
+      <mat-icon>trending_up</mat-icon>
     </div>
 
-
-    <div class="progress-info">
+    <div>
+      <h2>Progreso de nivel</h2>
 
       <span>
-        Nivel {{ level }}
+        Seguí completando actividades para alcanzar el próximo nivel.
       </span>
-
-      <strong>
-        {{ totalXp % 1000 }} / 1000 XP
-      </strong>
-
     </div>
+  </div>
 
+  <div class="progress-info">
+    <span>Nivel {{ level }}</span>
 
-    <div class="xp-progress">
+    <strong>
+      {{ getXpProgress() }}%
+    </strong>
+  </div>
 
-      <div
-        class="xp-progress-bar"
-        [style.width.%]="getXpProgress()">
-      </div>
-
+  <div class="xp-progress">
+    <div
+      class="xp-progress-bar"
+      [style.width.%]="getXpProgress()">
     </div>
+  </div>
 
-
-    <span class="progress-hint">
-      {{ 1000 - (totalXp % 1000) }} XP para el próximo nivel
+  <div class="progress-hint">
+    <span>
+      {{ totalXp }} XP acumulados
     </span>
 
-  </mat-card>
-
+    <span>
+      {{ getXpToNextLevel() }} XP para el Nivel {{ level + 1 }}
+    </span>
+  </div>
+</mat-card>
 
   <!-- ================================
        INSIGNIAS
   ================================= -->
 
   <mat-card class="badges-card">
-
     <div class="section-header">
-
       <div class="section-icon">
         <mat-icon>workspace_premium</mat-icon>
       </div>
@@ -171,45 +128,23 @@
           Tus logros desbloqueados y los desafíos que todavía podés conseguir.
         </span>
       </div>
-
     </div>
 
-
     @if (badges.length > 0) {
-
       <div class="badges-grid">
-
         @for (badge of badges; track badge.id) {
-
-          <div
-            class="badge-item"
-            [class.locked]="!badge.isUnlocked">
-
+          <div class="badge-item" [class.locked]="!badge.isUnlocked">
             <div class="badge-icon">
-
-              <img
-  [src]="getBadgeIconUrl(badge.iconUrl)"
-  [alt]="badge.name"
-/>
-
+              <img [src]="getBadgeIconUrl(badge.iconUrl)" [alt]="badge.name" />
             </div>
 
-
             @if (!badge.isUnlocked) {
-
               <div class="badge-lock">
-
-                <mat-icon>
-                  lock
-                </mat-icon>
-
+                <mat-icon> lock </mat-icon>
               </div>
-
             }
 
-
             <div class="badge-info">
-
               <strong>
                 {{ badge.name }}
               </strong>
@@ -217,42 +152,25 @@
               <span>
                 {{ badge.description }}
               </span>
-
             </div>
-
           </div>
-
         }
-
       </div>
-
     } @else {
-
       <div class="empty-state">
+        <mat-icon> workspace_premium </mat-icon>
 
-        <mat-icon>
-          workspace_premium
-        </mat-icon>
-
-        <span>
-          Todavía no hay insignias disponibles.
-        </span>
-
+        <span> Todavía no hay insignias disponibles. </span>
       </div>
-
     }
-
   </mat-card>
-
 
   <!-- ================================
        RANKING
   ================================= -->
 
   <mat-card class="leaderboard-card">
-
     <div class="section-header">
-
       <div class="section-icon">
         <mat-icon>leaderboard</mat-icon>
       </div>
@@ -260,76 +178,38 @@
       <div>
         <h2>Ranking</h2>
 
-        <span>
-          Los estudiantes con más experiencia en EcoAprende.
-        </span>
+        <span> Los estudiantes con más experiencia en EcoAprende. </span>
       </div>
-
     </div>
 
-
     @if (leaderboard.length > 0) {
-
       <div class="leaderboard-list">
-
-        @for (
-          student of leaderboard;
-          track student.id;
-          let i = $index
-        ) {
-
+        @for (student of leaderboard; track student.id; let i = $index) {
           <div class="leaderboard-item">
-
             <div class="leaderboard-position">
-
               @if (i === 0) {
                 <mat-icon>emoji_events</mat-icon>
               } @else {
                 #{{ student.rank }}
               }
-
             </div>
-
 
             <div class="leaderboard-user">
+              <strong> {{ student.firstName }} {{ student.lastName }} </strong>
 
-              <strong>
-                {{ student.firstName }} {{ student.lastName }}
-              </strong>
-
-              <span>
-                Nivel {{ student.level }}
-              </span>
-
+              <span> Nivel {{ student.level }} </span>
             </div>
 
-
-            <strong class="leaderboard-xp">
-              {{ student.totalXp }} XP
-            </strong>
-
+            <strong class="leaderboard-xp"> {{ student.totalXp }} XP </strong>
           </div>
-
         }
-
       </div>
-
     } @else {
-
       <div class="empty-state">
+        <mat-icon> leaderboard </mat-icon>
 
-        <mat-icon>
-          leaderboard
-        </mat-icon>
-
-        <span>
-          Todavía no hay estudiantes en el ranking.
-        </span>
-
+        <span> Todavía no hay estudiantes en el ranking. </span>
       </div>
-
     }
-
   </mat-card>
-
 </div>

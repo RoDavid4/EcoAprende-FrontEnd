@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 
 import { MatIconModule } from '@angular/material/icon';
-
 import { MatCardModule } from '@angular/material/card';
 
 import {
@@ -160,14 +159,28 @@ export class Gamification implements OnInit {
   }
 
   getXpProgress(): number {
+  const xpForCurrentLevel = Math.pow(this.level - 1, 2) * 100;
+  const xpForNextLevel = Math.pow(this.level, 2) * 100;
 
-    const xpPerLevel = 1000;
+  const xpInLevel = this.totalXp - xpForCurrentLevel;
+  const xpNeededForLevel = xpForNextLevel - xpForCurrentLevel;
 
-    return Math.min(
-      ((this.totalXp % xpPerLevel) / xpPerLevel) * 100,
-      100
-    );
-
+  if (xpNeededForLevel <= 0) {
+    return 100;
   }
+
+  return Math.min(
+    Math.max((xpInLevel / xpNeededForLevel) * 100, 0),
+    100
+  );
+}
+
+getXpToNextLevel(): number {
+  const xpForNextLevel = Math.pow(this.level, 2) * 100;
+
+  return Math.max(xpForNextLevel - this.totalXp, 0);
+}
+
+ 
 
 }
