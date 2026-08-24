@@ -8,7 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 
 import { AuthService } from '../auth/services/auth.services';
 
-import { GamificationService,LeaderboardUser, Badge } from '../gamification/services/gamification.service';
+import { GamificationService,LeaderboardUser, Badge, BadgeIcon } from '../gamification/services/gamification.service';
 import { MissionsService } from '../missions/missions.service';
 import { Mission } from '../missions/missions.service';
 
@@ -40,6 +40,7 @@ export class Home implements OnInit {
   currentStreak = 0;
   missions: Mission[] = [];
   badges: Badge[] = [];
+  badgeIcons: BadgeIcon[] = [];
 
   ngOnInit(): void {
     const storedUser = localStorage.getItem('user');
@@ -55,6 +56,7 @@ export class Home implements OnInit {
      this.loadLeaderboard();
      this.loadMissions();
      this.loadBadges();
+     this.loadBadgeIcons();
   }
 
    loadGamification(): void {
@@ -100,6 +102,30 @@ loadBadges(): void {
   });
 }
 
+loadBadgeIcons(): void {
+  this.gamificationService.getBadgeIcons().subscribe({
+    next: (data) => {
+      console.log('Iconos de insignias:', data);
+
+      this.badgeIcons = data;
+    },
+    error: (error) => {
+      console.error(
+        'Error al cargar iconos de insignias:',
+        error
+      );
+    }
+  });
+}
+
+getBadgeIconUrl(iconId: string): string {
+  const icon = this.badgeIcons.find(
+    (badgeIcon) => badgeIcon.id === iconId
+  );
+
+  return icon?.url ?? '';
+}
+
 getXpProgress(): number {
   const xpPerLevel = 1000;
 
@@ -112,9 +138,10 @@ getXpProgress(): number {
 loadLeaderboard(): void {
   this.gamificationService.getLeaderboard().subscribe({
     next: (data) => {
-      console.log('Leaderboard:', data);
-      this.leaderboard = data;
-    },
+  console.log('Leaderboard:', data);
+
+  this.leaderboard = data.data;
+},
     error: (error) => {
       console.error('Error al cargar leaderboard:', error);
     }

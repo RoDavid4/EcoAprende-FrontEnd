@@ -1,10 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
+
 import { MatIconModule } from '@angular/material/icon';
+
 import { MatCardModule } from '@angular/material/card';
 
 import {
   GamificationService,
   Badge,
+  BadgeIcon,
   LeaderboardUser,
 } from './services/gamification.service';
 
@@ -26,12 +29,20 @@ export class Gamification implements OnInit {
   currentStreak = 0;
 
   badges: Badge[] = [];
+  badgeIcons: BadgeIcon[] = [];
+
   leaderboard: LeaderboardUser[] = [];
 
   ngOnInit(): void {
+
     this.loadProfile();
+
     this.loadBadges();
+
+    this.loadBadgeIcons();
+
     this.loadLeaderboard();
+
   }
 
   loadProfile(): void {
@@ -43,7 +54,9 @@ export class Gamification implements OnInit {
         console.log('Perfil de gamificación:', data);
 
         this.totalXp = data.totalXp;
+
         this.level = data.level;
+
         this.currentStreak = data.currentStreak;
 
       },
@@ -86,6 +99,31 @@ export class Gamification implements OnInit {
 
   }
 
+  loadBadgeIcons(): void {
+
+    this.gamificationService.getBadgeIcons().subscribe({
+
+      next: (data) => {
+
+        console.log('Iconos de insignias:', data);
+
+        this.badgeIcons = data;
+
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Error al cargar iconos de insignias:',
+          error
+        );
+
+      }
+
+    });
+
+  }
+
   loadLeaderboard(): void {
 
     this.gamificationService.getLeaderboard().subscribe({
@@ -94,7 +132,7 @@ export class Gamification implements OnInit {
 
         console.log('Leaderboard:', data);
 
-        this.leaderboard = data;
+        this.leaderboard = data.data;
 
       },
 
@@ -108,6 +146,16 @@ export class Gamification implements OnInit {
       }
 
     });
+
+  }
+
+  getBadgeIconUrl(iconId: string): string {
+
+    const icon = this.badgeIcons.find(
+      (badgeIcon) => badgeIcon.id === iconId
+    );
+
+    return icon?.url ?? '';
 
   }
 

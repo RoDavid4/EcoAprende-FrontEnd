@@ -210,9 +210,16 @@
             @for (badge of badges; track badge.id) {
               <div class="badge-item">
                 <!-- INSIGNIA -->
-                <div class="badge-icon" [class.locked]="!badge.isUnlocked">
-                  <img [src]="badge.iconUrl" [alt]="badge.name" />
-                </div>
+                <div
+  class="badge-icon"
+  [class.locked]="!badge.isUnlocked">
+
+  <img
+    [src]="getBadgeIconUrl(badge.iconUrl)"
+    [alt]="badge.name"
+  />
+
+</div>
 
                 <!-- INFORMACIÓN -->
                 <div class="badge-info">
@@ -266,11 +273,11 @@
           <div class="leaderboard-list">
             @for (student of leaderboard; track student.id; let i = $index) {
               <div class="leaderboard-item">
-                <span class="leaderboard-position"> #{{ i + 1 }} </span>
+                <span class="leaderboard-position"> #{{ student.rank }} </span>
 
                 <div class="leaderboard-user">
                   <span class="leaderboard-name">
-                    {{ student.fullName }}
+                    {{ student.firstName }} {{ student.lastName }}
                   </span>
 
                   <span class="leaderboard-level">

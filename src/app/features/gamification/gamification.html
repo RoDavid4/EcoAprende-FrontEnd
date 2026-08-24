@@ -188,9 +188,9 @@
             <div class="badge-icon">
 
               <img
-                [src]="badge.iconUrl"
-                [alt]="badge.name"
-              >
+  [src]="getBadgeIconUrl(badge.iconUrl)"
+  [alt]="badge.name"
+/>
 
             </div>
 
@@ -285,7 +285,7 @@
               @if (i === 0) {
                 <mat-icon>emoji_events</mat-icon>
               } @else {
-                #{{ i + 1 }}
+                #{{ student.rank }}
               }
 
             </div>
@@ -294,7 +294,7 @@
             <div class="leaderboard-user">
 
               <strong>
-                {{ student.fullName }}
+                {{ student.firstName }} {{ student.lastName }}
               </strong>
 
               <span>

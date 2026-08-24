@@ -9,9 +9,21 @@ export interface Badge {
   description: string;
   iconUrl: string;
   xpValue: number;
-  category: 'ACADEMIC' | 'COMMUNITY' | 'STREAK' | 'SPECIAL';
+  category:
+    | 'ECOLOGY'
+    | 'ACADEMIC'
+    | 'COMMUNITY'
+    | 'STREAK'
+    | 'SPECIAL';
   isActive: boolean;
   isUnlocked: boolean;
+}
+
+export interface BadgeIcon {
+  id: string;
+  name: string;
+  category: string;
+  url: string;
 }
 
 export interface GamificationProfile {
@@ -23,10 +35,25 @@ export interface GamificationProfile {
 
 export interface LeaderboardUser {
   id: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   level: number;
   totalXp: number;
+  currentStreak: number;
+  rank: number;
 }
+
+export interface LeaderboardResponse {
+  data: LeaderboardUser[];
+  meta: {
+    limit: number;
+    page: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -49,9 +76,15 @@ export class GamificationService {
     );
   }
 
-  getLeaderboard(): Observable<LeaderboardUser[]> {
-    return this.http.get<LeaderboardUser[]>(
-      `${this.apiUrl}/gamification/leaderboard`
-    );
-  }
+  getBadgeIcons(): Observable<BadgeIcon[]> {
+  return this.http.get<BadgeIcon[]>(
+    `${this.apiUrl}/gamification/badges/icons`
+  );
+}
+
+  getLeaderboard(): Observable<LeaderboardResponse> {
+  return this.http.get<LeaderboardResponse>(
+    `${this.apiUrl}/gamification/leaderboard`
+  );
+}
 }
