@@ -21,10 +21,12 @@
   </nav>
 
   <div class="user-actions desktop-only">
-    <button mat-flat-button class="btn-action" (click)="onPrimaryAction()">
-      <mat-icon>add</mat-icon>
-      {{ userRole === "STUDENT" ? "Unirse a Aula" : "Crear Aula" }}
-    </button>
+    <app-btn-create
+      [label]="userRole === 'STUDENT' ? 'Unirse a Aula' : 'Crear Aula'"
+      [icon]="userRole === 'STUDENT' ? 'group_add' : 'add'"
+      (action)="onPrimaryAction()"
+    >
+    </app-btn-create>
 
     <div class="profile-info">
       <span class="user-name">{{ userName }}</span>

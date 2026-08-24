@@ -1,0 +1,77 @@
+<div class="courses-panel">
+  <header class="panel-header">
+    <div>
+      <h1 class="panel-title">Gestión de Cursos</h1>
+      <p class="panel-subtitle">
+        Crea, edita y estructura tus cursos y contenidos.
+      </p>
+    </div>
+    <app-btn-create
+      label="Nuevo Curso"
+      (action)="goToCreate()"
+    ></app-btn-create>
+  </header>
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <p>Cargando cursos...</p>
+    </div>
+  } @else {
+    <div class="courses-grid">
+      @for (course of courses; track course.id) {
+        <div class="course-card">
+          <div class="card-media">
+            <img
+              [src]="course.imageUrl || '/assets/images/default-course.png'"
+              [alt]="course.title"
+            />
+            <span class="status-tag" [ngClass]="course.status.toLowerCase()">
+              {{ course.status === "PUBLISHED" ? "Publicado" : "Borrador" }}
+            </span>
+          </div>
+
+          <div class="card-body">
+            <h3 class="course-title">{{ course.title }}</h3>
+            <p class="course-description">
+              {{ course.description || "Sin descripción asignada." }}
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <button
+              matButton="outlined"
+              class="btn-action edit"
+              (click)="goToEdit(course.id)"
+              title="Editar contenido y estructura"
+            >
+              <mat-icon>edit</mat-icon>
+              <span>Editar</span>
+            </button>
+            <button
+              matButton="outlined"
+              class="btn-action delete"
+              (click)="deleteCourse(course.id)"
+              title="Eliminar curso"
+            >
+              <mat-icon>delete_outline</mat-icon>
+              Eliminar
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-courses">
+          <mat-icon class="empty-icon">school</mat-icon>
+          <h3>Aún no has creado ningún curso</h3>
+          <p>
+            Comienza creando un curso para estructurar tus módulos y lecciones.
+          </p>
+
+          <app-btn-create
+            label="Crear mi primer curso"
+            (action)="goToCreate()"
+          ></app-btn-create>
+        </div>
+      }
+    </div>
+  }
+</div>

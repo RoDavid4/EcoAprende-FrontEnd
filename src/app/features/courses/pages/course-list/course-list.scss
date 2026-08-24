@@ -1,0 +1,199 @@
+.courses-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+
+    .panel-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--eco-text-main);
+      margin: 0 0 4px 0;
+    }
+
+    .panel-subtitle {
+      color: var(--eco-text-muted);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+  }
+
+  .loading-state {
+    padding: 3rem;
+    text-align: center;
+    color: var(--eco-text-muted);
+  }
+
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+
+    .course-card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-media {
+        position: relative;
+        height: 180px;
+        width: 100%;
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+        }
+
+        .status-tag {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          padding: 4px 10px;
+          border-radius: 20px;
+          font-size: 0.75rem;
+          font-weight: 700;
+
+          &.published {
+            background-color: var(--eco-secondary-container);
+            color: var(--eco-primary);
+          }
+
+          &.draft {
+            background-color: var(--eco-draft-bg);
+            color: var(--eco-draft-text);
+          }
+        }
+      }
+
+      .card-body {
+        padding: 1rem 1.25rem;
+        flex: 1;
+
+        .course-title {
+          font-size: 1.15rem;
+          font-weight: 600;
+          color: var(--eco-primary);
+          margin: 0 0 8px 0;
+        }
+
+        .course-description {
+          font-size: 0.9rem;
+          color: var(--eco-text-muted);
+          margin: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      }
+
+      .card-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0 1.25rem 1.25rem 1.25rem;
+        margin-top: auto;
+
+        .btn-action {
+          flex: 1;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.35rem;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          border-radius: 8px;
+          transition: all 0.2s ease;
+
+          &.edit {
+            background-color: #ffffff;
+            color: var(--eco-primary);
+            border: 1px solid var(--eco-primary);
+
+            &:hover {
+              background-color: var(--eco-primary);
+              color: #ffffff;
+            }
+          }
+
+          &.delete {
+            background-color: #ffffff;
+            color: var(--eco-error, #dc2626);
+            border: 1px solid var(--eco-error, #dc2626);
+
+            &:hover {
+              background-color: var(--eco-error, #dc2626);
+              color: #ffffff;
+            }
+          }
+
+          mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+    }
+  }
+
+  .empty-courses {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #f9fbf9;
+    border: 2px dashed #4caf50;
+    border-radius: 12px;
+
+    .empty-icon {
+      font-size: 56px;
+      width: 56px;
+      height: 56px;
+      color: #2e7d32;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      color: var(--eco-text-main);
+      margin: 0 0 8px 0;
+    }
+
+    p {
+      color: var(--eco-text-muted);
+      margin: 0 0 20px 0;
+    }
+  }
+}

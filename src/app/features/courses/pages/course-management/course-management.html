@@ -1,0 +1,62 @@
+<div class="course-management-container">
+  <div class="management-header">
+    <a [routerLink]="['/courses']" class="back-link">
+      <mat-icon>arrow_back</mat-icon>
+      Volver
+    </a>
+
+    <div class="header-actions">
+      <span class="status-badge" [ngClass]="currentStatus.toLowerCase()">
+        {{ currentStatus === "PUBLISHED" ? "Publicado" : "Borrador" }}
+      </span>
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="saveCourse('DRAFT')"
+        [disabled]="isSaving"
+      >
+        <mat-icon>save</mat-icon>
+        <span>{{ isSaving ? "Guardando..." : "Guardar Borrador" }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="saveCourse('PUBLISHED')"
+        [disabled]="isSaving"
+      >
+        <mat-icon>publish</mat-icon>
+        <span>{{
+          currentStatus === "PUBLISHED"
+            ? "Actualizar Publicación"
+            : "Publicar Curso"
+        }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="management-content">
+    @if (!isLoading) {
+      <app-course-form [parentForm]="courseForm"></app-course-form>
+
+      @if (isEditMode && courseId) {
+        <app-module-builder
+          [parentForm]="courseForm"
+          [courseId]="courseId"
+        ></app-module-builder>
+      } @else {
+        <div class="info-message">
+          <p>
+            Guarda la información general del curso para poder agregar sus
+            módulos y lecciones.
+          </p>
+        </div>
+      }
+    } @else {
+      <div class="loading-state">
+        <p>Cargando información del curso...</p>
+      </div>
+    }
+  </div>
+</div>
