@@ -8,6 +8,10 @@ import { ResetPassword } from './features/reset-password/reset-password';
 import { Profile } from './features/profile/profile';
 import { ClassroomRoster } from './features/classrooms/pages/classroom-roster/classroom-roster';
 import { ClassroomManagement } from './features/classrooms/pages/classroom-management/classroom-management';
+import { Missions } from './features/missions/missions';
+import {MissionDetail} from './features/missions/mission-detail/mission-detail';
+import { MySubmissions } from './features/missions/my-submissions/my-submissions';
+import { Gamification } from './features/gamification/gamification';
 
 export const routes: Routes = [
   {
@@ -46,6 +50,27 @@ export const routes: Routes = [
     component: ClassroomManagement,
     canActivate: [authGuard],
   },
+  {
+    path: 'gamification',
+    component: Gamification,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'missions',
+    component: Missions,
+    canActivate: [authGuard],
+  },
+  {
+     path: 'missions/submissions',
+    component: MySubmissions,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'missions/:id',
+    component: MissionDetail,
+    canActivate: [authGuard],
+  },
+  
   {
     path: 'classrooms/:id/lista',
     component: ClassroomRoster,

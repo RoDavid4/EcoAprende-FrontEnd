@@ -1,13 +1,300 @@
-<h1>Bienvenido a EcoAprende</h1>
+<div class="home-layout">
+  <!-- CONTENIDO -->
+  <div class="content-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <!-- NIVEL Y XP -->
+      <div class="level-card">
+        <div class="level-header">
+          <div class="level-icon">
+            <mat-icon>eco</mat-icon>
+          </div>
 
-<p>Login realizado correctamente.</p>
+          <div>
+            <span class="level-title"> Nivel {{ level }} </span>
 
+            <span class="level-xp"> {{ totalXp }} XP </span>
+          </div>
+        </div>
 
-<button
-  mat-stroked-button
-  class="logout-button"
-  (click)="logout()"
->
-  <mat-icon>logout</mat-icon>
-  Cerrar sesión
-</button>
+        <div class="xp-bar">
+          <div class="xp-progress" [style.width.%]="getXpProgress()"></div>
+        </div>
+
+        <div class="xp-info">
+          <div class="xp-progress-label">
+            <span>Progreso</span>
+
+            <span>{{ getXpProgress() }}%</span>
+          </div>
+
+          <span class="xp-next-level">
+            {{ getXpToNextLevel() }} XP para alcanzar el Nivel {{ level + 1 }}
+          </span>
+        </div>
+      </div>
+
+      <!-- NAVEGACIÓN -->
+      <nav class="sidebar-navigation">
+        <a class="sidebar-link active">
+          <mat-icon>school</mat-icon>
+          <span>Resumen</span>
+        </a>
+
+        <a class="sidebar-link" routerLink="/missions/submissions">
+          <mat-icon>assignment</mat-icon>
+          <span>Mis Entregas</span>
+        </a>
+        <a class="sidebar-link" routerLink="/gamification">
+          <mat-icon>workspace_premium</mat-icon>
+          <span>Mis Avances</span>
+        </a>
+
+        <a class="sidebar-link" routerLink="/profile">
+          <mat-icon>settings</mat-icon>
+          <span>Configuracion</span>
+        </a>
+      </nav>
+
+      <!-- PARTE INFERIOR -->
+      <div class="sidebar-bottom">
+        <a class="sidebar-link">
+          <mat-icon>help_outline</mat-icon>
+          <span>Ayuda</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+      <!-- BIENVENIDA -->
+      <section class="welcome-section">
+        <div>
+          <span class="welcome-label"> ¡Hola, {{ userName }}! </span>
+
+          <h1>Bienvenido a EcoAprende</h1>
+
+          <p>Aprendé jugando y contribuí al cuidado del planeta.</p>
+        </div>
+
+        <button mat-flat-button class="daily-button">
+          <mat-icon>calendar_today</mat-icon>
+
+          Misión diaria
+        </button>
+      </section>
+
+      <!-- ESTADÍSTICAS -->
+      <section class="stats-grid">
+        <!-- XP -->
+        <mat-card class="stat-card">
+          <div class="stat-icon xp-icon">
+            <mat-icon>stars</mat-icon>
+          </div>
+
+          <div class="stat-content">
+            <span class="stat-label"> Experiencia </span>
+
+            <strong> {{ totalXp }} XP </strong>
+
+            <span class="stat-description"> Experiencia acumulada </span>
+          </div>
+        </mat-card>
+
+        <!-- RACHA -->
+        <mat-card class="stat-card">
+          <div class="stat-icon streak">
+            <mat-icon>local_fire_department</mat-icon>
+          </div>
+
+          <div class="stat-content">
+            <span class="stat-label">Racha actual </span>
+
+            <strong>{{ currentStreak }} días</strong>
+
+            <span class="stat-description"> ¡Seguí aprendiendo! </span>
+          </div>
+        </mat-card>
+
+        <!-- NIVEL -->
+        <mat-card class="stat-card">
+          <div class="stat-icon level-stat-icon">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+
+          <div class="stat-content">
+            <span class="stat-label"> Nivel actual </span>
+
+            <strong> Nivel {{ level }} </strong>
+
+            <span class="stat-description"> Seguí acumulando XP </span>
+          </div>
+        </mat-card>
+      </section>
+
+      <!-- CONTENIDO -->
+      <section class="home-grid">
+        <!-- CURSOS: LO MANEJA TU COMPAÑERA -->
+        <mat-card class="dashboard-card">
+          <mat-icon>school</mat-icon>
+
+          <h2>Mis cursos</h2>
+
+          <p>
+            Próximamente podrás continuar tus cursos y descubrir nuevos
+            contenidos.
+          </p>
+        </mat-card>
+
+        <!-- MISIONES -->
+        <!-- MISIONES -->
+        <mat-card class="dashboard-card missions-card">
+          <div class="dashboard-card-header">
+            <div class="dashboard-card-icon">
+              <mat-icon>assignment</mat-icon>
+            </div>
+
+            <div>
+              <h2>Misiones</h2>
+
+              <span class="dashboard-card-subtitle">
+                Desafíos disponibles
+              </span>
+            </div>
+          </div>
+
+          <div class="missions-list">
+            @for (mission of missions.slice(0, 3); track mission.id) {
+              <div class="mission-item">
+                <div class="mission-info">
+                  <strong>
+                    {{ mission.title }}
+                  </strong>
+
+                  <span>
+                    {{ mission.description }}
+                  </span>
+                </div>
+
+                <div class="mission-xp">+{{ mission.pointsReward }} XP</div>
+              </div>
+            }
+
+            @if (missions.length === 0) {
+              <div class="empty-missions">
+                <mat-icon>assignment_late</mat-icon>
+
+                <span> No hay misiones disponibles. </span>
+              </div>
+            }
+          </div>
+
+          <a mat-button class="card-action" routerLink="/missions">
+            Ver misiones
+
+            <mat-icon>arrow_forward</mat-icon>
+          </a>
+        </mat-card>
+
+        <!-- INSIGNIAS -->
+        <mat-card class="dashboard-card badges-card">
+          <div class="dashboard-card-header">
+            <div class="dashboard-card-icon">
+              <mat-icon>workspace_premium</mat-icon>
+            </div>
+
+            <div>
+              <h2>Mis insignias</h2>
+
+              <span class="dashboard-card-subtitle">
+                Tus logros en EcoAprende
+              </span>
+            </div>
+          </div>
+
+          <div class="badges-list">
+            @for (badge of badges; track badge.id) {
+              <div class="badge-item">
+                <!-- INSIGNIA -->
+                <div class="badge-icon" [class.locked]="!badge.isUnlocked">
+                  <img
+                    [src]="getBadgeIconUrl(badge.iconUrl)"
+                    [alt]="badge.name"
+                  />
+                </div>
+
+                <!-- INFORMACIÓN -->
+                <div class="badge-info">
+                  <strong>
+                    {{ badge.name }}
+                  </strong>
+
+                  <span>
+                    {{ badge.description }}
+                  </span>
+                </div>
+
+                <!-- CANDADO -->
+                @if (!badge.isUnlocked) {
+                  <div class="badge-lock">
+                    <mat-icon>lock</mat-icon>
+                  </div>
+                }
+              </div>
+            }
+
+            @if (badges.length === 0) {
+              <div class="empty-badges">
+                <mat-icon>workspace_premium</mat-icon>
+
+                <span> Todavía no hay insignias disponibles. </span>
+              </div>
+            }
+          </div>
+
+          <button mat-button class="card-action">
+            Ver insignias
+
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </mat-card>
+
+        <!-- RANKING -->
+        <mat-card class="dashboard-card leaderboard-card">
+          <div class="dashboard-card-header">
+            <div class="dashboard-card-icon">
+              <mat-icon>leaderboard</mat-icon>
+            </div>
+
+            <div>
+              <h2>Ranking</h2>
+              <p>Los estudiantes con más experiencia.</p>
+            </div>
+          </div>
+
+          <div class="leaderboard-list">
+            @for (student of leaderboard; track student.id; let i = $index) {
+              <div class="leaderboard-item">
+                <span class="leaderboard-position"> #{{ student.rank }} </span>
+
+                <div class="leaderboard-user">
+                  <span class="leaderboard-name">
+                    {{ student.firstName }} {{ student.lastName }}
+                  </span>
+
+                  <span class="leaderboard-level">
+                    Nivel {{ student.level }}
+                  </span>
+                </div>
+
+                <strong class="leaderboard-xp">
+                  {{ student.totalXp }} XP
+                </strong>
+              </div>
+            }
+          </div>
+        </mat-card>
+      </section>
+    </main>
+  </div>
+</div>

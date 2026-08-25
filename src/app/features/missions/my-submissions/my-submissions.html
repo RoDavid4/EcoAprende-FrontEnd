@@ -1,0 +1,192 @@
+<div class="submissions-page">
+
+  <!-- Volver -->
+  <button
+    mat-button
+    class="back-button"
+    (click)="goBack()">
+
+    <mat-icon>arrow_back</mat-icon>
+
+    Volver a misiones
+
+  </button>
+
+
+  <!-- Encabezado -->
+  <div class="page-header">
+
+    <div class="page-icon">
+      <mat-icon>assignment</mat-icon>
+    </div>
+
+    <div>
+      <h1>Mis entregas</h1>
+
+      <p>
+        Consultá el estado de las misiones que entregaste.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Cargando -->
+  @if (isLoading) {
+
+    <div class="loading-state">
+
+      <mat-icon>hourglass_empty</mat-icon>
+
+      <span>
+        Cargando tus entregas...
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- Error -->
+  @if (!isLoading && errorMessage) {
+
+    <div class="error-state">
+
+      <mat-icon>error_outline</mat-icon>
+
+      <span>
+        {{ errorMessage }}
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- Sin entregas -->
+  @if (!isLoading && !errorMessage && submissions.length === 0) {
+
+    <div class="empty-state">
+
+      <mat-icon>assignment</mat-icon>
+
+      <h2>
+        Todavía no entregaste ninguna misión
+      </h2>
+
+      <p>
+        Completá una misión para que aparezca aquí.
+      </p>
+
+      <button
+        mat-flat-button
+        class="missions-button"
+        (click)="goBack()">
+
+        Ver misiones
+
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- Entregas -->
+  @if (!isLoading && !errorMessage && submissions.length > 0) {
+
+    <div class="submissions-list">
+
+      @for (submission of submissions; track submission.id) {
+
+        <mat-card class="submission-card">
+
+          <!-- Información principal -->
+          <div class="submission-main">
+
+            <div class="submission-icon">
+              <mat-icon>assignment_turned_in</mat-icon>
+            </div>
+
+            <div class="submission-info">
+
+              <span class="submission-label">
+                Entrega
+              </span>
+
+              <strong>
+                {{ getMissionTitle(submission.missionId) }}
+              </strong>
+
+              @if (submission.createdAt) {
+
+                <span class="submission-date">
+                  Entregada el
+                  {{ submission.createdAt | date: "dd/MM/yyyy HH:mm" }}
+                </span>
+
+              }
+              @if (submission.reviewedAt) {
+
+  <span class="submission-date">
+    Revisada el
+    {{ submission.reviewedAt | date: "dd/MM/yyyy HH:mm" }}
+  </span>
+
+}
+
+            </div>
+
+          </div>
+
+
+          <!-- Estado -->
+          <div
+            class="submission-status"
+            [class.pending]="submission.status === 'PENDING'"
+            [class.approved]="submission.status === 'APPROVED'"
+            [class.rejected]="submission.status === 'REJECTED'">
+
+            <mat-icon>
+              {{ getStatusIcon(submission.status) }}
+            </mat-icon>
+
+            <span>
+              {{ getStatusLabel(submission.status) }}
+            </span>
+
+          </div>
+
+
+          <!-- Feedback -->
+          @if (submission.feedback) {
+
+            <div class="submission-feedback">
+
+              <mat-icon>chat</mat-icon>
+
+              <div>
+
+                <span>
+                  Comentarios del docente
+                </span>
+
+                <p>
+                  {{ submission.feedback }}
+                </p>
+
+              </div>
+
+            </div>
+
+          }
+
+        </mat-card>
+
+      }
+
+    </div>
+
+  }
+
+</div>
