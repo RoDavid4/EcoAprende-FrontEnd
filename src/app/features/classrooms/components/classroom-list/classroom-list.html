@@ -19,21 +19,52 @@
 
     @for (item of classrooms; track item.id) {
       <div class="card class-card">
-        <h3 class="class-title">{{ item.name }}</h3>
+        <div class="card-header flex justify-between items-start">
+          <div>
+            <h3 class="class-title">{{ item.name }}</h3>
+            <p class="class-description">{{ item.description }}</p>
+          </div>
 
-        <h3 class="class-description">{{ item.description }}</h3>
+          <!-- Menú Opciones (⋮) solo para TEACHER/ADMIN -->
+          @if (userRole === "TEACHER" || userRole === "ADMIN") {
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="cardMenu"
+              (click)="$event.stopPropagation()"
+              title="Opciones del aula"
+            >
+              <mat-icon>more_vert</mat-icon>
+            </button>
+
+            <mat-menu #cardMenu="matMenu">
+              <button mat-menu-item (click)="onEdit(item, $event)">
+                <mat-icon>edit</mat-icon>
+                <span>Editar</span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="onDelete(item, $event)"
+                class="text-danger"
+              >
+                <mat-icon color="warn">delete</mat-icon>
+                <span>Eliminar</span>
+              </button>
+            </mat-menu>
+          }
+        </div>
+
+        <!-- Info Estudiantes -->
         @if (userRole !== "STUDENT") {
           <div class="students-info">
             <mat-icon>group</mat-icon>
             <span>
               {{ item.studentsCount }}
-              {{
-                item.studentsCount === 1 ? "Estudiante" : "Estudiantes"
-              }}</span
-            >
+              {{ item.studentsCount === 1 ? "Estudiante" : "Estudiantes" }}
+            </span>
           </div>
         }
 
+        <!-- Código de Acceso -->
         <div class="code-box">
           <div class="code-info">
             <span class="code-label">Código de Acceso</span>
@@ -47,30 +78,28 @@
             <mat-icon>content_copy</mat-icon>
           </button>
         </div>
-        @if (userRole === "TEACHER" || userRole === "ADMIN") {
-          <div class="card-actions">
+
+        <!-- Botones Principales de la Card -->
+        <div class="card-actions">
+          <button
+            mat-flat-button
+            color="primary"
+            class="btn-card primary-btn"
+            (click)="onGoToDetail(item.id!)"
+          >
+            <mat-icon>login</mat-icon> Entrar a clase
+          </button>
+
+          @if (userRole === "TEACHER" || userRole === "ADMIN") {
             <button
-              matButton="outlined"
-              class="btn-card"
-              (click)="onEdit(item, $event)"
-            >
-              Editar
-            </button>
-            <button
-              matButton="outlined"
+              mat-stroked-button
               class="btn-card"
               (click)="onGoToRoster(item.id!, $event)"
             >
-              Listar
+              <mat-icon>format_list_bulleted</mat-icon> Listar
             </button>
-          </div>
-        } @else {
-          <div class="card-actions">
-            <button matButton="outlined" class="btn-card">
-              Entrar a clase
-            </button>
-          </div>
-        }
+          }
+        </div>
       </div>
     }
   </div>

@@ -11,6 +11,8 @@ import { ClassroomManagement } from './features/classrooms/pages/classroom-manag
 import { CourseManagement } from './features/courses/pages/course-management/course-management';
 import { CourseList } from './features/courses/pages/course-list/course-list';
 import { ModuleBuilder } from './features/courses/components/module-builder/module-builder';
+import { ClassroomAssignmentsPage } from './features/classroom-assignments/pages/classroom-assignments-page/classroom-assignments-page';
+import { ClassroomDetail } from './features/classrooms/pages/classroom-detail/classroom-detail';
 
 export const routes: Routes = [
   {
@@ -50,6 +52,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'classrooms/:id',
+    component: ClassroomDetail,
+    canActivate: [authGuard],
+  },
+  {
     path: 'classrooms/:id/lista',
     component: ClassroomRoster,
     canActivate: [authGuard],
@@ -67,6 +74,11 @@ export const routes: Routes = [
   {
     path: 'courses/edit/:id',
     component: CourseManagement,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'classrooms/:id/assignments',
+    component: ClassroomAssignmentsPage,
     canActivate: [authGuard],
   },
 

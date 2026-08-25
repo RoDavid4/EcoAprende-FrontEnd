@@ -124,4 +124,23 @@ export class ClassroomManagement implements OnInit {
     }
     this.router.navigate(['/classrooms', classroomId, 'lista']);
   }
+
+  handleGoToDetail(classroomId: string): void {
+    this.router.navigate(['/classrooms', classroomId]);
+  }
+
+  onDeleteClassroom(classroom: Classroom): void {
+    const confirmacion = confirm(
+      `¿Estás seguro de que deseas eliminar el aula "${classroom.name}"?`,
+    );
+
+    if (confirmacion && classroom.id) {
+      this.classroomService.deleteClassroom(classroom.id).subscribe({
+        next: () => {
+          this.loadClassrooms();
+        },
+        error: (err) => console.error('Error al eliminar el aula:', err),
+      });
+    }
+  }
 }

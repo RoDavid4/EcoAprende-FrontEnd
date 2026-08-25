@@ -1,0 +1,119 @@
+<div class="assignments-container">
+  <header class="assignments-header">
+    <div class="top-nav">
+      <a
+        [routerLink]="
+          selectedClassroomId
+            ? ['/classrooms', selectedClassroomId]
+            : ['/classrooms']
+        "
+        class="back-link"
+      >
+        <mat-icon>arrow_back</mat-icon> Volver
+      </a>
+    </div>
+
+    <div class="header-actions">
+      @if (selectedClassroomId) {
+        <app-btn-create
+          label="Guardar Asignación"
+          icon="save"
+          (action)="saveAssignments()"
+        ></app-btn-create>
+      }
+    </div>
+  </header>
+
+  <!-- Paneles de arrastre (CDK Drag & Drop) -->
+  <div class="assignments-grid" cdkDropListGroup>
+    <section class="panel-card">
+      <div class="panel-header">
+        <h3><mat-icon>library_books</mat-icon> Módulos Publicados</h3>
+        <span class="count-badge"
+          >{{ filteredAvailableModules.length }} disponibles</span
+        >
+      </div>
+
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input
+          type="text"
+          placeholder="Buscar módulo..."
+          [(ngModel)]="searchQuery"
+        />
+      </div>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="filteredAvailableModules"
+        class="dropzone-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div
+          *ngFor="let moduleItem of filteredAvailableModules"
+          class="module-item-card"
+          cdkDrag
+        >
+          <div class="card-header">
+            <div class="title-group">
+              <h4>{{ moduleItem.title }}</h4>
+              @if (moduleItem.courseTitle) {
+                <span class="course-subtitle">
+                  <mat-icon>school</mat-icon> {{ moduleItem.courseTitle }}
+                </span>
+              }
+            </div>
+            <mat-icon class="drag-handle" cdkDragHandle
+              >drag_indicator</mat-icon
+            >
+          </div>
+
+          <p>{{ moduleItem.description }}</p>
+        </div>
+
+        <div
+          class="empty-state-small"
+          *ngIf="filteredAvailableModules.length === 0"
+        >
+          <p>No hay módulos disponibles para asignar.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-card highlight-panel">
+      <div class="panel-header">
+        <h3><mat-icon>class</mat-icon> Contenido del Aula</h3>
+        <span class="count-badge primary"
+          >{{ assignedModules.length }} asignados</span
+        >
+      </div>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="assignedModules"
+        class="dropzone-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="empty-zone" *ngIf="assignedModules.length === 0">
+          <mat-icon>add_to_photos</mat-icon>
+          <p>Arrastra aquí los módulos que deseas publicar en esta aula.</p>
+        </div>
+
+        <div
+          *ngFor="let moduleItem of assignedModules; let i = index"
+          class="module-item-card assigned"
+          cdkDrag
+        >
+          <div class="card-header">
+            <span class="order-number">#{{ i + 1 }}</span>
+            <h4>{{ moduleItem.title }}</h4>
+            <mat-icon class="drag-handle" cdkDragHandle
+              >drag_indicator</mat-icon
+            >
+          </div>
+          <p>{{ moduleItem.description }}</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

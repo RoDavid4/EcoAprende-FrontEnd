@@ -25,6 +25,23 @@
             class="module-input"
           />
 
+          <div class="status-toggle-wrapper">
+            <mat-slide-toggle
+              [checked]="mod.value.status === 'PUBLISHED'"
+              (change)="toggleModuleStatus(mIdx, $event.checked)"
+              color="primary"
+            >
+              <span
+                class="status-text"
+                [class.published]="mod.value.status === 'PUBLISHED'"
+              >
+                {{
+                  mod.value.status === "PUBLISHED" ? "Publicado" : "Borrador"
+                }}
+              </span>
+            </mat-slide-toggle>
+          </div>
+
           <button
             type="button"
             class="btn-icon-danger"
@@ -33,6 +50,15 @@
           >
             <mat-icon>delete_outline</mat-icon>
           </button>
+        </div>
+
+        <div class="module-description-wrapper">
+          <textarea
+            formControlName="description"
+            rows="2"
+            placeholder="Descripción o resumen del módulo (opcional)..."
+            class="module-description-input"
+          ></textarea>
         </div>
 
         <!-- Secciones de Contenido del Módulo -->

@@ -120,7 +120,7 @@ export class CourseManagement implements OnInit {
       this.courseService.updateCourse(this.courseId, payload).subscribe({
         next: () => {
           if (this.moduleBuilder) {
-            this.moduleBuilder.saveAllModules(this.courseId!, targetStatus);
+            this.moduleBuilder.saveAllModules(this.courseId!);
           }
           this.isSaving = false;
           this.router.navigate(['/courses']);

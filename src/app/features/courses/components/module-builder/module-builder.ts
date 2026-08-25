@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../../../core/services/course-service';
 import { ModuleService } from '../../../../core/services/module';
 import { LessonService } from '../../../../core/services/lesson';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-module-builder',
@@ -24,6 +25,7 @@ import { LessonService } from '../../../../core/services/lesson';
     MatButtonModule,
     MatIconModule,
     FormsModule,
+    MatSlideToggleModule,
   ],
   templateUrl: './module-builder.html',
   styleUrl: './module-builder.scss',
@@ -95,6 +97,8 @@ export class ModuleBuilder implements OnInit {
         this.fb.group({
           id: [mod.id],
           title: [mod.title, Validators.required],
+          status: [mod.status || 'DRAFT'],
+          description: [mod.description],
           lessons: lessonsArray,
         }),
       );
@@ -112,6 +116,8 @@ export class ModuleBuilder implements OnInit {
     const moduleGroup = this.fb.group({
       id: [null],
       title: [finalTitle, Validators.required],
+      description: [''],
+      status: ['DRAFT'],
       lessons: this.fb.array([]),
     });
 
@@ -162,10 +168,7 @@ export class ModuleBuilder implements OnInit {
     }
   }
 
-  public saveAllModules(
-    courseId: string,
-    courseStatus: string = 'DRAFT',
-  ): void {
+  public saveAllModules(courseId: string): void {
     if (!courseId) return;
 
     this.modules.controls.forEach((moduleControl, mIdx) => {
@@ -180,7 +183,7 @@ export class ModuleBuilder implements OnInit {
         courseId: courseId,
         order: mIdx + 1,
         description: moduleValue.description || null,
-        status: courseStatus,
+        status: moduleValue.status || 'DRAFT',
       };
 
       const saveObs = moduleId
@@ -232,6 +235,12 @@ export class ModuleBuilder implements OnInit {
         });
       }
     });
+  }
+
+  toggleModuleStatus(mIdx: number, isChecked: boolean): void {
+    const moduleGroup = this.modules.at(mIdx) as FormGroup;
+    const newStatus = isChecked ? 'PUBLISHED' : 'DRAFT';
+    moduleGroup.patchValue({ status: newStatus });
   }
 
   goToCreateQuiz(mIdx: number): void {

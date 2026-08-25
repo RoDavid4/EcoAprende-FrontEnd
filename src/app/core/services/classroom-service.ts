@@ -58,12 +58,16 @@ export class ClassroomService {
   }
 
   deleteClassroom(id: string): Observable<void> {
-    return this.http
-      .delete<void>(`${this.apiUrl}/${id}`)
-      .pipe(tap(() => this.classroomChangedSubject.next()));
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   getClassroomById(id: string): Observable<ClassroomDetail> {
     return this.http.get<Classroom>(`${this.apiUrl}/${id}`);
+  }
+
+  getClassroomStudentCount(classroomId: string): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(
+      `${this.apiUrl}/${classroomId}/students/count`,
+    );
   }
 }
