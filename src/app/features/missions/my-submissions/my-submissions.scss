@@ -1,0 +1,479 @@
+/* ================================
+   PÁGINA
+================================ */
+
+.submissions-page {
+  min-height: 100vh;
+
+  padding: 32px 46px;
+
+  box-sizing: border-box;
+
+  background: var(--eco-background);
+}
+
+
+/* ================================
+   VOLVER
+================================ */
+
+.back-button {
+  margin-bottom: 28px;
+
+  padding-left: 0;
+
+  color: var(--eco-primary);
+
+  font-weight: 600;
+}
+
+.back-button mat-icon {
+  margin-right: 6px;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.page-header {
+  max-width: 850px;
+
+  margin: 0 auto 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+}
+
+.page-icon {
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: var(--eco-active-bg);
+
+  color: var(--eco-primary);
+}
+
+.page-icon mat-icon {
+  font-size: 30px;
+}
+
+.page-header h1 {
+  margin: 0;
+
+  color: var(--eco-primary);
+
+  font-size: 30px;
+
+  line-height: 1.2;
+}
+
+.page-header p {
+  margin: 7px 0 0;
+
+  color: var(--eco-text-muted);
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+
+/* ================================
+   LISTA
+================================ */
+
+.submissions-list {
+  max-width: 850px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* ================================
+   CARD
+================================ */
+
+.submission-card {
+  padding: 20px !important;
+
+  box-sizing: border-box;
+
+  background: var(--eco-surface) !important;
+
+  border: 1px solid #e7ebe8;
+
+  border-radius: var(--eco-border-radius) !important;
+
+  box-shadow: 0 6px 20px rgba(27, 67, 50, 0.06);
+}
+
+
+/* ================================
+   INFORMACIÓN PRINCIPAL
+================================ */
+
+.submission-main {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+.submission-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: var(--eco-active-bg);
+
+  color: var(--eco-primary);
+}
+
+.submission-icon mat-icon {
+  font-size: 24px;
+}
+
+.submission-info {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.submission-label {
+  color: var(--eco-text-muted);
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+.submission-info strong {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: var(--eco-text-main);
+
+  font-size: 15px;
+}
+
+.submission-date {
+  color: var(--eco-text-muted);
+
+  font-size: 12px;
+}
+
+
+/* ================================
+   ESTADO
+================================ */
+
+.submission-status {
+  margin-top: 16px;
+
+  padding: 9px 12px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.submission-status mat-icon {
+  width: auto;
+  height: auto;
+
+  font-size: 18px;
+}
+
+
+/* Pendiente */
+
+.submission-status.pending {
+  background: #fff7e6;
+
+  color: #a16207;
+}
+
+
+/* Aprobada */
+
+.submission-status.approved {
+  background: #e8f5e9;
+
+  color: #2e7d32;
+}
+
+
+/* Rechazada */
+
+.submission-status.rejected {
+  background: #ffebee;
+
+  color: #c62828;
+}
+
+
+/* ================================
+   FEEDBACK
+================================ */
+
+.submission-feedback {
+  margin-top: 16px;
+
+  padding: 14px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  box-sizing: border-box;
+
+  border-radius: 10px;
+
+  background: var(--eco-background);
+
+  border: 1px solid #edf0ed;
+}
+
+.submission-feedback > mat-icon {
+  flex-shrink: 0;
+
+  margin-top: 1px;
+
+  color: var(--eco-primary);
+
+  font-size: 20px;
+}
+
+.submission-feedback div {
+  min-width: 0;
+}
+
+.submission-feedback span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: var(--eco-text-muted);
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+.submission-feedback p {
+  margin: 0;
+
+  color: var(--eco-text-main);
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* ================================
+   LOADING / ERROR / VACÍO
+================================ */
+
+.loading-state,
+.error-state,
+.empty-state {
+  max-width: 850px;
+
+  margin: 40px auto 0;
+
+  padding: 50px 24px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  border-radius: var(--eco-border-radius);
+
+  background: var(--eco-surface);
+
+  border: 1px solid #e7ebe8;
+}
+
+.loading-state mat-icon,
+.error-state mat-icon,
+.empty-state > mat-icon {
+  margin-bottom: 12px;
+
+  font-size: 36px;
+
+  color: var(--eco-tertiary);
+}
+
+.loading-state span,
+.error-state span {
+  color: var(--eco-text-muted);
+
+  font-size: 14px;
+}
+
+.empty-state h2 {
+  margin: 0 0 8px;
+
+  color: var(--eco-primary);
+
+  font-size: 19px;
+}
+
+.empty-state p {
+  margin: 0;
+
+  color: var(--eco-text-muted);
+
+  font-size: 14px;
+}
+
+.missions-button {
+  margin-top: 22px;
+
+  min-height: 42px;
+
+  padding: 0 20px !important;
+
+  border-radius: 10px !important;
+
+  background: var(--eco-primary) !important;
+
+  color: var(--eco-surface) !important;
+
+  font-weight: 600;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+
+  .submissions-page {
+    padding: 24px;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .page-icon mat-icon {
+    font-size: 26px;
+  }
+
+  .page-header h1 {
+    font-size: 26px;
+  }
+
+  .submission-card {
+    padding: 16px !important;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .submissions-page {
+    padding: 20px 16px;
+  }
+
+  .page-header {
+    align-items: flex-start;
+  }
+
+  .page-header h1 {
+    font-size: 23px;
+  }
+
+  .page-header p {
+    font-size: 13px;
+  }
+
+  .submission-main {
+    align-items: flex-start;
+  }
+
+  .submission-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .submission-icon mat-icon {
+    font-size: 21px;
+  }
+
+  .submission-info strong {
+    white-space: normal;
+  }
+
+  .submission-status {
+    margin-left: 0;
+  }
+
+  .submission-feedback {
+    padding: 12px;
+  }
+
+}
