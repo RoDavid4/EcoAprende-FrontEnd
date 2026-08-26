@@ -1,13 +1,13 @@
 <div class="classroom-page">
   <header class="page-header">
     <div>
-      @if (userRole === "TEACHER") {
+      @if (userRole === "TEACHER" || userRole === "ADMIN") {
         <h1 class="title">Gestión de Aulas</h1>
         <p class="subtitle">
           Gestioná tus aulas y seguí el progreso de tus estudiantes.
         </p>
       } @else {
-        <h1 class="title">Mis Cursos</h1>
+        <h1 class="title">Mis Aulas</h1>
         <p class="subtitle">
           Accedé a tus aulas virtuales y participá en tus clases activas.
         </p>
@@ -22,5 +22,8 @@
     (createRequested)="openCreateModal()"
     (editRequested)="openEditModal($event)"
     (rosterRequested)="goToRoster($event)"
+    (detailRequested)="handleGoToDetail($event)"
+    (playerRequested)="goToPlayer($event)"
+    (deleteRequested)="onDeleteClassroom($event)"
   ></app-classroom-list>
 </div>

@@ -9,9 +9,14 @@ import { Profile } from './features/profile/profile';
 import { ClassroomRoster } from './features/classrooms/pages/classroom-roster/classroom-roster';
 import { ClassroomManagement } from './features/classrooms/pages/classroom-management/classroom-management';
 import { Missions } from './features/missions/missions';
-import {MissionDetail} from './features/missions/mission-detail/mission-detail';
+import { MissionDetail } from './features/missions/mission-detail/mission-detail';
 import { MySubmissions } from './features/missions/my-submissions/my-submissions';
 import { Gamification } from './features/gamification/gamification';
+import { CourseManagement } from './features/courses/pages/course-management/course-management';
+import { CourseList } from './features/courses/pages/course-list/course-list';
+import { ClassroomAssignmentsPage } from './features/classroom-assignments/pages/classroom-assignments-page/classroom-assignments-page';
+import { ClassroomDetail } from './features/classrooms/pages/classroom-detail/classroom-detail';
+import { LessonPlayer } from './features/classrooms/pages/lesson-player/lesson-player';
 
 export const routes: Routes = [
   {
@@ -61,7 +66,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-     path: 'missions/submissions',
+    path: 'missions/submissions',
     component: MySubmissions,
     canActivate: [authGuard],
   },
@@ -70,10 +75,40 @@ export const routes: Routes = [
     component: MissionDetail,
     canActivate: [authGuard],
   },
-  
+
+  {
+    path: 'classrooms/:id',
+    component: ClassroomDetail,
+    canActivate: [authGuard],
+  },
   {
     path: 'classrooms/:id/lista',
     component: ClassroomRoster,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'courses',
+    component: CourseList,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'courses/new',
+    component: CourseManagement,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'courses/edit/:id',
+    component: CourseManagement,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'classrooms/:id/assignments',
+    component: ClassroomAssignmentsPage,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'classrooms/:id/player',
+    component: LessonPlayer,
     canActivate: [authGuard],
   },
   {

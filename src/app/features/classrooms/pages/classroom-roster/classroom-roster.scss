@@ -1,26 +1,31 @@
 .roster-page {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 1.5rem 2rem;
+  box-sizing: border-box;
 
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #2e7d32;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
+  .header-actions {
     margin-bottom: 1.25rem;
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
 
-    mat-icon {
-      font-size: 1.1rem;
-      width: 1.1rem;
-      height: 1.1rem;
-    }
+      mat-icon {
+        font-size: 1.1rem;
+        width: 1.1rem;
+        height: 1.1rem;
+      }
 
-    &:hover {
-      text-decoration: underline;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
@@ -34,68 +39,70 @@
     align-items: flex-start;
     gap: 2rem;
     margin-bottom: 2.5rem;
-
-    .badges-row {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.75rem;
-
-      .badge {
-        display: inline-flex;
+    .hero-main-content {
+      flex: 1;
+      .badges-row {
+        display: flex;
         align-items: center;
-        gap: 0.35rem;
-        padding: 0.25rem 0.65rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.75rem;
 
-        &.active-badge {
-          background-color: #1a4332;
-          color: #ade84f;
+        .badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          padding: 0.25rem 0.75rem;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: 600;
 
-          .dot {
-            width: 6px;
-            height: 6px;
-            background-color: #ade84f;
-            border-radius: 50%;
+          &.active-badge {
+            background-color: #1a4332;
+            color: var(--eco-secondary-container);
+
+            .dot {
+              width: 6px;
+              height: 6px;
+              background-color: var(--eco-secondary-container);
+              border-radius: 50%;
+            }
+          }
+        }
+
+        .students-count-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          font-size: 0.85rem;
+          font-weight: 500;
+          color: #4b5563;
+
+          mat-icon {
+            font-size: 1rem;
+            width: 1.2rem;
+            height: 1.2rem;
           }
         }
       }
 
-      .students-count-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        font-size: 0.85rem;
-        font-weight: 500;
-        color: #4b5563;
+      .class-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0 0 0.5rem 0;
+        letter-spacing: -0.02em;
+      }
 
-        mat-icon {
-          font-size: 1rem;
-          width: 1rem;
-          height: 1rem;
-        }
+      .class-description {
+        color: #64748b;
+        margin: 0;
+        padding: 0.5rem;
+        font-size: 0.95rem;
+        max-width: 650px;
+        line-height: 1.5;
       }
     }
-
-    .class-title {
-      font-size: 2rem;
-      font-weight: 800;
-      color: #0f172a;
-      margin: 0 0 0.5rem 0;
-      letter-spacing: -0.02em;
-    }
-
-    .class-description {
-      color: #64748b;
-      margin: 0;
-      padding: 0.5rem;
-      font-size: 0.95rem;
-      max-width: 650px;
-      line-height: 1.5;
-    }
-
     .code-box-card {
       background: #eef7f0;
       border: 1px solid #d1e7d5;
@@ -126,12 +133,12 @@
       }
 
       .btn-copy-code {
-        background-color: #86efac;
+        background-color: var(--eco-secondary-container);
         color: #14532d;
         border-radius: 8px;
 
         &:hover {
-          background-color: #4ade80;
+          background-color: #53b889;
         }
       }
     }
@@ -139,7 +146,7 @@
 
   .roster-section {
     .section-header {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
 
       .section-title {
         font-size: 1.35rem;
@@ -152,8 +159,14 @@
     .table-container {
       background: #ffffff;
       border-radius: 12px;
-      border: 1px solid #f1f5f9;
+      border: 1px solid #dfe3e7;
       overflow: hidden;
+      width: 100%;
+      overflow-x: auto;
+
+      .matColumnDef {
+        background: #ffffff;
+      }
     }
 
     .custom-roster-table {
@@ -161,8 +174,8 @@
 
       th.mat-mdc-header-cell {
         background-color: #f8fafc;
-        color: #64748b;
-        font-size: 0.75rem;
+        color: #718096;
+        font-size: 0.8rem;
         font-weight: 700;
         letter-spacing: 0.05em;
         border-bottom: 1px solid #e2e8f0;
@@ -173,6 +186,7 @@
         padding: 1.1rem 1.25rem;
         border-bottom: 1px solid #f1f5f9;
         font-size: 0.9rem;
+        background-color: #ffffff;
       }
 
       .student-profile {
@@ -184,8 +198,8 @@
           width: 38px;
           height: 38px;
           border-radius: 50%;
-          background-color: #a7f3d0;
-          color: #065f46;
+          background-color: var(--eco-secondary-container);
+          color: #005236;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -220,7 +234,7 @@
       }
 
       .btn-delete {
-        color: #ef4444;
+        color: var(--eco-error);
 
         &:hover {
           background-color: #fef2f2;
@@ -239,5 +253,92 @@
     display: flex;
     justify-content: center;
     padding: 4rem;
+  }
+}
+@media (max-width: 768px) {
+  .roster-page {
+    padding: 1rem 0.75rem;
+
+    .page-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .class-hero-card {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 1.25rem;
+      gap: 1.25rem;
+
+      .hero-main-content {
+        .class-title {
+          font-size: 1.35rem;
+        }
+
+        .class-description {
+          font-size: 0.875rem;
+        }
+      }
+
+      .code-box-card {
+        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  }
+  .roster-section {
+    .table-container {
+      border-radius: 8px;
+      padding-bottom: 1rem !important;
+      .custom-roster-table {
+        display: block;
+
+        mat-header-row {
+          display: none;
+        }
+
+        mat-row {
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          padding: 1rem 0.75rem;
+          border-bottom: 1px solid #f1f5f9;
+          height: auto;
+
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+
+        mat-cell {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.35rem 0;
+          border: none;
+
+          &[data-label="Inscripción"]::before {
+            content: "Inscripción: ";
+            font-weight: 600;
+            color: #64748b;
+            font-size: 0.8rem;
+          }
+        }
+
+        .text-right {
+          justify-content: flex-end;
+        }
+      }
+
+      mat-paginator {
+        ::ng-deep .mat-mdc-paginator-container {
+          flex-wrap: wrap;
+          justify-content: center;
+          padding: 0.5rem 0;
+        }
+      }
+    }
   }
 }

@@ -13,7 +13,7 @@
 }
 
 .card {
-  background-color: #ffffff;
+  background-color: var(--eco-surface);
   border-radius: 12px;
   border: 1px solid #e0e0e0;
   padding: 1.25rem;
@@ -75,18 +75,36 @@
 }
 
 .class-card {
-  .class-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 0 0 0.5rem 0;
-    color: var(--eco-primary);
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    .class-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+      color: var(--eco-primary);
+    }
+
+    button {
+      margin-top: -0.25rem;
+      margin-right: -0.5rem;
+      color: #666;
+    }
   }
 
   .class-description {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 400;
-    margin: 0 0 0.5rem 0;
-    color: #333;
+    margin: 0 0 0.75rem 0;
+    color: #555;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .students-info {
@@ -141,18 +159,34 @@
     button {
       flex: 1;
     }
+
     .btn-card {
       background-color: #ffffff;
       color: var(--eco-primary);
-      border: inline;
-      border-color: var(--eco-primary);
+      border: 1px solid var(--eco-primary);
       border-radius: 10px !important;
 
       &:hover {
         background-color: var(--eco-primary);
         color: #ffffff;
-        border-color: #ffffff;
       }
     }
+
+    .primary-btn {
+      background-color: var(--eco-primary);
+      color: #ffffff;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+.text-danger {
+  color: var(--eco-error);
+
+  mat-icon {
+    color: var(--eco-error);
   }
 }

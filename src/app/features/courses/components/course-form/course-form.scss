@@ -1,0 +1,90 @@
+.course-details-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+
+  .card-header {
+    margin-bottom: 1.25rem;
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--eco-text-main);
+      margin: 0;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: var(--eco-text-muted);
+      margin-top: 0.25rem;
+    }
+  }
+
+  .field-group {
+    margin-bottom: 1.25rem;
+
+    .field-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 0.4rem;
+
+      .required {
+        color: var(--eco-error);
+      }
+    }
+
+    .custom-input,
+    .custom-textarea {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+      box-sizing: border-box;
+
+      &:focus {
+        border-color: var(--eco-primary);
+      }
+    }
+
+    .input-with-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .input-icon {
+        position: absolute;
+        left: 0.75rem;
+        color: #94a3b8;
+        font-size: 1.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+
+      .icon-padding {
+        padding-left: 2.5rem;
+      }
+    }
+
+    .custom-textarea {
+      resize: vertical;
+    }
+
+    .field-hint {
+      font-size: 0.75rem;
+      color: var(--eco-text-muted);
+      margin-top: 0.35rem;
+      display: block;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .course-details-card {
+    padding: 1rem;
+  }
+}

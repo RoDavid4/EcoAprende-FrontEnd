@@ -7,6 +7,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { JoinClassModal } from '../../../shared/components/join-class-modal/join-class-modal';
 import { CreateEditClassroomModal } from '../../../shared/components/create-edit-classroom-modal/create-edit-classroom-modal';
 import { AuthService } from '../../../features/auth/services/auth.services';
+import { BtnCreate } from '../../../shared/components/btn-create/btn-create';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ import { AuthService } from '../../../features/auth/services/auth.services';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
+    BtnCreate,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
@@ -126,10 +128,16 @@ export class Header implements OnInit {
     }
 
     if (this.userRole === 'TEACHER' || this.userRole === 'ADMIN') {
-      items.push({
-        label: 'Gestión de Aulas',
-        route: '/classrooms',
-      });
+      items.push(
+        {
+          label: 'Gestión de Aulas',
+          route: '/classrooms',
+        },
+        {
+          label: 'Cursos',
+          route: '/courses',
+        },
+      );
     }
 
     return items;

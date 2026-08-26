@@ -1,0 +1,179 @@
+<div class="classroom-detail-container">
+  <div class="top-nav">
+    <a [routerLink]="['/classrooms']" class="back-link">
+      <mat-icon>arrow_back</mat-icon> Mis Aulas
+    </a>
+    <span class="separator">/</span>
+    <span class="current-page">{{
+      classroom?.name || "Cargando aula..."
+    }}</span>
+  </div>
+
+  <div class="header-section">
+    <div class="title-info">
+      <h1>{{ classroom?.name }}</h1>
+      @if (classroom?.description) {
+        <p class="description">{{ classroom?.description }}</p>
+      }
+    </div>
+    @if (isAdminOrTeacher) {
+      <app-btn-create label="Añadir Módulo" (action)="goToAssignModules()">
+      </app-btn-create>
+    }
+  </div>
+
+  <!-- Tarjetas de Métricas Estadísticas (KPIs) -->
+  @if (isAdminOrTeacher) {
+    <div class="metrics-grid">
+      <!-- Métricas Totales de Estudiante-->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">Estudiantes Totales</span>
+          <div class="icon-avatar">
+            <mat-icon>group</mat-icon>
+          </div>
+        </div>
+        <div class="metric-value">{{ metrics.totalStudents || 0 }}</div>
+      </div>
+
+      <!-- Progreso Promedio -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">Progreso Promedio</span>
+          <div class="icon-avatar">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+        </div>
+        <div class="metric-value">{{ metrics.averageProgress || 0 }}%</div>
+        <div class="progress-bar-bg">
+          <div
+            class="progress-bar-fill"
+            [style.width.%]="metrics.averageProgress || 0"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Módulos Activos -->
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">Módulos Activos</span>
+          <div class="icon-avatar">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+        </div>
+        <div class="metric-value-group">
+          <span class="metric-value">{{ assignedModules.length }}</span>
+          @if (assignedModules.length > 0) {
+            <span class="status-badge active">Asignados</span>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="single-metric-container">
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">Progreso del Aula</span>
+          <div class="icon-avatar">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+        </div>
+
+        <div class="metric-value-group">
+          <span class="metric-value">75%</span>
+          <span class="status-badge active">En curso</span>
+        </div>
+
+        <div class="metric-progress">
+          <div class="progress-info">
+            <span class="progress-label">Completado</span>
+            <span class="progress-percentage">75%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: 75%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="main-content-layout">
+    <div class="curriculum-section">
+      <div class="section-header">
+        <h3>Plan de Estudios Asignado</h3>
+      </div>
+
+      @if (assignedModules.length === 0) {
+        <div class="empty-state-card">
+          <mat-icon>menu_book</mat-icon>
+          <h4>No hay módulos asignados a esta aula</h4>
+          <p>
+            Asigna módulos desde los cursos disponibles para comenzar las
+            clases.
+          </p>
+
+          <app-btn-create label="Asignar Módulo" (action)="goToAssignModules()">
+          </app-btn-create>
+        </div>
+      }
+
+      <div class="modules-list">
+        @if (assignedModules.length > 0) {
+          <span class="status-badge active">Activo</span>
+          <div class="modules-list">
+            @for (moduleItem of assignedModules; track moduleItem.id) {
+              <div class="module-card">
+                <div class="card-content">
+                  <div class="card-header">
+                    <h4 class="module-title">
+                      {{ moduleItem.title || moduleItem.name }}
+                    </h4>
+
+                    @if (
+                      moduleItem.courseTitle &&
+                      moduleItem.courseTitle !== "Sin Curso"
+                    ) {
+                      <span class="course-tag">{{
+                        moduleItem.courseTitle
+                      }}</span>
+                    }
+                  </div>
+
+                  @if (moduleItem.description) {
+                    <p class="module-description">
+                      {{ moduleItem.description }}
+                    </p>
+                  }
+                </div>
+
+                <div class="card-actions">
+                  @if (isStudent) {
+                    <button
+                      matButton="outlined"
+                      class="button-content"
+                      (click)="viewModuleDetail(moduleItem.id)"
+                    >
+                      Ir a la Lección
+                    </button>
+                  } @else {
+                    <button
+                      matButton="outlined"
+                      (click)="viewModuleDetail(moduleItem.id)"
+                      class="button-content"
+                    >
+                      Ver Contenido
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="empty-state-card">
+            <p>No hay módulos asignados</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

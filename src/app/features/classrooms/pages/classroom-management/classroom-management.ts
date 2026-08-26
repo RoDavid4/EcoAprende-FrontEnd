@@ -10,6 +10,8 @@ import { CreateEditClassroomModal } from '../../../../shared/components/create-e
 import { ClassroomList } from '../../components/classroom-list/classroom-list';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../auth/services/auth.services';
+import { forkJoin } from 'rxjs';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-classroom-management',
@@ -19,6 +21,7 @@ import { AuthService } from '../../../auth/services/auth.services';
     MatIconModule,
     MatDialogModule,
     ClassroomList,
+    MatSnackBarModule,
   ],
   templateUrl: './classroom-management.html',
   styleUrl: './classroom-management.scss',
@@ -30,6 +33,8 @@ export class ClassroomManagement implements OnInit {
 
   private classroomSub!: Subscription;
   private authService = inject(AuthService);
+  private snackBar = inject(MatSnackBar);
+
   constructor(
     private classroomService: ClassroomService,
 
@@ -60,15 +65,52 @@ export class ClassroomManagement implements OnInit {
 
   loadClassrooms(): void {
     this.isLoading = true;
+
     this.classroomService.getClassrooms().subscribe({
-      next: (data) => {
-        this.classrooms = data;
-        this.isLoading = false;
-        console.log(`Aulas cargadas (${this.userRole}):`, data);
+      next: (list) => {
+        if (list.length === 0) {
+          this.classrooms = [];
+          this.isLoading = false;
+          console.log(`Aulas cargadas (${this.userRole}): []`);
+          return;
+        }
+
+        if (this.userRole === 'STUDENT') {
+          this.classrooms = list.map((c) => ({
+            ...c,
+            studentsCount: c.studentsCount || 0,
+          }));
+          this.isLoading = false;
+          return;
+        }
+
+        forkJoin(
+          list.map((c) => this.classroomService.getClassroomById(c.id)),
+        ).subscribe({
+          next: (details) => {
+            this.classrooms = list.map((c, i) => ({
+              ...c,
+              studentsCount: details[i]?.students?.length || 0,
+            }));
+            this.isLoading = false;
+            console.log(`Aulas cargadas (${this.userRole}):`, this.classrooms);
+          },
+          error: () => {
+            this.classrooms = list;
+            this.isLoading = false;
+            console.warn('No se pudo obtener el detalle de las aulas');
+          },
+        });
       },
-      error: () => {
+      error: (err) => {
         this.isLoading = false;
         console.error('Error al cargar aulas');
+
+        if (err.status === 403 && this.userRole === 'STUDENT') {
+          this.snackBar.open('No tienes aulas asignadas', 'Cerrar', {
+            duration: 3000,
+          });
+        }
       },
     });
   }
@@ -100,5 +142,28 @@ export class ClassroomManagement implements OnInit {
       return;
     }
     this.router.navigate(['/classrooms', classroomId, 'lista']);
+  }
+
+  goToPlayer(classroomId: string): void {
+    this.router.navigate(['/classrooms', classroomId, 'player']);
+  }
+
+  handleGoToDetail(classroomId: string): void {
+    this.router.navigate(['/classrooms', classroomId]);
+  }
+
+  onDeleteClassroom(classroom: Classroom): void {
+    const confirmacion = confirm(
+      `¿Estás seguro de que deseas eliminar el aula "${classroom.name}"?`,
+    );
+
+    if (confirmacion && classroom.id) {
+      this.classroomService.deleteClassroom(classroom.id).subscribe({
+        next: () => {
+          this.loadClassrooms();
+        },
+        error: (err) => console.error('Error al eliminar el aula:', err),
+      });
+    }
   }
 }

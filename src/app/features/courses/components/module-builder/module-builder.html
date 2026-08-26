@@ -1,0 +1,210 @@
+<div [formGroup]="parentForm" class="curriculum-card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title">Estructura de Módulos</h2>
+      <p class="card-subtitle">
+        Organiza el contenido que se asignará a las aulas.
+      </p>
+    </div>
+    <button type="button" class="btn-add-module" (click)="addModule()">
+      <mat-icon>add_circle_outline</mat-icon>
+      <span>Agregar Módulo</span>
+    </button>
+  </div>
+
+  <div formArrayName="modules" class="modules-list">
+    @for (mod of modules.controls; track $index; let mIdx = $index) {
+      <div [formGroupName]="mIdx" class="module-block">
+        <!-- Header del Módulo -->
+        <div class="module-header">
+          <mat-icon class="drag-handle">drag_indicator</mat-icon>
+          <span class="module-badge">Módulo {{ mIdx + 1 }}</span>
+          <input
+            formControlName="title"
+            placeholder="Título del Módulo"
+            class="module-input"
+          />
+
+          <div class="status-toggle-wrapper">
+            <mat-slide-toggle
+              [checked]="mod.value.status === 'PUBLISHED'"
+              (change)="toggleModuleStatus(mIdx, $event.checked)"
+              color="primary"
+            >
+              <span
+                class="status-text"
+                [class.published]="mod.value.status === 'PUBLISHED'"
+              >
+                {{
+                  mod.value.status === "PUBLISHED" ? "Publicado" : "Borrador"
+                }}
+              </span>
+            </mat-slide-toggle>
+          </div>
+
+          <button
+            type="button"
+            class="btn-icon-danger"
+            (click)="removeModule(mIdx)"
+            title="Eliminar Módulo"
+          >
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+
+        <div class="module-description-wrapper">
+          <textarea
+            formControlName="description"
+            rows="2"
+            placeholder="Descripción o resumen del módulo (opcional)..."
+            class="module-description-input"
+          ></textarea>
+        </div>
+
+        <!-- Secciones de Contenido del Módulo -->
+        <div class="module-content">
+          <div formArrayName="lessons" class="items-section">
+            <span class="section-label">Lecciones</span>
+            @for (
+              less of getLessons(mIdx).controls;
+              track $index;
+              let lIdx = $index
+            ) {
+              <div [formGroupName]="lIdx" class="lesson-card">
+                <!-- Fila principal de la Lección -->
+                <div class="lesson-header-row">
+                  <mat-icon class="drag-handle">drag_indicator</mat-icon>
+
+                  <span class="type-badge" [ngClass]="less.value.contentType">
+                    @switch (less.value.contentType) {
+                      @case ("VIDEO") {
+                        <mat-icon>play_circle</mat-icon>
+                        <span class="badge-text">Video</span>
+                      }
+                      @case ("TEXT") {
+                        <mat-icon>description</mat-icon>
+                        <span class="badge-text">Lectura</span>
+                      }
+                      @case ("MULTIMEDIA") {
+                        <mat-icon>extension</mat-icon>
+                        <span class="badge-text">Recurso</span>
+                      }
+                    }
+                  </span>
+
+                  <input
+                    formControlName="title"
+                    placeholder="Título de la lección..."
+                    class="item-input"
+                  />
+
+                  <button
+                    type="button"
+                    class="btn-icon-subtle"
+                    (click)="removeLesson(mIdx, lIdx)"
+                    title="Eliminar lección"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+
+                <!-- Detalles desplegados según el tipo -->
+                <div class="lesson-details">
+                  @if (
+                    less.value.contentType === "VIDEO" ||
+                    less.value.contentType === "MULTIMEDIA"
+                  ) {
+                    <div class="detail-group">
+                      <label>
+                        {{
+                          less.value.contentType === "VIDEO"
+                            ? "URL del Video (YouTube, Vimeo, S3):"
+                            : "URL del Recurso (Drive, PDF, Canva):"
+                        }}
+                      </label>
+                      <input
+                        type="url"
+                        formControlName="mediaUrl"
+                        [placeholder]="
+                          less.value.contentType === 'VIDEO'
+                            ? 'https://www.youtube.com/watch?v=...'
+                            : 'https://drive.google.com/file/d/...'
+                        "
+                        class="detail-input"
+                      />
+                    </div>
+                  }
+
+                  <div class="detail-group">
+                    <label>
+                      {{
+                        less.value.contentType === "TEXT"
+                          ? "Contenido de la Lectura:"
+                          : "Instrucciones o Descripción (Opcional):"
+                      }}
+                    </label>
+                    <textarea
+                      formControlName="content"
+                      rows="3"
+                      placeholder="Escribe el texto o las instrucciones aquí..."
+                      class="detail-textarea"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            } @empty {
+              <p class="empty-subtext">No hay lecciones en este módulo.</p>
+            }
+          </div>
+        </div>
+
+        <!-- Acciones del Módulo -->
+        <div class="module-footer">
+          <button
+            type="button"
+            class="btn-add-item btn-text"
+            (click)="addLesson(mIdx, 'TEXT')"
+          >
+            <mat-icon>description</mat-icon>
+            <span>+ Lectura</span>
+          </button>
+
+          <button
+            type="button"
+            class="btn-add-item btn-video"
+            (click)="addLesson(mIdx, 'VIDEO')"
+          >
+            <mat-icon>play_circle</mat-icon>
+            <span>+ Video</span>
+          </button>
+
+          <button
+            type="button"
+            class="btn-add-item btn-multimedia"
+            (click)="addLesson(mIdx, 'MULTIMEDIA')"
+          >
+            <mat-icon>extension</mat-icon>
+            <span>+ Multimedia</span>
+          </button>
+
+          <button
+            type="button"
+            class="btn-add-item btn-quiz"
+            (click)="goToCreateQuiz(mIdx)"
+          >
+            <mat-icon>assignment</mat-icon>
+            <span>+ Cuestionario</span>
+          </button>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">view_module</mat-icon>
+        <p>
+          Aún no has creado ningún módulo. Haz clic en "Agregar Módulo" para
+          comenzar.
+        </p>
+      </div>
+    }
+  </div>
+</div>
