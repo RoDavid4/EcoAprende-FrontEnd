@@ -50,4 +50,11 @@ export class ClassroomAssignmentService {
       `${this.apiUrl}/classrooms/${classroomId}/modules/${moduleId}`,
     );
   }
+
+  completeLesson(lessonId: string): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/lessons/${lessonId}/complete`,
+      {},
+    );
+  }
 }

@@ -39,7 +39,9 @@ export class ClassroomDetail implements OnInit {
     }
     this.classroomId = this.route.snapshot.paramMap.get('id') || '';
     if (this.classroomId) {
-      this.loadClassroomDetail();
+      if (this.userRole === 'TEACHER' || this.userRole === 'ADMIN') {
+        this.loadClassroomDetail();
+      }
     }
   }
   get isStudent(): boolean {
@@ -88,6 +90,10 @@ export class ClassroomDetail implements OnInit {
   }
 
   viewModuleDetail(moduleId: string): void {
-    this.router.navigate(['/modules', moduleId]);
+    if (!this.classroomId) return;
+
+    this.router.navigate(['/classrooms', this.classroomId, 'player'], {
+      queryParams: { moduleId: moduleId },
+    });
   }
 }

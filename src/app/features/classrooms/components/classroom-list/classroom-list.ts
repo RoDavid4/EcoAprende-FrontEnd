@@ -28,10 +28,15 @@ export class ClassroomList {
   @Output() editRequested = new EventEmitter<Classroom>();
   @Output() rosterRequested = new EventEmitter<string>();
   @Output() detailRequested = new EventEmitter<string>();
+  @Output() playerRequested = new EventEmitter<string>();
   @Output() deleteRequested = new EventEmitter<Classroom>();
 
   onCreate(): void {
     this.createRequested.emit();
+  }
+
+  onGoToPlayer(classroomId: string): void {
+    this.playerRequested.emit(classroomId);
   }
 
   onGoToDetail(classroomId: string): void {

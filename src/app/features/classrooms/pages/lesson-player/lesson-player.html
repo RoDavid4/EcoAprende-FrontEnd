@@ -1,0 +1,173 @@
+<div class="player-container">
+  <header class="top-nav">
+    <a href="javascript:void(0)" (click)="goBack()" class="back-link">
+      <mat-icon>arrow_back</mat-icon>
+      {{ isStudent ? "Volver a Mis Aulas" : "Volver al Aula" }}
+    </a>
+  </header>
+
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando el contenido del curso...</p>
+    </div>
+  } @else {
+    <div class="player-layout">
+      <aside class="sidebar">
+        <h3 class="sidebar-title">Módulos del Curso</h3>
+
+        @for (module of modules; track module.id) {
+          <div class="module-group">
+            <div
+              class="module-header clickable"
+              (click)="toggleModule(module.id)"
+            >
+              <h4>{{ module.title }}</h4>
+              <span class="chevron">
+                @if (activeModuleId === module.id) {
+                  <mat-icon>arrow_drop_up</mat-icon>
+                } @else {
+                  <mat-icon>arrow_drop_down</mat-icon>
+                }
+              </span>
+            </div>
+
+            @if (activeModuleId === module.id) {
+              @if (isLoadingLessons) {
+                <div class="loading-spinner">Cargando lecciones...</div>
+              } @else {
+                <ul class="lesson-list">
+                  @for (lesson of module.lessons; track lesson.id) {
+                    <li
+                      class="lesson-item"
+                      [class.active]="currentLesson?.id === lesson.id"
+                      (click)="selectLesson(lesson)"
+                    >
+                      <span class="lesson-icon">
+                        @if (lesson.contentType === "VIDEO") {
+                          <mat-icon>play_circle</mat-icon>
+                        } @else if (lesson.contentType === "TEXT") {
+                          <mat-icon>description</mat-icon>
+                        } @else {
+                          <mat-icon>extension</mat-icon>
+                        }
+                      </span>
+
+                      <span class="lesson-name">{{ lesson.title }}</span>
+
+                      @if (lesson.isCompleted) {
+                        <mat-icon class="check-icon">check_circle</mat-icon>
+                      }
+                    </li>
+                  } @empty {
+                    <li class="empty-lesson">
+                      Este módulo no tiene lecciones disponibles.
+                    </li>
+                  }
+                </ul>
+              }
+            }
+          </div>
+        } @empty {
+          <div class="no-modules">No se encontraron módulos.</div>
+        }
+      </aside>
+
+      <main class="main-content">
+        @if (currentLesson) {
+          @if (currentLesson.contentType === "VIDEO" && safeVideoUrl) {
+            <div class="media-container video-box">
+              <iframe
+                [src]="safeVideoUrl"
+                frameborder="0"
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture;
+                "
+                allowfullscreen
+                class="media-iframe"
+              >
+              </iframe>
+            </div>
+          } @else if (
+            currentLesson.contentType === "MULTIMEDIA" && safeMediaUrl
+          ) {
+            <div class="media-container resource-box">
+              <iframe [src]="safeMediaUrl" frameborder="0" class="media-iframe">
+              </iframe>
+            </div>
+          }
+
+          <div class="lesson-header">
+            <span class="badge {{ currentLesson.contentType | lowercase }}">
+              {{ getContentTypeLabel(currentLesson.contentType) }}
+            </span>
+            <h2>{{ currentLesson.title }}</h2>
+          </div>
+
+          <div class="lesson-body">
+            @if (currentLesson.content) {
+              <div
+                class="text-content"
+                [innerHTML]="currentLesson.content"
+              ></div>
+            }
+
+            @if (currentLesson.description) {
+              <div class="description-content">
+                <p>{{ currentLesson.description }}</p>
+              </div>
+            }
+          </div>
+
+          <footer class="player-controls">
+            <button
+              class="btn-nav"
+              [disabled]="!hasPreviousLesson()"
+              (click)="loadPreviousLesson()"
+            >
+              ← Anterior
+            </button>
+
+            @if (isStudent && currentLesson) {
+              <button
+                class="btn-complete"
+                [class.completed]="currentLesson.isCompleted"
+                (click)="markAsCompleted()"
+              >
+                <mat-icon>{{
+                  currentLesson.isCompleted
+                    ? "check_circle"
+                    : "radio_button_unchecked"
+                }}</mat-icon>
+                <span>{{
+                  currentLesson.isCompleted
+                    ? "Completado"
+                    : "Marcar como Completado"
+                }}</span>
+              </button>
+            }
+
+            <button
+              class="btn-nav"
+              [disabled]="!hasNextLesson()"
+              (click)="loadNextLesson()"
+            >
+              Siguiente →
+            </button>
+          </footer>
+        } @else {
+          <div class="empty-state">
+            <p>
+              No hay ninguna lección seleccionada o disponible en esta aula.
+            </p>
+          </div>
+        }
+      </main>
+    </div>
+  }
+</div>

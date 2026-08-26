@@ -11,6 +11,7 @@ import { ClassroomList } from '../../components/classroom-list/classroom-list';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../auth/services/auth.services';
 import { forkJoin } from 'rxjs';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-classroom-management',
@@ -20,6 +21,7 @@ import { forkJoin } from 'rxjs';
     MatIconModule,
     MatDialogModule,
     ClassroomList,
+    MatSnackBarModule,
   ],
   templateUrl: './classroom-management.html',
   styleUrl: './classroom-management.scss',
@@ -31,6 +33,8 @@ export class ClassroomManagement implements OnInit {
 
   private classroomSub!: Subscription;
   private authService = inject(AuthService);
+  private snackBar = inject(MatSnackBar);
+
   constructor(
     private classroomService: ClassroomService,
 
@@ -71,6 +75,15 @@ export class ClassroomManagement implements OnInit {
           return;
         }
 
+        if (this.userRole === 'STUDENT') {
+          this.classrooms = list.map((c) => ({
+            ...c,
+            studentsCount: c.studentsCount || 0,
+          }));
+          this.isLoading = false;
+          return;
+        }
+
         forkJoin(
           list.map((c) => this.classroomService.getClassroomById(c.id)),
         ).subscribe({
@@ -89,9 +102,15 @@ export class ClassroomManagement implements OnInit {
           },
         });
       },
-      error: () => {
+      error: (err) => {
         this.isLoading = false;
         console.error('Error al cargar aulas');
+
+        if (err.status === 403 && this.userRole === 'STUDENT') {
+          this.snackBar.open('No tienes aulas asignadas', 'Cerrar', {
+            duration: 3000,
+          });
+        }
       },
     });
   }
@@ -123,6 +142,10 @@ export class ClassroomManagement implements OnInit {
       return;
     }
     this.router.navigate(['/classrooms', classroomId, 'lista']);
+  }
+
+  goToPlayer(classroomId: string): void {
+    this.router.navigate(['/classrooms', classroomId, 'player']);
   }
 
   handleGoToDetail(classroomId: string): void {

@@ -25,7 +25,7 @@
   <!-- Tarjetas de Métricas Estadísticas (KPIs) -->
   @if (isAdminOrTeacher) {
     <div class="metrics-grid">
-      <!-- Métricas Totales de Estudiantes -->
+      <!-- Métricas Totales de Estudiante-->
       <div class="metric-card">
         <div class="metric-header">
           <span class="metric-title">Estudiantes Totales</span>
@@ -33,7 +33,7 @@
             <mat-icon>group</mat-icon>
           </div>
         </div>
-        <div class="metric-value">{{ metrics?.totalStudents || 0 }}</div>
+        <div class="metric-value">{{ metrics.totalStudents || 0 }}</div>
       </div>
 
       <!-- Progreso Promedio -->
@@ -44,11 +44,11 @@
             <mat-icon>trending_up</mat-icon>
           </div>
         </div>
-        <div class="metric-value">{{ metrics?.averageProgress || 0 }}%</div>
+        <div class="metric-value">{{ metrics.averageProgress || 0 }}%</div>
         <div class="progress-bar-bg">
           <div
             class="progress-bar-fill"
-            [style.width.%]="metrics?.averageProgress || 0"
+            [style.width.%]="metrics.averageProgress || 0"
           ></div>
         </div>
       </div>
@@ -70,7 +70,6 @@
       </div>
     </div>
   } @else {
-    <!-- Vista para Estudiante (Tarjeta Única) -->
     <div class="single-metric-container">
       <div class="metric-card">
         <div class="metric-header">
@@ -99,7 +98,6 @@
   }
 
   <div class="main-content-layout">
-    <!-- Columna Izquierda: Plan de Estudios Asignado -->
     <div class="curriculum-section">
       <div class="section-header">
         <h3>Plan de Estudios Asignado</h3>
@@ -119,15 +117,12 @@
         </div>
       }
 
-      <!-- Lista de Módulos Asignados -->
       <div class="modules-list">
         @if (assignedModules.length > 0) {
           <span class="status-badge active">Activo</span>
           <div class="modules-list">
-            <!-- En lugar de *ngFor="let moduleItem of assignedModules" -->
             @for (moduleItem of assignedModules; track moduleItem.id) {
               <div class="module-card">
-                <!-- Columna izquierda: Información del módulo -->
                 <div class="card-content">
                   <div class="card-header">
                     <h4 class="module-title">
@@ -151,7 +146,6 @@
                   }
                 </div>
 
-                <!-- Columna derecha: Acción / Botón -->
                 <div class="card-actions">
                   @if (isStudent) {
                     <button

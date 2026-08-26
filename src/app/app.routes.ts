@@ -10,9 +10,9 @@ import { ClassroomRoster } from './features/classrooms/pages/classroom-roster/cl
 import { ClassroomManagement } from './features/classrooms/pages/classroom-management/classroom-management';
 import { CourseManagement } from './features/courses/pages/course-management/course-management';
 import { CourseList } from './features/courses/pages/course-list/course-list';
-import { ModuleBuilder } from './features/courses/components/module-builder/module-builder';
 import { ClassroomAssignmentsPage } from './features/classroom-assignments/pages/classroom-assignments-page/classroom-assignments-page';
 import { ClassroomDetail } from './features/classrooms/pages/classroom-detail/classroom-detail';
+import { LessonPlayer } from './features/classrooms/pages/lesson-player/lesson-player';
 
 export const routes: Routes = [
   {
@@ -81,7 +81,11 @@ export const routes: Routes = [
     component: ClassroomAssignmentsPage,
     canActivate: [authGuard],
   },
-
+  {
+    path: 'classrooms/:id/player',
+    component: LessonPlayer,
+    canActivate: [authGuard],
+  },
   {
     path: '**',
     redirectTo: 'login',

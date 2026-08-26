@@ -79,18 +79,27 @@
           </button>
         </div>
 
-        <!-- Botones Principales de la Card -->
         <div class="card-actions">
-          <button
-            mat-flat-button
-            color="primary"
-            class="btn-card primary-btn"
-            (click)="onGoToDetail(item.id!)"
-          >
-            <mat-icon>login</mat-icon> Entrar a clase
-          </button>
+          @if (userRole === "STUDENT") {
+            <button
+              mat-flat-button
+              color="primary"
+              class="btn-card primary-btn"
+              (click)="onGoToPlayer(item.id!)"
+            >
+              <mat-icon>login</mat-icon> Ver Clase
+            </button>
 
-          @if (userRole === "TEACHER" || userRole === "ADMIN") {
+          } @else if (userRole === "TEACHER" || userRole === "ADMIN") {
+            <button
+              mat-flat-button
+              color="primary"
+              class="btn-card primary-btn"
+              (click)="onGoToDetail(item.id!)"
+            >
+              <mat-icon>settings</mat-icon> Gestionar
+            </button>
+
             <button
               mat-stroked-button
               class="btn-card"
