@@ -70,4 +70,10 @@ export class ClassroomService {
       `${this.apiUrl}/${classroomId}/students/count`,
     );
   }
+
+  getClassroomMetrics(classroomId: string): Observable<any> {
+  return this.http.get<any>(
+    `${this.apiUrl}/${classroomId}/metrics`
+  );
+}
 }

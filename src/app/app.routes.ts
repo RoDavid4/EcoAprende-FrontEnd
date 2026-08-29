@@ -20,6 +20,8 @@ import { LessonPlayer } from './features/classrooms/pages/lesson-player/lesson-p
 import { roleGuard } from './core/guards/role-guards';
 import { TeacherDashboard } from './features/teacher/dashboard/dashboard';
 import { AdminDashboard } from './features/admin/dashboard/dashboard';
+import { TeacherSubmissions } from './features/teacher/pages/teacher-submissions/teacher-submissions';
+import { SubmissionReview } from './features/teacher/submission-review/submission-review';
 
 export const routes: Routes = [
   {
@@ -56,6 +58,16 @@ export const routes: Routes = [
   {
   path: 'teacher',
   component: TeacherDashboard,
+  canActivate: [authGuard, roleGuard(['TEACHER'])]
+},
+{
+  path: 'teacher/submissions',
+  component: TeacherSubmissions,
+  canActivate: [authGuard, roleGuard(['TEACHER'])]
+},
+{
+  path: 'teacher/submissions/:id',
+  component: SubmissionReview,
   canActivate: [authGuard, roleGuard(['TEACHER'])]
 },
 {
