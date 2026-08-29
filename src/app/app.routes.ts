@@ -17,6 +17,9 @@ import { CourseList } from './features/courses/pages/course-list/course-list';
 import { ClassroomAssignmentsPage } from './features/classroom-assignments/pages/classroom-assignments-page/classroom-assignments-page';
 import { ClassroomDetail } from './features/classrooms/pages/classroom-detail/classroom-detail';
 import { LessonPlayer } from './features/classrooms/pages/lesson-player/lesson-player';
+import { roleGuard } from './core/guards/role-guards';
+import { TeacherDashboard } from './features/teacher/dashboard/dashboard';
+import { AdminDashboard } from './features/admin/dashboard/dashboard';
 
 export const routes: Routes = [
   {
@@ -48,8 +51,18 @@ export const routes: Routes = [
   {
     path: 'home',
     component: Home,
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard(['STUDENT'])]
   },
+  {
+  path: 'teacher',
+  component: TeacherDashboard,
+  canActivate: [authGuard, roleGuard(['TEACHER'])]
+},
+{
+  path: 'admin',
+  component: AdminDashboard,
+  canActivate: [authGuard, roleGuard(['ADMIN'])]
+},
   {
     path: 'classrooms',
     component: ClassroomManagement,
@@ -58,7 +71,7 @@ export const routes: Routes = [
   {
     path: 'gamification',
     component: Gamification,
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard(['STUDENT'])],
   },
   {
     path: 'missions',

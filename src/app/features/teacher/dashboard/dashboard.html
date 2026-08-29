@@ -1,0 +1,139 @@
+<div class="teacher-dashboard">
+
+  <!-- Header -->
+  <section class="dashboard-header">
+    <div>
+      <span class="eyebrow">PANEL DOCENTE</span>
+
+      <h1>¡Bienvenido, docente! 👋</h1>
+
+      <p>
+        Gestiona tus aulas, acompaña a tus estudiantes
+        y revisa su progreso desde un solo lugar.
+      </p>
+    </div>
+
+    <div class="header-icon">
+      <mat-icon>school</mat-icon>
+    </div>
+  </section>
+
+  <!-- Métricas -->
+  <section class="metrics-grid">
+
+    <article class="metric-card">
+      <div class="metric-icon classrooms">
+        <mat-icon>groups</mat-icon>
+      </div>
+
+      <div>
+        <span class="metric-label">Mis aulas</span>
+        <strong>--</strong>
+        <small>Aulas activas</small>
+      </div>
+    </article>
+
+    <article class="metric-card">
+      <div class="metric-icon students">
+        <mat-icon>person</mat-icon>
+      </div>
+
+      <div>
+        <span class="metric-label">Estudiantes</span>
+        <strong>--</strong>
+        <small>En tus aulas</small>
+      </div>
+    </article>
+
+    <article class="metric-card">
+      <div class="metric-icon progress">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+
+      <div>
+        <span class="metric-label">Progreso promedio</span>
+        <strong>--%</strong>
+        <small>De tus estudiantes</small>
+      </div>
+    </article>
+
+    <article class="metric-card">
+      <div class="metric-icon submissions">
+        <mat-icon>assignment</mat-icon>
+      </div>
+
+      <div>
+        <span class="metric-label">Entregas pendientes</span>
+        <strong>--</strong>
+        <small>Para revisar</small>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- Contenido principal -->
+  <section class="dashboard-content">
+
+    <!-- Aulas -->
+    <article class="dashboard-card classrooms-card">
+
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow">GESTIÓN ACADÉMICA</span>
+          <h2>Mis aulas</h2>
+        </div>
+
+        <button class="view-all-button">
+          Ver todas
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      <div class="empty-state">
+        <div class="empty-icon">
+          <mat-icon>school</mat-icon>
+        </div>
+
+        <h3>Tus aulas aparecerán aquí</h3>
+
+        <p>
+          Podrás consultar estudiantes, progreso y
+          contenido de cada aula.
+        </p>
+      </div>
+
+    </article>
+
+    <!-- Entregas -->
+    <article class="dashboard-card submissions-card">
+
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow">REVISIÓN</span>
+          <h2>Entregas pendientes</h2>
+        </div>
+
+        <button class="view-all-button">
+          Ver todas
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      <div class="empty-state">
+        <div class="empty-icon">
+          <mat-icon>assignment_turned_in</mat-icon>
+        </div>
+
+        <h3>No hay entregas para mostrar</h3>
+
+        <p>
+          Las misiones pendientes de revisión
+          aparecerán en esta sección.
+        </p>
+      </div>
+
+    </article>
+
+  </section>
+
+</div>
