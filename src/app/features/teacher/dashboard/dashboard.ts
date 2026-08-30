@@ -11,6 +11,21 @@ import {
 
 import { MissionsService, Mission } from '../../missions/missions.service'
 
+interface TeacherStudent {
+  id: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string | null;
+  progressPercentage: number;
+  totalXp: number;
+  level: number;
+  currentStreak: number;
+  completedLessonsCount: number;
+  completedQuizzesCount: number;
+  isCompleted: boolean;
+  lastAccessedAt: string | null;
+}
+
 @Component({
   selector: 'app-teacher-dashboard',
   imports: [
@@ -27,6 +42,7 @@ export class TeacherDashboard implements OnInit {
   private missionsService = inject(MissionsService);
 
   classrooms: any[] = [];
+  students: TeacherStudent[] = [];
 
   totalStudents = 0;
   averageProgress = 0;
@@ -59,48 +75,54 @@ export class TeacherDashboard implements OnInit {
   }
 
   loadClassroomMetrics(): void {
-
-    if (this.classrooms.length === 0) {
-      this.totalStudents = 0;
-      this.averageProgress = 0;
-      return;
-    }
-
-    const requests = this.classrooms.map((classroom) =>
-      this.classroomService.getClassroomMetrics(classroom.id)
-    );
-
-    forkJoin(requests).subscribe({
-      next: (metrics) => {
-
-        console.log('Métricas de aulas:', metrics);
-
-        this.totalStudents = metrics.reduce(
-          (total, classroomMetrics) =>
-            total + classroomMetrics.summary.totalStudents,
-          0
-        );
-
-        const progressTotal = metrics.reduce(
-          (total, classroomMetrics) =>
-            total + classroomMetrics.summary.averageProgress,
-          0
-        );
-
-        this.averageProgress =
-          metrics.length > 0
-            ? Math.round(progressTotal / metrics.length)
-            : 0;
-      },
-
-      error: (error) => {
-        console.error(
-          'Error al cargar métricas de las aulas:',
-          error
-        );
-      },
-    });
+  if (this.classrooms.length === 0) {
+    this.totalStudents = 0;
+    this.averageProgress = 0;
+    this.students = [];
+    return;
   }
+
+  const requests = this.classrooms.map((classroom) =>
+    this.classroomService.getClassroomMetrics(classroom.id)
+  );
+
+  forkJoin(requests).subscribe({
+    next: (metrics) => {
+      console.log('Métricas de aulas:', metrics);
+
+      this.totalStudents = metrics.reduce(
+        (total, classroomMetrics) =>
+          total + classroomMetrics.summary.totalStudents,
+        0
+      );
+
+      const progressTotal = metrics.reduce(
+        (total, classroomMetrics) =>
+          total + classroomMetrics.summary.averageProgress,
+        0
+      );
+
+      this.averageProgress =
+        metrics.length > 0
+          ? Math.round(progressTotal / metrics.length)
+          : 0;
+
+      // Unificamos los estudiantes de todas las aulas
+      this.students = metrics.flatMap(
+        (classroomMetrics) => classroomMetrics.students
+      );
+
+      console.log('Estudiantes del docente:', this.students);
+    },
+
+    error: (error) => {
+      console.error(
+        'Error al cargar métricas de las aulas:',
+        error
+      );
+    },
+  });
+}
 
   // ================================
   // ENTREGAS PENDIENTES
