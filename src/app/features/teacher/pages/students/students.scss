@@ -1,0 +1,630 @@
+.students-page {
+  min-height: 100%;
+  padding: 32px;
+  background: var(--eco-background);
+  color: var(--eco-text-main);
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  padding: 32px;
+  margin-bottom: 28px;
+
+  background: var(--eco-surface);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.back-button {
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 8px;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+
+  color: #2563eb;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.page-header p {
+  max-width: 650px;
+  margin: 10px 0 0;
+
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 72px;
+  height: 72px;
+
+  border-radius: 18px;
+
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.header-icon mat-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+}
+
+
+/* =========================================
+   MÉTRICAS
+========================================= */
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 22px;
+
+  background: var(--eco-surface);
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.metric-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 52px;
+  height: 52px;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+}
+
+.metric-icon.students {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.metric-icon.active {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.metric-icon.progress {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.metric-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-content span {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.metric-content strong {
+  margin-top: 3px;
+
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.metric-content small {
+  margin-top: 3px;
+  color: #9ca3af;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.dashboard-card {
+  background: var(--eco-surface);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 28px 30px;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.card-eyebrow {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+
+  color: #2563eb;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.card-header p {
+  margin: 6px 0 0;
+  color: #6b7280;
+}
+
+.student-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 42px;
+  height: 42px;
+  padding: 0 12px;
+
+  border-radius: 12px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  font-weight: 800;
+}
+
+
+/* =========================================
+   LISTA
+========================================= */
+
+.students-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.student-row {
+  display: grid;
+
+  grid-template-columns:
+    45px
+    48px
+    minmax(220px, 1.4fr)
+    minmax(180px, 1fr)
+    170px
+    60px;
+
+  align-items: center;
+  gap: 18px;
+
+  padding: 20px 30px;
+
+  border-bottom: 1px solid #f1f5f9;
+
+  transition:
+    background 0.2s ease;
+}
+
+.student-row:last-child {
+  border-bottom: none;
+}
+
+.student-row:hover {
+  background: #fafafa;
+}
+
+.student-position {
+  font-size: 13px;
+  font-weight: 700;
+  color: #9ca3af;
+}
+
+
+/* =========================================
+   AVATAR
+========================================= */
+
+.student-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+
+  background: #dbeafe;
+  color: #2563eb;
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+
+/* =========================================
+   INFO
+========================================= */
+
+.student-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.student-info strong {
+  font-size: 15px;
+  font-weight: 700;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.student-info > span {
+  margin-top: 4px;
+
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.classrooms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  margin-top: 8px;
+}
+
+.classroom-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 4px 8px;
+
+  border-radius: 6px;
+
+  background: #f1f5f9;
+  color: #475569;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.classroom-tag mat-icon {
+  width: 14px;
+  height: 14px;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   PROGRESO
+========================================= */
+
+.student-progress {
+  min-width: 0;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 7px;
+
+  font-size: 12px;
+}
+
+.progress-header span {
+  color: #6b7280;
+}
+
+.progress-header strong {
+  font-weight: 800;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 7px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: #e5e7eb;
+}
+
+.progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  transition: width 0.4s ease;
+}
+
+.progress-fill.high {
+  background: #10b981;
+}
+
+.progress-fill.medium {
+  background: #f59e0b;
+}
+
+.progress-fill.low {
+  background: #ef4444;
+}
+
+
+/* =========================================
+   ACTIVIDAD
+========================================= */
+
+.student-activity {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.student-activity mat-icon {
+  width: 17px;
+  height: 17px;
+
+  font-size: 17px;
+
+  color: #9ca3af;
+}
+
+.student-activity mat-icon:first-child {
+  color: #10b981;
+}
+
+
+/* =========================================
+   ACCIONES
+========================================= */
+
+.student-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+/* =========================================
+   ESTADOS
+========================================= */
+
+.state-card,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 70px 30px;
+
+  text-align: center;
+
+  background: var(--eco-surface);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+}
+
+.state-icon,
+.empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  height: 64px;
+
+  margin-bottom: 18px;
+
+  border-radius: 18px;
+
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.state-card h2,
+.empty-state h3 {
+  margin: 0 0 8px;
+}
+
+.state-card p,
+.empty-state p {
+  max-width: 500px;
+  margin: 0;
+
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.error-state .state-icon {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   ACCIONES
+========================================= */
+
+.student-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2px;
+}
+
+
+/* =========================================
+   MENÚ DE GESTIÓN
+========================================= */
+
+.menu-title {
+  padding: 12px 16px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.menu-section-title {
+  padding: 10px 16px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.remove-classroom-option {
+  color: #dc2626;
+}
+
+.remove-classroom-option mat-icon {
+  color: #dc2626;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .student-row {
+    grid-template-columns:
+      40px
+      45px
+      minmax(180px, 1fr)
+      minmax(150px, 1fr)
+      150px
+      50px;
+  }
+
+}
+
+@media (max-width: 900px) {
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-row {
+    grid-template-columns:
+      40px
+      45px
+      1fr
+      50px;
+  }
+
+  .student-progress,
+  .student-activity {
+    grid-column: 3 / -1;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .students-page {
+    padding: 16px;
+  }
+
+  .page-header {
+    padding: 24px;
+  }
+
+  .page-header h1 {
+    font-size: 26px;
+  }
+
+  .header-icon {
+    display: none;
+  }
+
+  .student-row {
+    grid-template-columns:
+      40px
+      45px
+      1fr
+      45px;
+
+    padding: 18px;
+  }
+
+  .student-progress,
+  .student-activity {
+    grid-column: 3 / -1;
+  }
+
+}

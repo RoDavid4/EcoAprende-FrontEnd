@@ -1,0 +1,273 @@
+<div class="students-page">
+  <!-- HEADER -->
+  <section class="page-header">
+    <div class="header-content">
+      <button mat-button class="back-button" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Volver al dashboard
+      </button>
+
+      <span class="eyebrow"> GESTIÓN ACADÉMICA </span>
+
+      <h1>Mis estudiantes</h1>
+
+      <p>Consulta y gestiona los estudiantes que pertenecen a tus aulas.</p>
+    </div>
+
+    <div class="header-icon">
+      <mat-icon>groups</mat-icon>
+    </div>
+  </section>
+
+  <!-- LOADING -->
+  @if (loading) {
+    <section class="state-card">
+      <mat-icon class="state-icon spinning"> sync </mat-icon>
+
+      <h2>Cargando estudiantes...</h2>
+
+      <p>Estamos obteniendo la información de tus aulas.</p>
+    </section>
+  }
+
+  <!-- ERROR -->
+  @else if (errorMessage) {
+    <section class="state-card error-state">
+      <div class="state-icon">
+        <mat-icon> error_outline </mat-icon>
+      </div>
+
+      <h2>No se pudo cargar la información</h2>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button mat-flat-button color="primary" (click)="loadStudents()">
+        <mat-icon> refresh </mat-icon>
+
+        Intentar nuevamente
+      </button>
+    </section>
+  }
+
+  <!-- CONTENIDO -->
+  @else {
+    <!-- MÉTRICAS -->
+    <section class="metrics-grid">
+      <article class="metric-card">
+        <div class="metric-icon students">
+          <mat-icon> groups </mat-icon>
+        </div>
+
+        <div class="metric-content">
+          <span> Estudiantes </span>
+
+          <strong>
+            {{ totalStudents }}
+          </strong>
+
+          <small> En tus aulas </small>
+        </div>
+      </article>
+
+      <article class="metric-card">
+        <div class="metric-icon active">
+          <mat-icon> bolt </mat-icon>
+        </div>
+
+        <div class="metric-content">
+          <span> Activos </span>
+
+          <strong>
+            {{ activeStudents }}
+          </strong>
+
+          <small> Últimos 7 días </small>
+        </div>
+      </article>
+
+      <article class="metric-card">
+        <div class="metric-icon progress">
+          <mat-icon> trending_up </mat-icon>
+        </div>
+
+        <div class="metric-content">
+          <span> Progreso promedio </span>
+
+          <strong> {{ averageProgress }}% </strong>
+
+          <small> Rendimiento general </small>
+        </div>
+      </article>
+    </section>
+
+    <!-- LISTADO -->
+    <section class="dashboard-card students-card">
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow"> ESTUDIANTES </span>
+
+          <h2>Todos mis estudiantes</h2>
+
+          <p>Consulta el estado académico y la actividad de cada estudiante.</p>
+        </div>
+
+        <div class="student-count">
+          {{ students.length }}
+        </div>
+      </div>
+
+      @if (students.length > 0) {
+        <div class="students-list">
+          @for (student of students; track student.id; let i = $index) {
+            <article class="student-row">
+              <!-- POSICIÓN -->
+              <div class="student-position">#{{ i + 1 }}</div>
+
+              <!-- AVATAR -->
+              <div class="student-avatar">
+                <span>
+                  {{ student.firstName.charAt(0) }}
+                </span>
+              </div>
+
+              <!-- INFORMACIÓN -->
+              <div class="student-info">
+                <strong>
+                  {{ student.firstName }}
+                  {{ student.lastName }}
+                </strong>
+
+                <span>
+                  Nivel {{ student.level }} · {{ student.totalXp }} XP
+                </span>
+
+                <div class="classrooms">
+                  @for (classroom of student.classroomNames; track classroom) {
+                    <span class="classroom-tag">
+                      <mat-icon>school</mat-icon>
+                      {{ classroom }}
+                    </span>
+                  }
+                </div>
+              </div>
+
+              <!-- PROGRESO -->
+              <div class="student-progress">
+                <div class="progress-header">
+                  <span> Progreso </span>
+
+                  <strong> {{ student.progressPercentage }}% </strong>
+                </div>
+
+                <div class="progress-bar">
+                  <div
+                    class="progress-fill"
+                    [class.high]="
+                      getProgressClass(student.progressPercentage) === 'high'
+                    "
+                    [class.medium]="
+                      getProgressClass(student.progressPercentage) === 'medium'
+                    "
+                    [class.low]="
+                      getProgressClass(student.progressPercentage) === 'low'
+                    "
+                    [style.width.%]="student.progressPercentage"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- ACTIVIDAD -->
+              <div class="student-activity">
+                <mat-icon>
+                  {{
+                    isRecentlyActive(student.lastActivityDate)
+                      ? "check_circle"
+                      : "schedule"
+                  }}
+                </mat-icon>
+
+                <span>
+                  {{ getActivityLabel(student.lastActivityDate) }}
+                </span>
+              </div>
+
+              <!-- ACCIONES -->
+              <!-- ACCIONES -->
+              <div class="student-actions">
+                <!-- VER DETALLES -->
+                <button
+                  mat-icon-button
+                  matTooltip="Ver detalles"
+                  (click)="viewStudent(student.id)"
+                >
+                  <mat-icon> visibility </mat-icon>
+                </button>
+
+                <!-- GESTIONAR -->
+                <button
+                  mat-icon-button
+                  matTooltip="Gestionar estudiante"
+                  [matMenuTriggerFor]="studentMenu"
+                >
+                  <mat-icon> more_vert </mat-icon>
+                </button>
+
+                <!-- MENÚ -->
+                <mat-menu #studentMenu="matMenu">
+                  <div class="menu-title">Gestionar estudiante</div>
+
+                  <button mat-menu-item (click)="viewStudent(student.id)">
+                    <mat-icon> visibility </mat-icon>
+
+                    <span> Ver detalles </span>
+                  </button>
+
+                  <mat-divider></mat-divider>
+
+                  <div class="menu-section-title">Desvincular de un aula</div>
+
+                  @for (
+                    classroom of student.classroomNames;
+                    track classroom;
+                    let i = $index
+                  ) {
+                    <button
+                      mat-menu-item
+                      class="remove-classroom-option"
+                      (click)="
+                        removeStudentFromClassroom(
+                          student,
+                          student.classroomIds[i],
+                          classroom
+                        )
+                      "
+                    >
+                      <mat-icon> person_remove </mat-icon>
+
+                      <span>
+                        {{ classroom }}
+                      </span>
+                    </button>
+                  }
+                </mat-menu>
+              </div>
+            </article>
+          }
+        </div>
+
+      } @else {
+        <div class="empty-state">
+          <div class="empty-icon">
+            <mat-icon> groups </mat-icon>
+          </div>
+
+          <h3>No tienes estudiantes</h3>
+
+          <p>Los estudiantes que se incorporen a tus aulas aparecerán aquí.</p>
+        </div>
+      }
+    </section>
+  }
+</div>

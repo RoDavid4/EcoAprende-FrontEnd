@@ -24,6 +24,7 @@ import { TeacherSubmissions } from './features/teacher/pages/teacher-submissions
 import { SubmissionReview } from './features/teacher/submission-review/submission-review';
 import { StudentProgress } from './features/teacher/pages/student-progress/student-progress';
 import {StudentDetail} from './features/teacher/pages/student-detail/student-detail'
+import { Students } from './features/teacher/pages/students/students';
 
 export const routes: Routes = [
   {
@@ -60,6 +61,11 @@ export const routes: Routes = [
   {
   path: 'teacher',
   component: TeacherDashboard,
+  canActivate: [authGuard, roleGuard(['TEACHER'])]
+},
+{
+  path: 'teacher/students',
+  component: Students,
   canActivate: [authGuard, roleGuard(['TEACHER'])]
 },
 {
