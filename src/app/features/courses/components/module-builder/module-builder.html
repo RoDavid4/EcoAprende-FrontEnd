@@ -156,6 +156,49 @@
               <p class="empty-subtext">No hay lecciones en este módulo.</p>
             }
           </div>
+
+          <div class="items-section quiz-section">
+            <span class="section-label">Cuestionarios</span>
+
+            @for (quiz of getQuizzesByModuleId(mod.value.id); track quiz.id) {
+              <div class="quiz-card-item">
+                <div class="quiz-info">
+                  <span class="quiz-badge">
+                    <mat-icon>assignment</mat-icon>
+                    <span class="badge-text">Cuestionario</span>
+                  </span>
+                  <span class="quiz-title">{{ quiz.title }}</span>
+                  @if (quiz.passingScore) {
+                    <span class="quiz-badge"
+                      >{{ quiz.passingScore }}% mín.</span
+                    >
+                  }
+                </div>
+
+                <div class="quiz-actions">
+                  <button
+                    type="button"
+                    class="btn-icon-subtle"
+                    (click)="goToEditQuiz(quiz.id, mod.value.id)"
+                    title="Editar Cuestionario"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn-icon-subtle btn-danger"
+                    (click)="deleteQuiz(quiz.id)"
+                    title="Eliminar Cuestionario"
+                  >
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </div>
+              </div>
+            } @empty {
+              <p class="empty-subtext">No hay cuestionarios en este módulo.</p>
+            }
+          </div>
         </div>
 
         <!-- Acciones del Módulo -->
