@@ -17,6 +17,7 @@ import { CourseList } from './features/courses/pages/course-list/course-list';
 import { ClassroomAssignmentsPage } from './features/classroom-assignments/pages/classroom-assignments-page/classroom-assignments-page';
 import { ClassroomDetail } from './features/classrooms/pages/classroom-detail/classroom-detail';
 import { LessonPlayer } from './features/classrooms/pages/lesson-player/lesson-player';
+import { QuizCreator } from './features/quizzes/pages/quiz-creator/quiz-creator';
 
 export const routes: Routes = [
   {
@@ -99,6 +100,16 @@ export const routes: Routes = [
   {
     path: 'courses/edit/:id',
     component: CourseManagement,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'quizzes/create',
+    component: QuizCreator,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'quizzes/edit/:id',
+    component: QuizCreator,
     canActivate: [authGuard],
   },
   {

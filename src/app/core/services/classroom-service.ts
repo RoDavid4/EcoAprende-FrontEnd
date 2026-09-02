@@ -4,6 +4,7 @@ import { delay, tap } from 'rxjs/operators';
 import { Classroom, ClassroomDetail } from '../models/classroom.model';
 import { ClassroomRosterModel, Student } from '../models/student.model';
 import { HttpClient } from '@angular/common/http';
+import { ClassroomMetricsResponse } from '../../features/classrooms/models/classroom-metrics.model';
 
 @Injectable({
   providedIn: 'root',
@@ -68,6 +69,14 @@ export class ClassroomService {
   getClassroomStudentCount(classroomId: string): Observable<{ count: number }> {
     return this.http.get<{ count: number }>(
       `${this.apiUrl}/${classroomId}/students/count`,
+    );
+  }
+
+  getClassroomMetrics(
+    classroomId: string,
+  ): Observable<ClassroomMetricsResponse> {
+    return this.http.get<ClassroomMetricsResponse>(
+      `${this.apiUrl}/${classroomId}/metrics`,
     );
   }
 }

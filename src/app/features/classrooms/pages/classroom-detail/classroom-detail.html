@@ -33,7 +33,7 @@
             <mat-icon>group</mat-icon>
           </div>
         </div>
-        <div class="metric-value">{{ metrics.totalStudents || 0 }}</div>
+        <div class="metric-value">{{ metrics?.totalStudents || 0 }}</div>
       </div>
 
       <!-- Progreso Promedio -->
@@ -44,11 +44,14 @@
             <mat-icon>trending_up</mat-icon>
           </div>
         </div>
-        <div class="metric-value">{{ metrics.averageProgress || 0 }}%</div>
+        <div class="metric-value">
+          {{ metrics?.averageProgress ?? 0 | number: "1.0-0" }}%
+        </div>
+
         <div class="progress-bar-bg">
           <div
             class="progress-bar-fill"
-            [style.width.%]="metrics.averageProgress || 0"
+            [style.width.%]="metrics?.averageProgress || 0"
           ></div>
         </div>
       </div>

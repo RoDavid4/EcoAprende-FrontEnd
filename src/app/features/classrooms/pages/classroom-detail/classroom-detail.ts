@@ -5,6 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { BtnCreate } from '../../../../shared/components/btn-create/btn-create.js';
 import { AuthService } from '../../../auth/services/auth.services.js';
+import {
+  ClassroomMetricsResponse,
+  ClassroomMetricsSummary,
+  ClassroomStudentMetric,
+} from '../../models/classroom-metrics.model';
+import { ClassroomService } from '../../../../core/services/classroom-service.js';
 
 @Component({
   selector: 'app-classroom-detail',
@@ -18,17 +24,15 @@ export class ClassroomDetail implements OnInit {
   assignedModules: any[] = [];
   userRole: 'TEACHER' | 'STUDENT' | 'ADMIN' | string = 'STUDENT';
 
-  metrics = {
-    totalStudents: 0,
-    averageProgress: 0,
-  };
-
+  metrics: ClassroomMetricsSummary | null = null;
+  students: ClassroomStudentMetric[] = [];
   recentActivities: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private assignmentService: ClassroomAssignmentService,
+    private classroomService: ClassroomService,
     private authService: AuthService,
   ) {}
 
@@ -41,6 +45,7 @@ export class ClassroomDetail implements OnInit {
     if (this.classroomId) {
       if (this.userRole === 'TEACHER' || this.userRole === 'ADMIN') {
         this.loadClassroomDetail();
+        this.loadMetrics();
       }
     }
   }
@@ -69,20 +74,23 @@ export class ClassroomDetail implements OnInit {
       this.assignmentService.getClassroomById(this.classroomId).subscribe({
         next: (data) => {
           this.classroom = data;
-
-          this.metrics.totalStudents =
-            data.studentsCount ??
-            data.totalStudents ??
-            (Array.isArray(data.students) ? data.students.length : 0);
-
-          this.metrics.averageProgress =
-            data.averageProgress ?? data.progress ?? 0;
-
-          console.log('Respuesta de Classroom Detail:', data);
         },
         error: (err) => console.error('Error cargando aula:', err),
       });
     }
+  }
+
+  loadMetrics(): void {
+    this.classroomService.getClassroomMetrics(this.classroomId).subscribe({
+      next: (data: ClassroomMetricsResponse) => {
+        console.log('Respuesta de métricas recibida:', data);
+        this.metrics = data.summary;
+        this.students = data.students;
+      },
+      error: (err) => {
+        console.error('Error al obtener métricas:', err);
+      },
+    });
   }
 
   goToAssignModules(): void {
