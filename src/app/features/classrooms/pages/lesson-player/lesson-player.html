@@ -64,6 +64,72 @@
                       Este módulo no tiene lecciones disponibles.
                     </li>
                   }
+                  @if (module.quizzes && module.quizzes.length > 0) {
+                    @for (q of module.quizzes; track q.id) {
+                      <div
+                        class="lesson-item"
+                        [class.active]="currentQuiz?.id === q.id"
+                        [class.completed]="q.isCompleted || q.isPassed"
+                        (click)="selectQuiz(q)"
+                      >
+                        <span class="lesson-icon">
+                          <mat-icon>assignment</mat-icon>
+                        </span>
+                        <!-- <span class="icon">
+                          {{ q.isPassed ? "✅" : q.isCompleted ? "☑️" : "📝" }}
+                        </span> -->
+
+                        <span class="lesson-name">{{ q.title }}</span>
+
+                        @if (isStudent) {
+                          @if (
+                            q.highestScore !== undefined &&
+                            q.highestScore !== null
+                          ) {
+                            <span class="score-badge"
+                              >{{ q.highestScore }}%</span
+                            >
+                          }
+
+                          @if (q.isPassed) {
+                            <mat-icon class="check-icon">check_circle</mat-icon>
+                          } @else {
+                            <mat-icon class="fail-icon">cancel</mat-icon>
+                          }
+                        }
+                      </div>
+                    }
+                  } @else if (module.quiz) {
+                    <div
+                      class="lesson-item"
+                      [class.active]="currentQuiz?.id === module.quiz.id"
+                      [class.completed]="
+                        module.quiz.isCompleted || module.quiz.isPassed
+                      "
+                      (click)="selectQuiz(module.quiz)"
+                    >
+                      <!-- <span class="icon">
+                        {{
+                          module.quiz.isPassed
+                            ? "✅"
+                            : module.quiz.isCompleted
+                              ? "☑️"
+                              : "📝"
+                        }}
+                      </span> -->
+
+                      <span class="title">{{ module.quiz.title }}</span>
+
+                      @if (
+                        module.quiz.highestScore !== undefined &&
+                        module.quiz.highestScore !== null
+                      ) {
+                        <span class="score-badge"
+                          >{{ module.quiz.highestScore }}%</span
+                        >
+                      }
+                    </div>
+                  }
                 </ul>
               }
             }
@@ -74,7 +140,19 @@
       </aside>
 
       <main class="main-content">
-        @if (currentLesson) {
+        @if (isLoadingQuiz) {
+          <div class="quiz-loading-spinner">
+            <p>Cargando evaluación...</p>
+          </div>
+        } @else if (currentQuiz) {
+          <app-quiz-player
+            [quiz]="currentQuiz"
+            [isStudent]="isStudent"
+            (quizCompleted)="onQuizCompleted($event)"
+            (continueLesson)="loadNextLesson()"
+          >
+          </app-quiz-player>
+        } @else if (currentLesson) {
           @if (currentLesson.contentType === "VIDEO" && safeVideoUrl) {
             <div class="media-container video-box">
               <iframe
