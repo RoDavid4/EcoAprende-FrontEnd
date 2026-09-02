@@ -1,0 +1,159 @@
+<div class="quiz-player-embedded">
+  @if (quiz) {
+    @if (!quizResult && !hasReachedMaxAttempts) {
+      <div class="progress-bar-container">
+        <div class="progress-meta">
+          <span class="question-count">
+            Pregunta {{ currentIndex + 1 }} de {{ quiz.questions.length }}
+          </span>
+          <span class="attempts-count-badge">
+            Intentos realizados: {{ quiz.myAttempts?.length || 0 }}/{{
+              quiz.maxAttempts
+            }}
+          </span>
+        </div>
+        <div class="track">
+          <div class="fill" [style.width.%]="progressPercentage"></div>
+        </div>
+      </div>
+
+      @if (currentQuestion) {
+        <div class="question-card">
+          <div class="topic-badge">{{ quiz.title }}</div>
+
+          <h2 class="question-statement">{{ currentQuestion.statement }}</h2>
+
+          <div class="options-grid">
+            @for (
+              option of currentQuestion.options;
+              track option.id || $index
+            ) {
+              <div
+                class="option-card"
+                [class.selected]="
+                  option.id ? isOptionSelected(option.id) : false
+                "
+                [class.disabled]="submitting"
+                (click)="option.id && selectOption(option.id)"
+              >
+                <div class="letter-box">{{ optionLetters[$index] || "•" }}</div>
+                <div class="option-content">
+                  <span class="option-text">{{ option.text }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <footer class="player-footer">
+        <button
+          class="nav-btn sec"
+          [disabled]="currentIndex === 0 || submitting"
+          (click)="previousQuestion()"
+        >
+          Anterior
+        </button>
+
+        @if (currentIndex < quiz.questions.length - 1) {
+          <button
+            class="nav-btn primary"
+            [disabled]="
+              isStudent &&
+              (!currentQuestion?.id ||
+                !selectedAnswers.has(currentQuestion!.id!))
+            "
+            (click)="nextQuestion()"
+          >
+            Siguiente
+          </button>
+        } @else {
+          <button
+            class="nav-btn submit"
+            [disabled]="
+              isStudent &&
+              (selectedAnswers.size < quiz.questions.length || submitting)
+            "
+            (click)="submitQuiz()"
+          >
+            @if (isStudent) {
+              <span>{{
+                submitting ? "Enviando..." : "Finalizar Evaluación"
+              }}</span>
+            } @else {
+              <span>Vista Previa Finalizada</span>
+            }
+          </button>
+        }
+      </footer>
+    }
+
+    @if (quizResult || hasReachedMaxAttempts) {
+      <div class="result-wrapper">
+        <div class="result-card" [class.passed]="quizResult?.isPassed">
+          <div class="badge-icon">
+            @if (quizResult?.isPassed) {
+              🏆
+            } @else {
+              📚
+            }
+          </div>
+
+          <h2>
+            @if (quizResult) {
+              {{
+                quizResult.isPassed
+                  ? "¡Evaluación Aprobada!"
+                  : "Evaluación Finalizada"
+              }}
+            } @else {
+              Límite de Intentos Alcanzado
+            }
+          </h2>
+
+          @if (quizResult) {
+            <p class="score-display">
+              {{ quizResult.score | number: "1.0-0" }}%
+            </p>
+            <p class="points-detail">
+              Puntos obtenidos: {{ quizResult.pointsObtained }} /
+              {{ quizResult.totalPoints }}
+            </p>
+          }
+
+          <div class="attempts-status-info">
+            <p>
+              Intentos consumidos:
+              <strong
+                >{{ quiz.myAttempts?.length || 0 }} de
+                {{ quiz.maxAttempts }}</strong
+              >
+            </p>
+          </div>
+
+          @if (errorMessage) {
+            <div class="error-banner">
+              {{ errorMessage }}
+            </div>
+          }
+
+          <div class="result-actions">
+            @if (remainingAttempts > 0) {
+              <button type="button" class="retry-btn" (click)="retryQuiz()">
+                <mat-icon>cached</mat-icon>
+                Volver a Intentar ({{ remainingAttempts }} restante{{
+                  remainingAttempts > 1 ? "s" : ""
+                }})
+              </button>
+            }
+
+            <button type="button" class="continue-btn" (click)="onContinue()">
+              <mat-icon>done</mat-icon>
+              Continuar con esta nota
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>
