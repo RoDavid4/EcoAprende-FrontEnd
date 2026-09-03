@@ -39,7 +39,9 @@ export class ClassroomService {
 
   // POST: Unirse por código
   joinClassroomByCode(code: string): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(`${this.apiUrl}/join`, { code });
+    return this.http
+      .post<{ message: string }>(`${this.apiUrl}/join`, { code })
+      .pipe(tap(() => this.classroomChangedSubject.next()));
   }
 
   //Lista de estudiantes
