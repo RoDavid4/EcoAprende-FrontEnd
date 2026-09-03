@@ -14,7 +14,7 @@ import { Router, RouterLink } from '@angular/router';
   selector: 'app-login',
   imports: [
     FormsModule,
-     RouterLink,
+    RouterLink,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -55,33 +55,42 @@ export class Login {
 
     this.loading = true;
 
-    this.authService.login({
-      email: this.email,
-      password: this.password,
-    }).subscribe({
-      next: (response) => {
-        console.log('Login exitoso:', response);
+    this.authService
+      .login({
+        email: this.email,
+        password: this.password,
+      })
+      .subscribe({
+        next: (response) => {
+          console.log('Login exitoso:', response);
+          this.loading = false;
 
-        this.loading = false;
+          const role = response.user.role;
 
-        this.router.navigate(['/home']);
-      },
+          if (role === 'TEACHER') {
+            this.router.navigate(['/teacher']);
+          } else if (role === 'ADMIN') {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/home']);
+          }
+        },
 
-      error: (error) => {
-        console.error('Error de login:', error);
+        error: (error) => {
+          console.error('Error de login:', error);
 
-        this.loading = false;
+          this.loading = false;
 
-        if (error.status === 401) {
-          this.errorMessage = 'El correo o la contraseña son incorrectos.';
-        } else if (error.status === 400) {
-          this.errorMessage = 'Los datos ingresados no son válidos.';
-        } else {
-          this.errorMessage =
-            'No se pudo iniciar sesión. Intentá nuevamente.';
-        }
-      },
-    });
+          if (error.status === 401) {
+            this.errorMessage = 'El correo o la contraseña son incorrectos.';
+          } else if (error.status === 400) {
+            this.errorMessage = 'Los datos ingresados no son válidos.';
+          } else {
+            this.errorMessage =
+              'No se pudo iniciar sesión. Intentá nuevamente.';
+          }
+        },
+      });
   }
 
   private isValidEmail(email: string): boolean {

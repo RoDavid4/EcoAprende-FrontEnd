@@ -1,0 +1,342 @@
+<div class="admin-users">
+  <!-- Header -->
+  <section class="users-header">
+    <div>
+      <span class="eyebrow">ADMINISTRACIÓN</span>
+
+      <h1>Gestión de usuarios</h1>
+
+      <p>
+        Administra las cuentas, roles y estados de los usuarios de EcoAprende.
+      </p>
+    </div>
+
+    <div class="header-icon">
+      <mat-icon>manage_accounts</mat-icon>
+    </div>
+  </section>
+
+  <!-- Toolbar -->
+  <section class="users-toolbar">
+    <div class="search-box">
+      <mat-icon>search</mat-icon>
+
+      <input
+        type="text"
+        placeholder="Buscar por nombre o correo..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearch()"
+      />
+    </div>
+
+    <div class="filter-box">
+      <mat-icon>filter_list</mat-icon>
+
+      <select [(ngModel)]="selectedRole" (change)="onRoleChange()">
+        <option value="">Todos los roles</option>
+        <option value="STUDENT">Estudiantes</option>
+        <option value="TEACHER">Docentes</option>
+        <option value="ADMIN">Administradores</option>
+      </select>
+    </div>
+
+    <div class="filter-box">
+      <mat-icon>toggle_on</mat-icon>
+
+      <select [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+        <option value="">Todos los estados</option>
+        <option value="true">Activos</option>
+        <option value="false">Inactivos</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Users card -->
+  <section class="users-card">
+    <div class="card-header">
+      <div>
+        <span class="card-eyebrow">USUARIOS</span>
+        <h2>Todos los usuarios</h2>
+      </div>
+
+      <span class="user-count"> {{ totalUsers }} usuarios </span>
+    </div>
+
+    <!-- Loading -->
+    <div class="state-container" *ngIf="loading">
+      <mat-icon class="loading-icon">sync</mat-icon>
+      <p>Cargando usuarios...</p>
+    </div>
+
+    <!-- Error -->
+    <div class="state-container error" *ngIf="!loading && errorMessage">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Empty -->
+    <div
+      class="state-container"
+      *ngIf="!loading && !errorMessage && users.length === 0"
+    >
+      <mat-icon>group_off</mat-icon>
+      <p>No se encontraron usuarios.</p>
+    </div>
+
+    <!-- Users table -->
+    <div
+      class="users-table-container"
+      *ngIf="!loading && !errorMessage && users.length > 0"
+    >
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>XP</th>
+            <th>Nivel</th>
+            <th>Actividad</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let user of users">
+            <!-- Usuario -->
+            <td>
+              <div class="user-info">
+                <div class="user-avatar">
+                  <mat-icon>person</mat-icon>
+                </div>
+
+                <div class="user-data">
+                  <strong>{{ user.fullName }}</strong>
+                  <span>{{ user.email }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Rol -->
+            <td>
+              <span
+                class="role-badge"
+                [class.student]="user.role.name === 'STUDENT'"
+                [class.teacher]="user.role.name === 'TEACHER'"
+                [class.admin]="user.role.name === 'ADMIN'"
+              >
+                <mat-icon>
+                  {{
+                    user.role.name === "STUDENT"
+                      ? "person"
+                      : user.role.name === "TEACHER"
+                        ? "school"
+                        : "admin_panel_settings"
+                  }}
+                </mat-icon>
+
+                {{
+                  user.role.name === "STUDENT"
+                    ? "Estudiante"
+                    : user.role.name === "TEACHER"
+                      ? "Docente"
+                      : "Administrador"
+                }}
+              </span>
+            </td>
+
+            <!-- Estado -->
+            <td>
+              <span
+                class="status-badge"
+                [class.active]="user.isActive"
+                [class.inactive]="!user.isActive"
+              >
+                <span class="status-dot"></span>
+
+                {{ user.isActive ? "Activo" : "Inactivo" }}
+              </span>
+            </td>
+
+            <!-- XP -->
+            <td>
+              <strong class="xp-value">
+                {{ user.totalXp }}
+              </strong>
+            </td>
+
+            <!-- Nivel -->
+            <td>
+              <span class="level-badge"> Nivel {{ user.level }} </span>
+            </td>
+
+            <!-- Actividad -->
+            <td>
+              <div class="activity-data">
+                <span>
+                  <mat-icon>menu_book</mat-icon>
+                  {{ user.lessonsCompleted }}
+                </span>
+
+                <span>
+                  <mat-icon>quiz</mat-icon>
+                  {{ user.quizzesPassed }}
+                </span>
+              </div>
+            </td>
+
+            <!-- Acción -->
+            <td>
+              <button
+                class="more-button"
+                type="button"
+                title="Más opciones"
+                (click)="openUserMenu(user)"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <div
+                class="user-actions-menu"
+                *ngIf="selectedUser?.id === user.id"
+              >
+                <button type="button" (click)="viewUser(user)" >
+                  <mat-icon>visibility</mat-icon>
+                  Ver detalles
+                </button>
+
+                <button type="button" (click)="changeUserRole(user)">
+                  <mat-icon>manage_accounts</mat-icon>
+                  Cambiar rol
+                </button>
+
+                <button
+  type="button"
+  [class.activate-action]="!user.isActive"
+  [class.deactivate-action]="user.isActive"
+  (click)="toggleUserStatus(user)"
+>
+  <mat-icon>
+    {{ user.isActive ? 'block' : 'check_circle' }}
+  </mat-icon>
+
+  {{ user.isActive ? 'Desactivar usuario' : 'Activar usuario' }}
+</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination -->
+    <div
+      class="pagination"
+      *ngIf="!loading && !errorMessage && users.length > 0"
+    >
+      <button
+        type="button"
+        class="pagination-button"
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)"
+      >
+        <mat-icon>chevron_left</mat-icon>
+        Anterior
+      </button>
+
+      <div class="pagination-info">
+        <span class="pagination-label"> Página </span>
+
+        <strong>
+          {{ currentPage }}
+        </strong>
+
+        <span class="pagination-label"> de {{ totalPages }} </span>
+      </div>
+
+      <button
+        type="button"
+        class="pagination-button"
+        [disabled]="currentPage === totalPages"
+        (click)="onPageChange(currentPage + 1)"
+      >
+        Siguiente
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+    <!-- Modal cambiar rol -->
+<div
+  class="modal-overlay"
+  *ngIf="showRoleModal"
+  (click)="closeRoleModal()"
+>
+  <div
+    class="role-modal"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="role-modal-header">
+      <div>
+        <h2>Cambiar rol</h2>
+        <p>
+          Modifica el rol de
+          <strong>{{ selectedUser?.fullName }}</strong>
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="modal-close"
+        (click)="closeRoleModal()"
+        title="Cerrar"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="role-modal-body">
+
+      <label for="role-select">
+        Seleccionar nuevo rol
+      </label>
+
+      <select
+        id="role-select"
+        [(ngModel)]="selectedRoleId"
+      >
+        <option [ngValue]="3">
+          Estudiante
+        </option>
+
+        <option [ngValue]="2">
+          Docente
+        </option>
+
+        <option [ngValue]="1">
+          Administrador
+        </option>
+      </select>
+
+    </div>
+
+    <div class="role-modal-footer">
+
+      <button
+        type="button"
+        class="modal-cancel"
+        (click)="closeRoleModal()"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="modal-save"
+        (click)="saveUserRole()"
+      >
+        <mat-icon>save</mat-icon>
+        Guardar cambios
+      </button>
+
+    </div>
+  </div>
+</div>
+  </section>
+</div>

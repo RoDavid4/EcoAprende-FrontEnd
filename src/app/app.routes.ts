@@ -17,6 +17,15 @@ import { CourseList } from './features/courses/pages/course-list/course-list';
 import { ClassroomAssignmentsPage } from './features/classroom-assignments/pages/classroom-assignments-page/classroom-assignments-page';
 import { ClassroomDetail } from './features/classrooms/pages/classroom-detail/classroom-detail';
 import { LessonPlayer } from './features/classrooms/pages/lesson-player/lesson-player';
+import { roleGuard } from './core/guards/role-guards';
+import { TeacherDashboard } from './features/teacher/dashboard/dashboard';
+import { AdminDashboard } from './features/admin/dashboard/dashboard';
+import { TeacherSubmissions } from './features/teacher/pages/teacher-submissions/teacher-submissions';
+import { SubmissionReview } from './features/teacher/submission-review/submission-review';
+import { StudentProgress } from './features/teacher/pages/student-progress/student-progress';
+import { StudentDetail } from './features/teacher/pages/student-detail/student-detail';
+import { Students } from './features/teacher/pages/students/students';
+import { AdminUsers } from './features/admin/users/users';
 import { QuizCreator } from './features/quizzes/pages/quiz-creator/quiz-creator';
 
 export const routes: Routes = [
@@ -49,7 +58,47 @@ export const routes: Routes = [
   {
     path: 'home',
     component: Home,
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard(['STUDENT'])],
+  },
+  {
+    path: 'teacher',
+    component: TeacherDashboard,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'teacher/students',
+    component: Students,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'teacher/student-detail/:id',
+    component: StudentDetail,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'teacher/progress',
+    component: StudentProgress,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'teacher/submissions',
+    component: TeacherSubmissions,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'teacher/submissions/:id',
+    component: SubmissionReview,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'admin',
+    component: AdminDashboard,
+    canActivate: [authGuard, roleGuard(['ADMIN'])],
+  },
+  {
+    path: 'admin/users',
+    component: AdminUsers,
+    canActivate: [authGuard, roleGuard(['ADMIN'])],
   },
   {
     path: 'classrooms',
@@ -59,7 +108,7 @@ export const routes: Routes = [
   {
     path: 'gamification',
     component: Gamification,
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard(['STUDENT'])],
   },
   {
     path: 'missions',

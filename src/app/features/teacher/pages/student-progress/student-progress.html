@@ -1,0 +1,640 @@
+<div class="student-progress-page">
+
+  <!-- HEADER -->
+  <section class="page-header">
+
+    <div class="header-content">
+
+      <button
+        mat-button
+        class="back-button"
+        (click)="goBack()"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        Volver al dashboard
+      </button>
+
+      <span class="eyebrow">
+        ANÁLISIS ACADÉMICO
+      </span>
+
+      <h1>Progreso de estudiantes</h1>
+
+      <p>
+        Analiza el rendimiento y avance académico
+        de los estudiantes de tus aulas.
+      </p>
+
+    </div>
+
+    <div class="header-icon">
+      <mat-icon>analytics</mat-icon>
+    </div>
+
+  </section>
+
+
+  <!-- LOADING -->
+  @if (loading) {
+
+    <section class="state-card">
+
+      <mat-icon class="state-icon spinning">
+        sync
+      </mat-icon>
+
+      <h2>Cargando progreso...</h2>
+
+      <p>
+        Estamos obteniendo la información de tus estudiantes.
+      </p>
+
+    </section>
+
+  }
+
+
+  <!-- ERROR -->
+  @else if (errorMessage) {
+
+    <section class="state-card error-state">
+
+      <div class="state-icon">
+        <mat-icon>error_outline</mat-icon>
+      </div>
+
+      <h2>No se pudo cargar el progreso</h2>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="loadProgress()"
+      >
+        <mat-icon>refresh</mat-icon>
+        Intentar nuevamente
+      </button>
+
+    </section>
+
+  }
+
+
+  <!-- CONTENIDO -->
+  @else {
+
+    <!-- MÉTRICAS -->
+    <section class="metrics-grid">
+
+      <!-- ESTUDIANTES -->
+      <article class="metric-card">
+
+        <div class="metric-icon students">
+          <mat-icon>groups</mat-icon>
+        </div>
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            Estudiantes
+          </span>
+
+          <strong>
+            {{ totalStudents }}
+          </strong>
+
+          <small>
+            Estudiantes activos
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- PROGRESO -->
+      <article class="metric-card">
+
+        <div class="metric-icon progress">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            Progreso promedio
+          </span>
+
+          <strong>
+            {{ averageProgress }}%
+          </strong>
+
+          <small>
+            Rendimiento general
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- XP -->
+      <article class="metric-card">
+
+        <div class="metric-icon xp">
+          <mat-icon>stars</mat-icon>
+        </div>
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            XP promedio
+          </span>
+
+          <strong>
+            {{ averageXp }}
+          </strong>
+
+          <small>
+            Experiencia acumulada
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- COMPLETADOS -->
+      <article class="metric-card">
+
+        <div class="metric-icon completed">
+          <mat-icon>emoji_events</mat-icon>
+        </div>
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            Completados
+          </span>
+
+          <strong>
+            {{ completedStudentsCount }}
+          </strong>
+
+          <small>
+            Estudiantes que completaron
+          </small>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ANÁLISIS -->
+    <section class="analysis-grid">
+
+      <!-- DISTRIBUCIÓN -->
+      <article class="dashboard-card">
+
+        <div class="card-header">
+
+          <div>
+
+            <span class="card-eyebrow">
+              DISTRIBUCIÓN
+            </span>
+
+            <h2>
+              Nivel de progreso
+            </h2>
+
+            <p>
+              Cantidad de estudiantes según su avance.
+            </p>
+
+          </div>
+
+          <div class="card-header-icon">
+            <mat-icon>bar_chart</mat-icon>
+          </div>
+
+        </div>
+
+
+        <div class="distribution-list">
+
+          <!-- 0 - 25 -->
+          <div class="distribution-item">
+
+            <div class="distribution-label">
+              <span>0% - 25%</span>
+              <strong>
+                {{ getStudentsByRange(0, 25) }}
+              </strong>
+            </div>
+
+            <div class="distribution-bar">
+              <div
+                class="distribution-progress low"
+                [style.width.%]="
+                  totalStudents > 0
+                    ? (getStudentsByRange(0, 25) / totalStudents) * 100
+                    : 0
+                "
+              ></div>
+            </div>
+
+          </div>
+
+
+          <!-- 26 - 50 -->
+          <div class="distribution-item">
+
+            <div class="distribution-label">
+              <span>26% - 50%</span>
+              <strong>
+                {{ getStudentsByRange(26, 50) }}
+              </strong>
+            </div>
+
+            <div class="distribution-bar">
+              <div
+                class="distribution-progress medium"
+                [style.width.%]="
+                  totalStudents > 0
+                    ? (getStudentsByRange(26, 50) / totalStudents) * 100
+                    : 0
+                "
+              ></div>
+            </div>
+
+          </div>
+
+
+          <!-- 51 - 75 -->
+          <div class="distribution-item">
+
+            <div class="distribution-label">
+              <span>51% - 75%</span>
+              <strong>
+                {{ getStudentsByRange(51, 75) }}
+              </strong>
+            </div>
+
+            <div class="distribution-bar">
+              <div
+                class="distribution-progress good"
+                [style.width.%]="
+                  totalStudents > 0
+                    ? (getStudentsByRange(51, 75) / totalStudents) * 100
+                    : 0
+                "
+              ></div>
+            </div>
+
+          </div>
+
+
+          <!-- 76 - 100 -->
+          <div class="distribution-item">
+
+            <div class="distribution-label">
+              <span>76% - 100%</span>
+              <strong>
+                {{ getStudentsByRange(76, 100) }}
+              </strong>
+            </div>
+
+            <div class="distribution-bar">
+              <div
+                class="distribution-progress high"
+                [style.width.%]="
+                  totalStudents > 0
+                    ? (getStudentsByRange(76, 100) / totalStudents) * 100
+                    : 0
+                "
+              ></div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- RENDIMIENTO GENERAL -->
+      <article class="dashboard-card performance-card">
+
+        <div class="card-header">
+
+          <div>
+
+            <span class="card-eyebrow">
+              RENDIMIENTO
+            </span>
+
+            <h2>
+              Rendimiento general
+            </h2>
+
+            <p>
+              Progreso promedio de tus estudiantes.
+            </p>
+
+          </div>
+
+          <div class="card-header-icon">
+            <mat-icon>insights</mat-icon>
+          </div>
+
+        </div>
+
+
+        <div class="performance-content">
+
+          <div class="performance-circle" [style.background]="getPerformanceCircleStyle()">
+
+            <div class="circle-content">
+
+              <strong>
+                {{ averageProgress }}%
+              </strong>
+
+              <span>
+                Progreso
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="performance-details">
+
+            <div class="performance-stat">
+
+              <span>
+                Nivel promedio
+              </span>
+
+              <strong>
+                {{ averageLevel }}
+              </strong>
+
+            </div>
+
+            <div class="performance-stat">
+
+              <span>
+                XP promedio
+              </span>
+
+              <strong>
+                {{ averageXp }} XP
+              </strong>
+
+            </div>
+
+            <div class="performance-stat">
+
+              <span>
+                Completados
+              </span>
+
+              <strong>
+                {{ completedStudentsCount }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ESTUDIANTES -->
+    <section class="dashboard-card students-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <span class="card-eyebrow">
+            ESTUDIANTES
+          </span>
+
+          <h2>
+            Rendimiento individual
+          </h2>
+
+          <p>
+            Consulta el progreso de cada estudiante.
+          </p>
+
+        </div>
+
+        <div class="student-count">
+          {{ students.length }}
+        </div>
+
+      </div>
+
+
+      @if (students.length > 0) {
+
+        <div class="students-list">
+
+          @for (
+            student of students;
+            track student.id;
+            let i = $index
+          ) {
+
+            <article class="student-row">
+
+              <!-- POSICIÓN -->
+              <div class="student-position">
+                #{{ i + 1 }}
+              </div>
+
+
+              <!-- AVATAR -->
+              <div class="student-avatar">
+
+                @if (student.avatarUrl) {
+
+                  <img
+                    [src]="student.avatarUrl"
+                    [alt]="
+                      student.firstName +
+                      ' ' +
+                      student.lastName
+                    "
+                  />
+
+                } @else {
+
+                  <span>
+                    {{ student.firstName.charAt(0) }}
+                  </span>
+
+                }
+
+              </div>
+
+
+              <!-- INFO -->
+              <div class="student-info">
+
+                <strong>
+                  {{ student.firstName }}
+                  {{ student.lastName }}
+                </strong>
+
+                <span>
+                  Nivel {{ student.level }}
+                  · {{ student.totalXp }} XP
+                </span>
+
+              </div>
+
+
+              <!-- PROGRESO -->
+              <div class="student-progress">
+
+                <div class="student-progress-header">
+
+                  <span>
+                    Progreso
+                  </span>
+
+                  <strong>
+                    {{ student.progressPercentage }}%
+                  </strong>
+
+                </div>
+
+                <div class="student-progress-bar">
+
+                  <div
+                    class="student-progress-fill"
+                    [class.high]="
+                      getProgressClass(
+                        student.progressPercentage
+                      ) === 'high'
+                    "
+                    [class.medium]="
+                      getProgressClass(
+                        student.progressPercentage
+                      ) === 'medium'
+                    "
+                    [class.low]="
+                      getProgressClass(
+                        student.progressPercentage
+                      ) === 'low'
+                    "
+                    [style.width.%]="
+                      getProgressBarWidth(
+                        student.progressPercentage
+                      )
+                    "
+                  ></div>
+
+                </div>
+
+              </div>
+
+
+              <!-- RACHA -->
+              <div class="student-streak">
+
+                <mat-icon>
+                  local_fire_department
+                </mat-icon>
+
+                <span>
+                  {{ student.currentStreak }}
+                </span>
+
+              </div>
+
+
+              <!-- ESTADO -->
+              <div class="student-status">
+                <!-- DETALLE -->
+<button
+  mat-icon-button
+  class="student-detail-button"
+  (click)="viewStudentDetail(student.id)"
+  aria-label="Ver detalle del estudiante"
+>
+  <mat-icon>arrow_forward</mat-icon>
+</button>
+
+                @if (student.isCompleted) {
+
+                  <span class="status completed">
+                    <mat-icon>check_circle</mat-icon>
+                    Completado
+                  </span>
+
+                } @else if (
+                  student.progressPercentage >= 75
+                ) {
+
+                  <span class="status advanced">
+                    En progreso
+                  </span>
+
+                } @else {
+
+                  <span class="status pending">
+                    Necesita atención
+                  </span>
+
+                }
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      } @else {
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            <mat-icon>groups</mat-icon>
+          </div>
+
+          <h3>
+            No hay estudiantes
+          </h3>
+
+          <p>
+            Los estudiantes de tus aulas aparecerán
+            aquí cuando se incorporen.
+          </p>
+
+        </div>
+
+      }
+
+    </section>
+
+  }
+
+</div>

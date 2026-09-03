@@ -1,0 +1,399 @@
+<div class="student-detail-page">
+
+  <!-- HEADER -->
+  <section class="page-header">
+
+    <div class="header-content">
+
+      <button
+        mat-button
+        class="back-button"
+        (click)="goBack()"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        Volver al progreso
+      </button>
+
+      <span class="eyebrow">
+        PERFIL ACADÉMICO
+      </span>
+
+      @if (student) {
+
+        <h1>
+          {{ student.firstName }} {{ student.lastName }}
+        </h1>
+
+        <p>
+          Consulta el rendimiento y avance académico
+          de este estudiante.
+        </p>
+
+      } @else {
+
+        <h1>
+          Detalle del estudiante
+        </h1>
+
+      }
+
+    </div>
+
+    <div class="header-icon">
+      <mat-icon>person</mat-icon>
+    </div>
+
+  </section>
+
+
+  <!-- LOADING -->
+  @if (loading) {
+
+    <section class="state-card">
+
+      <mat-icon class="state-icon spinning">
+        sync
+      </mat-icon>
+
+      <h2>Cargando información...</h2>
+
+      <p>
+        Estamos obteniendo el progreso del estudiante.
+      </p>
+
+    </section>
+
+  }
+
+
+  <!-- ERROR -->
+  @else if (errorMessage) {
+
+    <section class="state-card error-state">
+
+      <div class="state-icon">
+        <mat-icon>error_outline</mat-icon>
+      </div>
+
+      <h2>No se pudo cargar la información</h2>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        mat-flat-button
+        (click)="goBack()"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        Volver al progreso
+      </button>
+
+    </section>
+
+  }
+
+
+  <!-- CONTENIDO -->
+  @else if (student) {
+
+    <!-- PERFIL + PROGRESO -->
+    <section class="overview-grid">
+
+      <!-- PERFIL -->
+      <article class="dashboard-card profile-card">
+
+        <div class="student-avatar">
+
+          @if (student.avatarUrl) {
+
+            <img
+              [src]="student.avatarUrl"
+              [alt]="student.firstName"
+            />
+
+          } @else {
+
+            <span>
+              {{ student.firstName.charAt(0) }}
+            </span>
+
+          }
+
+        </div>
+
+        <h2>
+          {{ student.firstName }}
+          {{ student.lastName }}
+        </h2>
+
+        <span class="student-level">
+          Nivel {{ student.level }}
+        </span>
+
+        @if (student.isCompleted) {
+
+          <span class="completion-badge">
+            <mat-icon>check_circle</mat-icon>
+            Curso completado
+          </span>
+
+        } @else {
+
+          <span class="progress-badge">
+            En progreso
+          </span>
+
+        }
+
+      </article>
+
+
+      <!-- PROGRESO -->
+      <article class="dashboard-card performance-card">
+
+        <div class="card-header">
+
+          <div>
+            <span class="card-eyebrow">
+              PROGRESO GENERAL
+            </span>
+
+            <h2>
+              Avance académico
+            </h2>
+          </div>
+
+          <mat-icon>
+            analytics
+          </mat-icon>
+
+        </div>
+
+
+        <div class="performance-content">
+
+          <div
+            class="progress-circle"
+            [style.background]="getProgressCircleStyle()"
+          >
+
+            <div class="circle-content">
+
+              <strong>
+                {{ student.progressPercentage }}%
+              </strong>
+
+              <span>
+                Completado
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="performance-info">
+
+            <div>
+              <span>Estado</span>
+
+              <strong>
+                @if (student.isCompleted) {
+                  Completado
+                } @else if (student.progressPercentage >= 75) {
+                  Avanzado
+                } @else if (student.progressPercentage >= 50) {
+                  En progreso
+                } @else {
+                  Necesita atención
+                }
+              </strong>
+            </div>
+
+            <div>
+              <span>XP acumulado</span>
+
+              <strong>
+                {{ student.totalXp }} XP
+              </strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ESTADÍSTICAS -->
+    <section class="stats-grid">
+
+      <article class="stat-card">
+
+        <div class="stat-icon xp">
+          <mat-icon>stars</mat-icon>
+        </div>
+
+        <div>
+          <span>Experiencia</span>
+          <strong>{{ student.totalXp }} XP</strong>
+          <small>XP acumulado</small>
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-icon level">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+
+        <div>
+          <span>Nivel</span>
+          <strong>{{ student.level }}</strong>
+          <small>Nivel actual</small>
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-icon streak">
+          <mat-icon>local_fire_department</mat-icon>
+        </div>
+
+        <div>
+          <span>Racha</span>
+          <strong>{{ student.currentStreak }} días</strong>
+          <small>Racha actual</small>
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-icon lessons">
+          <mat-icon>menu_book</mat-icon>
+        </div>
+
+        <div>
+          <span>Lecciones</span>
+          <strong>{{ student.completedLessonsCount }}</strong>
+          <small>Completadas</small>
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ACTIVIDAD ACADÉMICA -->
+    <section class="dashboard-card activity-card">
+
+      <div class="card-header">
+
+        <div>
+          <span class="card-eyebrow">
+            ACTIVIDAD ACADÉMICA
+          </span>
+
+          <h2>
+            Resumen de aprendizaje
+          </h2>
+
+          <p>
+            Información sobre las actividades completadas.
+          </p>
+        </div>
+
+        <mat-icon>
+          school
+        </mat-icon>
+
+      </div>
+
+
+      <div class="activity-grid">
+
+        <div class="activity-item">
+
+          <div class="activity-icon">
+            <mat-icon>menu_book</mat-icon>
+          </div>
+
+          <div>
+            <span>Lecciones completadas</span>
+            <strong>
+              {{ student.completedLessonsCount }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="activity-item">
+
+          <div class="activity-icon">
+            <mat-icon>quiz</mat-icon>
+          </div>
+
+          <div>
+            <span>Quizzes aprobados</span>
+            <strong>
+              {{ student.completedQuizzesCount }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="activity-item">
+
+          <div class="activity-icon">
+            <mat-icon>percent</mat-icon>
+          </div>
+
+          <div>
+            <span>Progreso</span>
+            <strong>
+              {{ student.progressPercentage }}%
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="activity-item">
+
+          <div class="activity-icon">
+            <mat-icon>emoji_events</mat-icon>
+          </div>
+
+          <div>
+            <span>Estado final</span>
+
+            <strong>
+              @if (student.isCompleted) {
+                Completado
+              } @else {
+                En progreso
+              }
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  }
+
+</div>
