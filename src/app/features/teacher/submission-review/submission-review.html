@@ -1,0 +1,302 @@
+<div class="submission-review">
+
+  <!-- HEADER -->
+  <section class="page-header">
+
+    <div>
+      <button
+        mat-button
+        class="back-button"
+        (click)="goBack()"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        Volver a entregas
+      </button>
+
+      <span class="eyebrow">
+        REVISIÓN ACADÉMICA
+      </span>
+
+      <h1>Revisar entrega</h1>
+
+      <p>
+        Revisá el trabajo realizado por el estudiante
+        y brindale una devolución.
+      </p>
+    </div>
+
+    <div class="header-icon">
+      <mat-icon>rate_review</mat-icon>
+    </div>
+
+  </section>
+
+
+  <!-- ERROR -->
+  @if (errorMessage) {
+
+    <div class="error-state">
+
+      <mat-icon>error_outline</mat-icon>
+
+      <span>
+        {{ errorMessage }}
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- LOADING -->
+  @if (loading) {
+
+    <div class="loading-state">
+
+      <mat-icon>hourglass_empty</mat-icon>
+
+      <span>
+        Cargando entrega...
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- CONTENIDO -->
+  @if (!loading && submission) {
+
+    <section class="review-layout">
+
+      <!-- INFORMACIÓN DE LA ENTREGA -->
+      <article class="submission-card">
+
+        <div class="card-header">
+
+          <div>
+
+            <span class="card-eyebrow">
+              ENTREGA
+            </span>
+
+            <h2>
+              Información del estudiante
+            </h2>
+
+          </div>
+
+          <span class="status-badge">
+            PENDIENTE
+          </span>
+
+        </div>
+
+
+        <!-- ESTUDIANTE -->
+        <div class="student-section">
+
+          <div class="student-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+
+          <div class="student-info">
+
+            <strong>
+              {{ submission.student.fullName }}
+            </strong>
+
+            <span>
+              {{ submission.student.email }}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- FECHA -->
+        <div class="detail-row">
+
+          <div class="detail-icon">
+            <mat-icon>calendar_today</mat-icon>
+          </div>
+
+          <div>
+
+            <span class="detail-label">
+              Fecha de entrega
+            </span>
+
+            <strong>
+              {{ submission.createdAt | date:'dd/MM/yyyy HH:mm' }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- EVIDENCIA -->
+        <div class="evidence-section">
+
+          <span class="detail-label">
+            Evidencia enviada
+          </span>
+
+          @if (submission.evidenceText) {
+
+            <div class="evidence-text">
+              {{ submission.evidenceText }}
+            </div>
+
+          } @else {
+
+            <div class="no-evidence">
+              El estudiante no agregó una descripción.
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- URL -->
+        @if (submission.evidenceUrl) {
+
+          <div class="evidence-url">
+
+            <div class="detail-icon">
+              <mat-icon>link</mat-icon>
+            </div>
+
+            <div>
+
+              <span class="detail-label">
+                Evidencia adjunta
+              </span>
+
+              <a
+                [href]="submission.evidenceUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ver evidencia
+                <mat-icon>open_in_new</mat-icon>
+              </a>
+
+            </div>
+
+          </div>
+
+        }
+
+      </article>
+
+
+      <!-- REVISIÓN -->
+      <article class="review-card">
+
+        <div class="card-header">
+
+          <div>
+
+            <span class="card-eyebrow">
+              EVALUACIÓN
+            </span>
+
+            <h2>
+              Devolución al estudiante
+            </h2>
+
+          </div>
+
+          <div class="feedback-icon">
+            <mat-icon>comment</mat-icon>
+          </div>
+
+        </div>
+
+
+        <p class="review-description">
+          Escribí una devolución clara para que el estudiante
+          pueda conocer qué hizo bien y qué puede mejorar.
+        </p>
+
+
+        <mat-form-field
+          appearance="outline"
+          class="feedback-field"
+        >
+
+          <mat-label>
+            Feedback
+          </mat-label>
+
+          <textarea
+            matInput
+            [(ngModel)]="feedback"
+            rows="8"
+            placeholder="Escribí aquí tu devolución..."
+          ></textarea>
+
+        </mat-form-field>
+
+
+        <!-- ERROR -->
+        @if (errorMessage) {
+
+          <div class="form-error">
+
+            <mat-icon>error_outline</mat-icon>
+
+            {{ errorMessage }}
+
+          </div>
+
+        }
+
+
+        <!-- ACCIONES -->
+        <div class="review-actions">
+
+          <button
+            mat-stroked-button
+            class="reject-button"
+            (click)="reject()"
+            [disabled]="saving"
+          >
+
+            <mat-icon>
+              close
+            </mat-icon>
+
+            Rechazar
+
+          </button>
+
+
+          <button
+            mat-flat-button
+            class="approve-button"
+            (click)="approve()"
+            [disabled]="saving"
+          >
+
+            <mat-icon>
+              check
+            </mat-icon>
+
+            Aprobar
+
+          </button>
+
+        </div>
+
+      </article>
+
+    </section>
+
+  }
+
+</div>

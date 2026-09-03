@@ -49,13 +49,14 @@ export class ClassroomService {
   }
 
   removeStudentFromClassroom(
-    classroomId: string,
-    studentId: string,
-  ): Observable<boolean> {
-    return this.http.delete<boolean>(
-      `${this.apiUrl}/${classroomId}/students/${studentId}`,
-    );
-  }
+  classroomId: string,
+  studentId: string,
+): Observable<{ message: string }> {
+
+  return this.http.delete<{ message: string }>(
+    `${this.apiUrl}/${classroomId}/students/${studentId}`,
+  );
+}
 
   deleteClassroom(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
@@ -70,4 +71,10 @@ export class ClassroomService {
       `${this.apiUrl}/${classroomId}/students/count`,
     );
   }
+
+  getClassroomMetrics(classroomId: string): Observable<any> {
+  return this.http.get<any>(
+    `${this.apiUrl}/${classroomId}/metrics`
+  );
+}
 }

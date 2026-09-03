@@ -1,0 +1,389 @@
+<div class="teacher-dashboard">
+  <!-- HEADER -->
+
+  <section class="dashboard-header">
+    <div>
+      <span class="eyebrow">PANEL DOCENTE</span>
+
+      <h1>¡Bienvenido, docente! 👋</h1>
+
+      <p>
+        Gestiona tus aulas, acompaña a tus estudiantes y revisa su progreso
+        desde un solo lugar.
+      </p>
+    </div>
+
+    <div class="header-icon">
+      <mat-icon>school</mat-icon>
+    </div>
+  </section>
+
+  <!-- MÉTRICAS -->
+
+  <section class="metrics-grid">
+    <article class="metric-card">
+      <div class="metric-icon classrooms">
+        <mat-icon>groups</mat-icon>
+      </div>
+
+      <div>
+        <span class="metric-label">Mis aulas</span>
+        <strong>{{ classrooms.length }}</strong>
+        <small>Aulas activas</small>
+      </div>
+    </article>
+
+    <article class="metric-card">
+      <div class="metric-icon students">
+        <mat-icon>person</mat-icon>
+      </div>
+
+      <div>
+        <span class="metric-label">Estudiantes</span>
+        <strong>{{ totalStudents }}</strong>
+        <small>En tus aulas</small>
+      </div>
+    </article>
+
+    <article class="metric-card">
+      <div class="metric-icon progress">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+
+      <div>
+        <span class="metric-label">Progreso promedio</span>
+        <strong>{{ averageProgress }}%</strong>
+        <small>De tus estudiantes</small>
+      </div>
+    </article>
+
+    <article class="metric-card">
+      <div class="metric-icon submissions">
+        <mat-icon>assignment</mat-icon>
+      </div>
+
+      <div>
+        <span class="metric-label">Entregas pendientes</span>
+        <strong>{{ pendingSubmissionsCount }}</strong>
+        <small>Para revisar</small>
+      </div>
+    </article>
+  </section>
+
+  <!-- ACCESOS RÁPIDOS -->
+
+  <section class="quick-access-section">
+    <div class="section-heading">
+      <div>
+        <span class="section-eyebrow">GESTIÓN</span>
+
+        <h2>Accesos rápidos</h2>
+
+        <p>
+          Accede rápidamente a las herramientas principales de tu panel docente.
+        </p>
+      </div>
+    </div>
+
+    <div class="quick-access-grid">
+      <!-- MIS AULAS -->
+      <article class="quick-access-card">
+        <div class="quick-access-icon classrooms">
+          <mat-icon>school</mat-icon>
+        </div>
+
+        <div class="quick-access-content">
+          <h3>Mis aulas</h3>
+
+          <p>Gestiona tus aulas, estudiantes y contenidos.</p>
+        </div>
+
+        <mat-icon class="quick-access-arrow" routerLink="/classrooms">
+          arrow_forward
+        </mat-icon>
+      </article>
+
+      <!-- ESTUDIANTES -->
+      <article class="quick-access-card">
+        <div class="quick-access-icon students">
+          <mat-icon>groups</mat-icon>
+        </div>
+
+        <div class="quick-access-content">
+          <h3>Estudiantes</h3>
+
+          <p>Consulta estudiantes y revisa su progreso.</p>
+        </div>
+
+        <mat-icon class="quick-access-arrow"  routerLink="/teacher/students"> arrow_forward </mat-icon>
+      </article>
+
+      <!-- ENTREGAS -->
+      <article class="quick-access-card">
+        <div class="quick-access-icon submissions">
+          <mat-icon>assignment</mat-icon>
+        </div>
+
+        <div class="quick-access-content">
+          <h3>Entregas</h3>
+
+          <p>Revisa y califica las misiones entregadas.</p>
+        </div>
+
+        <mat-icon class="quick-access-arrow" routerLink="/teacher/submissions">
+          arrow_forward
+        </mat-icon>
+      </article>
+
+      <!-- PROGRESO -->
+      <article class="quick-access-card">
+        <div class="quick-access-icon progress">
+          <mat-icon>analytics</mat-icon>
+        </div>
+
+        <div class="quick-access-content">
+          <h3>Progreso</h3>
+
+          <p>Analiza el avance académico de tus estudiantes.</p>
+        </div>
+
+        <mat-icon class="quick-access-arrow" routerLink="/teacher/progress"> arrow_forward </mat-icon>
+      </article>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+
+  <section class="dashboard-content">
+    <!-- AULAS -->
+    <article class="dashboard-card classrooms-card">
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow"> GESTIÓN ACADÉMICA </span>
+
+          <h2>Mis aulas</h2>
+        </div>
+
+        <button class="view-all-button" routerLink="/classrooms">
+          Ver todas
+
+          <mat-icon> arrow_forward </mat-icon>
+        </button>
+      </div>
+
+      @if (classrooms.length > 0) {
+        <div class="classrooms-list">
+          @for (classroom of classrooms.slice(0, 3); track classroom.id) {
+            <div class="classroom-item">
+              <div class="classroom-icon">
+                <mat-icon>school</mat-icon>
+              </div>
+
+              <div class="classroom-info">
+                <strong>
+                  {{ classroom.name }}
+                </strong>
+
+                <span>
+                  {{ classroom.description || "Sin descripción" }}
+                </span>
+              </div>
+
+              <mat-icon class="classroom-arrow"> arrow_forward </mat-icon>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="empty-state">
+          <div class="empty-icon">
+            <mat-icon>school</mat-icon>
+          </div>
+
+          <h3>No tienes aulas todavía</h3>
+
+          <p>Las aulas que crees aparecerán en esta sección.</p>
+        </div>
+      }
+    </article>
+
+    <!-- ENTREGAS -->
+    <article class="dashboard-card submissions-card">
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow"> REVISIÓN </span>
+
+          <h2>Entregas pendientes</h2>
+        </div>
+
+        <button class="view-all-button" routerLink="/teacher/submissions">
+          Ver todas
+
+          <mat-icon> arrow_forward </mat-icon>
+        </button>
+      </div>
+
+      @if (pendingSubmissions.length > 0) {
+        <div class="submissions-list">
+          @for (submission of pendingSubmissions; track submission.id) {
+            <div class="submission-item">
+              <div class="submission-icon">
+                <mat-icon> assignment </mat-icon>
+              </div>
+
+              <div class="submission-info">
+                <strong>
+                  {{ submission.student.fullName }}
+                </strong>
+
+                <span> Entrega pendiente de revisión </span>
+              </div>
+
+              <div class="submission-status">
+                <span> PENDIENTE </span>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="empty-state">
+          <div class="empty-icon">
+            <mat-icon> assignment_turned_in </mat-icon>
+          </div>
+
+          <h3>No hay entregas para revisar</h3>
+
+          <p>Las misiones pendientes de revisión aparecerán en esta sección.</p>
+        </div>
+      }
+    </article>
+    <!-- ESTUDIANTES -->
+<article class="dashboard-card students-card">
+
+  <div class="card-header">
+
+    <div>
+      <span class="card-eyebrow">SEGUIMIENTO</span>
+
+      <h2>Mis estudiantes</h2>
+    </div>
+
+    <span class="count-badge">
+      {{ students.length }}
+    </span>
+
+  </div>
+
+  @if (students.length > 0) {
+
+    <div class="students-list">
+
+      @for (student of students.slice(0, 5); track student.id) {
+
+        <div class="student-item">
+
+          <!-- AVATAR -->
+          <div class="student-avatar">
+
+            @if (student.avatarUrl) {
+
+              <img
+                [src]="student.avatarUrl"
+                [alt]="student.firstName"
+              />
+
+            } @else {
+
+              <mat-icon>person</mat-icon>
+
+            }
+
+          </div>
+
+          <!-- INFORMACIÓN -->
+          <div class="student-info">
+
+            <strong>
+              {{ student.firstName }}
+              {{ student.lastName }}
+            </strong>
+
+            <span>
+              Nivel {{ student.level }}
+              · {{ student.totalXp }} XP
+            </span>
+
+          </div>
+
+          <!-- PROGRESO -->
+          <div class="student-progress">
+
+            <div class="progress-header">
+
+              <span>Progreso</span>
+
+              <strong>
+                {{ student.progressPercentage }}%
+              </strong>
+
+            </div>
+
+            <div class="progress-bar">
+
+              <div
+                class="progress-fill"
+                [style.width.%]="student.progressPercentage"
+              ></div>
+
+            </div>
+
+          </div>
+
+          <!-- ESTADO -->
+          <span
+            class="student-status"
+            [class.completed]="student.isCompleted"
+          >
+            {{ student.isCompleted ? 'COMPLETADO' : 'EN PROGRESO' }}
+          </span>
+
+        </div>
+
+      }
+
+    </div>
+
+    @if (students.length > 5) {
+
+      <div class="students-more">
+
+        Mostrando 5 de {{ students.length }} estudiantes
+
+      </div>
+
+    }
+
+  } @else {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+
+        <mat-icon>groups</mat-icon>
+
+      </div>
+
+      <h3>No tienes estudiantes todavía</h3>
+
+      <p>
+        Los estudiantes que se incorporen a tus aulas
+        aparecerán en esta sección.
+      </p>
+
+    </div>
+
+  }
+
+</article>
+  </section>
+  
+</div>

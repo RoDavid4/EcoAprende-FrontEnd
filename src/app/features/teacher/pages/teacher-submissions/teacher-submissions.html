@@ -1,0 +1,133 @@
+<div class="teacher-submissions">
+  <!-- HEADER -->
+
+  <section class="page-header">
+    <div>
+      <button mat-button class="back-button" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Volver al dashboard
+      </button>
+
+      <span class="eyebrow"> REVISIÓN ACADÉMICA </span>
+
+      <h1>Entregas de estudiantes</h1>
+
+      <p>
+        Revisá las misiones enviadas por tus estudiantes y brindales feedback
+        sobre su trabajo.
+      </p>
+    </div>
+
+    <div class="header-icon">
+      <mat-icon>assignment</mat-icon>
+    </div>
+  </section>
+
+  <!-- RESUMEN -->
+
+  <section class="summary-card">
+    <div class="summary-icon">
+      <mat-icon>pending_actions</mat-icon>
+    </div>
+
+    <div>
+      <span class="summary-label"> Entregas pendientes </span>
+
+      <strong>
+        {{ submissions.length }}
+      </strong>
+    </div>
+  </section>
+
+  <!-- ERROR -->
+
+  @if (errorMessage) {
+    <div class="error-state">
+      <mat-icon>error_outline</mat-icon>
+
+      <span>
+        {{ errorMessage }}
+      </span>
+
+      <button mat-button (click)="loadSubmissions()">Reintentar</button>
+    </div>
+  }
+
+  <!-- LOADING -->
+
+  @if (loading) {
+    <div class="loading-state">
+      <mat-icon>hourglass_empty</mat-icon>
+
+      <span> Cargando entregas... </span>
+    </div>
+  }
+
+  <!-- LISTADO -->
+
+  @if (!loading && !errorMessage && submissions.length > 0) {
+    <section class="submissions-card">
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow"> ENTREGAS </span>
+
+          <h2>Pendientes de revisión</h2>
+        </div>
+
+        <span class="count-badge">
+          {{ submissions.length }}
+        </span>
+      </div>
+
+      <div class="submissions-list">
+        @for (submission of submissions; track submission.id) {
+          <article class="submission-item">
+            <div class="submission-icon">
+              <mat-icon> assignment </mat-icon>
+            </div>
+
+            <div class="submission-info">
+              <strong>
+                {{ submission.student.fullName }}
+              </strong>
+
+              <span>
+                Entrega enviada el
+                {{ getSubmissionDate(submission.createdAt) }}
+              </span>
+            </div>
+
+            <span class="status-badge"> PENDIENTE </span>
+
+            <button
+              mat-button
+              class="review-button"
+              (click)="reviewSubmission(submission)"
+            >
+              Revisar
+
+              <mat-icon> arrow_forward </mat-icon>
+            </button>
+          </article>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- EMPTY -->
+
+  @if (!loading && !errorMessage && submissions.length === 0) {
+    <section class="empty-state">
+      <div class="empty-icon">
+        <mat-icon> assignment_turned_in </mat-icon>
+      </div>
+
+      <h2>No hay entregas pendientes</h2>
+
+      <p>
+        Cuando tus estudiantes envíen nuevas misiones, aparecerán aquí para que
+        puedas revisarlas.
+      </p>
+    </section>
+  }
+</div>
