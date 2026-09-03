@@ -33,7 +33,7 @@
 
       <div>
         <span class="metric-label">Usuarios</span>
-        <strong>--</strong>
+        <strong>{{ stats?.users?.total ?? '--' }}</strong>
         <small>Total registrados</small>
       </div>
 
@@ -48,7 +48,7 @@
 
       <div>
         <span class="metric-label">Aulas</span>
-        <strong>--</strong>
+        <strong>{{ stats?.classrooms?.total ?? '--' }}</strong>
         <small>Aulas creadas</small>
       </div>
 
@@ -63,7 +63,7 @@
 
       <div>
         <span class="metric-label">Cursos</span>
-        <strong>--</strong>
+        <strong>{{ stats?.courses?.total ?? '--' }}</strong>
         <small>Cursos publicados</small>
       </div>
 
@@ -78,7 +78,7 @@
 
       <div>
         <span class="metric-label">XP generado</span>
-        <strong>--</strong>
+        <strong>{{ stats?.gamification?.totalXp ?? '--' }}</strong>
         <small>En toda la plataforma</small>
       </div>
 
@@ -100,7 +100,7 @@
           <h2>Usuarios</h2>
         </div>
 
-        <button class="view-all-button">
+        <button class="view-all-button"  routerLink="/admin/users">
           Gestionar
           <mat-icon>arrow_forward</mat-icon>
         </button>
@@ -117,7 +117,7 @@
           </div>
 
           <div>
-            <strong>--</strong>
+            <strong>{{ studentCount }}</strong>
             <span>Estudiantes</span>
           </div>
 
@@ -131,7 +131,7 @@
           </div>
 
           <div>
-            <strong>--</strong>
+            <strong>{{ teacherCount }}</strong>
             <span>Docentes</span>
           </div>
 
@@ -145,7 +145,7 @@
           </div>
 
           <div>
-            <strong>--</strong>
+            <strong>{{ adminCount }}</strong>
             <span>Administradores</span>
           </div>
 
@@ -159,36 +159,86 @@
     <!-- Sistema -->
     <article class="dashboard-card">
 
-      <div class="card-header">
+  <div class="card-header">
+    <div>
+      <span class="card-eyebrow">PLATAFORMA</span>
+      <h2>Actividad global</h2>
+    </div>
 
-        <div>
-          <span class="card-eyebrow">SISTEMA</span>
-          <h2>Actividad global</h2>
-        </div>
+    <mat-icon class="activity-icon">monitoring</mat-icon>
+  </div>
 
-        <mat-icon class="activity-icon">
-          monitoring
-        </mat-icon>
+  <div class="global-stats">
 
+    <div class="global-stat">
+      <div class="global-stat-icon">
+        <mat-icon>article</mat-icon>
       </div>
 
+      <div>
+        <strong>{{ stats?.courses?.published ?? '--' }}</strong>
+        <span>Cursos publicados</span>
+      </div>
+    </div>
 
-      <div class="empty-state">
-
-        <div class="empty-icon">
-          <mat-icon>analytics</mat-icon>
-        </div>
-
-        <h3>Métricas próximamente</h3>
-
-        <p>
-          Aquí podrás consultar la actividad general,
-          progreso y estadísticas de EcoAprende.
-        </p>
-
+    <div class="global-stat">
+      <div class="global-stat-icon">
+        <mat-icon>extension</mat-icon>
       </div>
 
-    </article>
+      <div>
+        <strong>{{ stats?.courses?.modules ?? '--' }}</strong>
+        <span>Módulos</span>
+      </div>
+    </div>
+
+    <div class="global-stat">
+      <div class="global-stat-icon">
+        <mat-icon>menu_book</mat-icon>
+      </div>
+
+      <div>
+        <strong>{{ stats?.courses?.lessons ?? '--' }}</strong>
+        <span>Lecciones</span>
+      </div>
+    </div>
+
+    <div class="global-stat">
+      <div class="global-stat-icon">
+        <mat-icon>quiz</mat-icon>
+      </div>
+
+      <div>
+        <strong>{{ stats?.courses?.quizzes ?? '--' }}</strong>
+        <span>Quizzes</span>
+      </div>
+    </div>
+
+    <div class="global-stat">
+      <div class="global-stat-icon">
+        <mat-icon>military_tech</mat-icon>
+      </div>
+
+      <div>
+        <strong>{{ stats?.gamification?.totalBadgesGranted ?? '--' }}</strong>
+        <span>Insignias otorgadas</span>
+      </div>
+    </div>
+
+    <div class="global-stat">
+      <div class="global-stat-icon">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+
+      <div>
+        <strong>{{ stats?.engagement?.totalLessonsCompleted ?? '--' }}</strong>
+        <span>Lecciones completadas</span>
+      </div>
+    </div>
+
+  </div>
+
+</article>
 
   </section>
 
@@ -200,7 +250,7 @@
 
     <div class="actions-grid">
 
-      <button class="action-card">
+      <button class="action-card" routerLink="/admin/users">
 
         <div class="action-icon">
           <mat-icon>manage_accounts</mat-icon>
@@ -211,7 +261,7 @@
           <span>Gestionar cuentas y roles</span>
         </div>
 
-        <mat-icon class="arrow">arrow_forward</mat-icon>
+        <mat-icon class="arrow" >arrow_forward</mat-icon>
 
       </button>
 

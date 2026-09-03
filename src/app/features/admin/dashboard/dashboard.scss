@@ -494,6 +494,180 @@
   }
 }
 
+.global-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.global-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--eco-background);
+  border-radius: 12px;
+}
+
+.global-stat-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+
+  mat-icon {
+    font-size: 21px;
+    width: 21px;
+    height: 21px;
+  }
+}
+
+.global-stat:nth-child(1) .global-stat-icon {
+  background: #e3f2fd;
+
+  mat-icon {
+    color: #1565c0;
+  }
+}
+
+.global-stat:nth-child(2) .global-stat-icon {
+  background: #e8f5e9;
+
+  mat-icon {
+    color: #2e7d32;
+  }
+}
+
+.global-stat:nth-child(3) .global-stat-icon {
+  background: #fff8e1;
+
+  mat-icon {
+    color: #f57f17;
+  }
+}
+
+.global-stat:nth-child(4) .global-stat-icon {
+  background: #f3e5f5;
+
+  mat-icon {
+    color: #7b1fa2;
+  }
+}
+
+.global-stat:nth-child(5) .global-stat-icon {
+  background: #fff3e0;
+
+  mat-icon {
+    color: #ef6c00;
+  }
+}
+
+.global-stat:nth-child(6) .global-stat-icon {
+  background: #e0f2f1;
+
+  mat-icon {
+    color: #00796b;
+  }
+}
+
+.global-stat strong {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.global-stat span {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--eco-text-secondary);
+}
+
+
+.global-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--eco-background);
+  border-radius: 12px;
+
+  animation: statFadeIn 0.5s ease both;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.global-stat:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.global-stat:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.global-stat:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.global-stat:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.global-stat:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.global-stat:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+@keyframes statFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.global-stat:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+}
+
+.global-stat:hover .global-stat-icon {
+  transform: scale(1.08);
+}
+
+.global-stat-icon {
+  transition: transform 0.25s ease;
+}
+
+.activity-icon {
+  animation: activityPulse 2s ease-in-out infinite;
+}
+
+@keyframes activityPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.12);
+    opacity: 0.75;
+  }
+}
 
 /* ================================
    RESPONSIVE
@@ -558,5 +732,9 @@
   .dashboard-card {
     padding: 20px;
   }
+
+  .global-stats {
+  grid-template-columns: 1fr;
+}
 
 }

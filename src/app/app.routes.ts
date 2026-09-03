@@ -25,6 +25,7 @@ import { SubmissionReview } from './features/teacher/submission-review/submissio
 import { StudentProgress } from './features/teacher/pages/student-progress/student-progress';
 import {StudentDetail} from './features/teacher/pages/student-detail/student-detail'
 import { Students } from './features/teacher/pages/students/students';
+import { AdminUsers } from './features/admin/users/users';
 
 export const routes: Routes = [
   {
@@ -91,6 +92,11 @@ export const routes: Routes = [
 {
   path: 'admin',
   component: AdminDashboard,
+  canActivate: [authGuard, roleGuard(['ADMIN'])]
+},
+{
+  path: 'admin/users',
+  component: AdminUsers,
   canActivate: [authGuard, roleGuard(['ADMIN'])]
 },
   {
