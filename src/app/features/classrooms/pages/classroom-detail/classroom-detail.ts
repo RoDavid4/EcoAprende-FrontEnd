@@ -81,7 +81,7 @@ export class ClassroomDetail implements OnInit {
   }
 
   loadMetrics(): void {
-    this.classroomService.getClassroomMetrics(this.classroomId).subscribe({
+    this.classroomService.getClassroomMetricsTA(this.classroomId).subscribe({
       next: (data: ClassroomMetricsResponse) => {
         console.log('Respuesta de métricas recibida:', data);
         this.metrics = data.summary;

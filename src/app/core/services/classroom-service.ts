@@ -74,7 +74,7 @@ export class ClassroomService {
     );
   }
 
-  getClassroomMetrics(
+  getClassroomMetricsTA(
     classroomId: string,
   ): Observable<ClassroomMetricsResponse> {
     return this.http.get<ClassroomMetricsResponse>(
