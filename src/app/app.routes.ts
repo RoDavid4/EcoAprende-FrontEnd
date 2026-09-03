@@ -23,9 +23,10 @@ import { AdminDashboard } from './features/admin/dashboard/dashboard';
 import { TeacherSubmissions } from './features/teacher/pages/teacher-submissions/teacher-submissions';
 import { SubmissionReview } from './features/teacher/submission-review/submission-review';
 import { StudentProgress } from './features/teacher/pages/student-progress/student-progress';
-import {StudentDetail} from './features/teacher/pages/student-detail/student-detail'
+import { StudentDetail } from './features/teacher/pages/student-detail/student-detail';
 import { Students } from './features/teacher/pages/students/students';
 import { AdminUsers } from './features/admin/users/users';
+import { QuizCreator } from './features/quizzes/pages/quiz-creator/quiz-creator';
 
 export const routes: Routes = [
   {
@@ -57,48 +58,48 @@ export const routes: Routes = [
   {
     path: 'home',
     component: Home,
-    canActivate: [authGuard, roleGuard(['STUDENT'])]
+    canActivate: [authGuard, roleGuard(['STUDENT'])],
   },
   {
-  path: 'teacher',
-  component: TeacherDashboard,
-  canActivate: [authGuard, roleGuard(['TEACHER'])]
-},
-{
-  path: 'teacher/students',
-  component: Students,
-  canActivate: [authGuard, roleGuard(['TEACHER'])]
-},
-{
-  path: 'teacher/student-detail/:id',
-  component: StudentDetail,
-  canActivate: [authGuard, roleGuard(['TEACHER'])],
-},
-{
-  path: 'teacher/progress',
-  component: StudentProgress,
-  canActivate: [authGuard, roleGuard(['TEACHER'])],
-},
-{
-  path: 'teacher/submissions',
-  component: TeacherSubmissions,
-  canActivate: [authGuard, roleGuard(['TEACHER'])]
-},
-{
-  path: 'teacher/submissions/:id',
-  component: SubmissionReview,
-  canActivate: [authGuard, roleGuard(['TEACHER'])]
-},
-{
-  path: 'admin',
-  component: AdminDashboard,
-  canActivate: [authGuard, roleGuard(['ADMIN'])]
-},
-{
-  path: 'admin/users',
-  component: AdminUsers,
-  canActivate: [authGuard, roleGuard(['ADMIN'])]
-},
+    path: 'teacher',
+    component: TeacherDashboard,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'teacher/students',
+    component: Students,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'teacher/student-detail/:id',
+    component: StudentDetail,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'teacher/progress',
+    component: StudentProgress,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'teacher/submissions',
+    component: TeacherSubmissions,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'teacher/submissions/:id',
+    component: SubmissionReview,
+    canActivate: [authGuard, roleGuard(['TEACHER'])],
+  },
+  {
+    path: 'admin',
+    component: AdminDashboard,
+    canActivate: [authGuard, roleGuard(['ADMIN'])],
+  },
+  {
+    path: 'admin/users',
+    component: AdminUsers,
+    canActivate: [authGuard, roleGuard(['ADMIN'])],
+  },
   {
     path: 'classrooms',
     component: ClassroomManagement,
@@ -148,6 +149,16 @@ export const routes: Routes = [
   {
     path: 'courses/edit/:id',
     component: CourseManagement,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'quizzes/create',
+    component: QuizCreator,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'quizzes/edit/:id',
+    component: QuizCreator,
     canActivate: [authGuard],
   },
   {

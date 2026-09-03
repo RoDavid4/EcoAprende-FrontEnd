@@ -10,12 +10,12 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { LessonContentType } from '../../../../core/models/course.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../../../core/services/course-service';
 import { ModuleService } from '../../../../core/services/module';
 import { LessonService } from '../../../../core/services/lesson';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { QuizService } from '../../../quizzes/services/quiz-service';
 
 @Component({
   selector: 'app-module-builder',
@@ -40,11 +40,14 @@ export class ModuleBuilder implements OnInit {
   private courseService = inject(CourseService);
   private moduleService = inject(ModuleService);
   private lessonService = inject(LessonService);
+  private quizService = inject(QuizService);
 
   courseData: any = null;
 
   newModuleTitle = '';
   newLessonTitles: { [moduleId: string]: string } = {};
+  quizzesList: any[] = [];
+  quizzesByModule: { [moduleId: string]: any[] } = {};
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -73,6 +76,7 @@ export class ModuleBuilder implements OnInit {
         console.log('Respuesta completa del curso:', courseData);
         console.log('Módulos recibidos:', courseData.modules);
         this.populateForm(courseData.modules || []);
+        this.loadAllQuizzes();
       },
       error: (err) => console.error('Error al cargar la estructura:', err),
     });
@@ -243,21 +247,73 @@ export class ModuleBuilder implements OnInit {
     moduleGroup.patchValue({ status: newStatus });
   }
 
+  loadAllQuizzes(): void {
+    this.quizzesList = [];
+
+    this.quizService.getAllQuizzes().subscribe({
+      next: (quizzes) => {
+        console.log('Quizzes traídos desde el backend:', quizzes);
+        this.quizzesList = quizzes || [];
+      },
+      error: (err) =>
+        console.error('Error al obtener la lista de quizzes:', err),
+    });
+  }
+
+  getQuizzesByModuleId(moduleId: string): any[] {
+    if (!moduleId || !this.quizzesList) return [];
+    return this.quizzesList.filter(
+      (q) => q.moduleId === moduleId && q.isActive === true,
+    );
+  }
+
+  goToEditQuiz(quizId: string, moduleId: string): void {
+    this.router.navigate(['/quizzes/edit', quizId], {
+      queryParams: { moduleId: moduleId, courseId: this.courseId },
+    });
+  }
+
+  deleteQuiz(quizId: string): void {
+    if (!quizId) {
+      console.error('El ID del cuestionario es nulo o indefinido.');
+      return;
+    }
+
+    if (confirm('¿Estás seguro de que deseas eliminar este cuestionario?')) {
+      this.quizService.deleteQuiz(quizId).subscribe({
+        next: () => {
+          console.log(`Cuestionario ${quizId} eliminado correctamente.`);
+          this.quizzesList = this.quizzesList.filter((q) => q.id !== quizId);
+        },
+        error: (err) => {
+          console.error('Error detallado al eliminar el cuestionario:', err);
+          if (err.status === 401 || err.status === 403) {
+            alert(
+              'Tu sesión ha expirado o no tienes permisos para eliminar este cuestionario.',
+            );
+          } else {
+            alert('Ocurrió un error al intentar eliminar el cuestionario.');
+          }
+        },
+      });
+    }
+  }
+
   goToCreateQuiz(mIdx: number): void {
     const moduleGroup = this.modules.at(mIdx);
     const moduleId = moduleGroup.get('id')?.value;
 
-    if (!moduleId) {
-      alert('Debes guardar el módulo antes de crear un cuestionario.');
-      return;
+    if (moduleId) {
+      this.router.navigate(['/quizzes/create'], {
+        queryParams: {
+          moduleId: moduleId,
+          courseId: this.courseId,
+        },
+      });
+    } else {
+      alert(
+        'Primero debes guardar el módulo antes de añadirle un cuestionario.',
+      );
     }
-
-    this.router.navigate([
-      '/admin/courses',
-      this.courseId,
-      'modules',
-      moduleId,
-      'quiz-builder',
-    ]);
   }
 }

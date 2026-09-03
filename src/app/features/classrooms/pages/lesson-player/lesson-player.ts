@@ -6,10 +6,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { LowerCasePipe } from '@angular/common';
 import { ModuleService } from '../../../../core/services/module.js';
 import { AuthService } from '../../../auth/services/auth.services.js';
+import { Quiz } from '../../../quizzes/models/quiz-model.js';
+import { QuizService } from '../../../quizzes/services/quiz-service.js';
+import { QuizPlayer } from '../../../quizzes/pages/quiz-player/quiz-player.js';
 
 @Component({
   selector: 'app-lesson-player',
-  imports: [MatIconModule, LowerCasePipe],
+  imports: [MatIconModule, LowerCasePipe, QuizPlayer],
   templateUrl: './lesson-player.html',
   styleUrl: './lesson-player.scss',
 })
@@ -20,12 +23,16 @@ export class LessonPlayer implements OnInit {
   private authService = inject(AuthService);
   private classroomAssignmentService = inject(ClassroomAssignmentService);
   private moduleService = inject(ModuleService);
+  private quizService = inject(QuizService);
 
+  isLoadingQuiz: boolean = false;
+  currentQuiz: Quiz | null = null;
   modules: any[] = [];
   activeModuleId: string | null = null;
   currentLesson: any = null;
   safeVideoUrl: SafeResourceUrl | null = null;
   safeMediaUrl: SafeResourceUrl | null = null;
+  currentModuleQuizzes: any[] = [];
 
   classroomId: string | null = null;
   isLoading: boolean = true;
@@ -75,7 +82,7 @@ export class LessonPlayer implements OnInit {
     if (!targetModule) return;
 
     if (targetModule.lessons && targetModule.lessons.length > 0) {
-      if (!this.currentLesson) {
+      if (!this.currentLesson && !this.currentQuiz) {
         this.selectLesson(targetModule.lessons[0]);
       }
       return;
@@ -85,6 +92,11 @@ export class LessonPlayer implements OnInit {
     this.moduleService.getModuleById(moduleId).subscribe({
       next: (moduleData) => {
         targetModule.lessons = moduleData.lessons || [];
+        targetModule.quizzes = moduleData.quizzes || [];
+
+        if (targetModule.quizzes.length > 0) {
+          targetModule.quiz = targetModule.quizzes[0];
+        }
 
         if (targetModule.lessons.length > 0 && !this.currentLesson) {
           this.selectLesson(targetModule.lessons[0]);
@@ -100,6 +112,7 @@ export class LessonPlayer implements OnInit {
 
   selectLesson(lesson: any): void {
     this.currentLesson = lesson;
+    this.currentQuiz = null;
     this.safeVideoUrl = null;
     this.safeMediaUrl = null;
 
@@ -116,9 +129,67 @@ export class LessonPlayer implements OnInit {
     }
   }
 
+  selectQuiz(quizHeader: any): void {
+    if (!quizHeader?.id) return;
+
+    this.isLoadingQuiz = true;
+    this.currentLesson = null;
+
+    this.quizService.getQuizById(quizHeader.id).subscribe({
+      next: (fullQuiz) => {
+        this.currentQuiz = fullQuiz;
+
+        this.quizService.getMyAttempts(quizHeader.id).subscribe({
+          next: (attempts) => {
+            if (this.currentQuiz) {
+              this.currentQuiz.myAttempts = attempts || [];
+            }
+            this.isLoadingQuiz = false;
+          },
+          error: () => (this.isLoadingQuiz = false),
+        });
+      },
+      error: (err) => {
+        console.error('Error al cargar la evaluación:', err);
+        this.isLoadingQuiz = false;
+      },
+    });
+  }
+
+  onQuizCompleted(result: any): void {
+    console.log('Evaluación finalizada con respuesta:', result);
+
+    if (this.currentQuiz) {
+      this.currentQuiz.isPassed = result.isPassed;
+      this.currentQuiz.highestScore = result.score;
+      if (!this.currentQuiz.myAttempts) this.currentQuiz.myAttempts = [];
+      this.currentQuiz.myAttempts.push(result);
+    }
+
+    const activeModule = this.modules.find((m) => m.id === this.activeModuleId);
+    if (activeModule) {
+      const targetQuiz =
+        activeModule.quizzes?.find((q: any) => q.id === this.currentQuiz?.id) ||
+        activeModule.quiz;
+      if (targetQuiz) {
+        targetQuiz.isPassed = result.isPassed;
+        targetQuiz.highestScore = result.score;
+        targetQuiz.attemptsCount = (targetQuiz.attemptsCount || 0) + 1;
+      }
+    }
+  }
+
   get currentModuleLessons(): any[] {
     const activeModule = this.modules.find((m) => m.id === this.activeModuleId);
     return activeModule?.lessons || [];
+  }
+
+  get currentModuleQuiz(): any | null {
+    const activeModule = this.modules.find((m) => m.id === this.activeModuleId);
+    return (
+      activeModule?.quiz ||
+      (activeModule?.quizzes ? activeModule.quizzes[0] : null)
+    );
   }
 
   hasPreviousLesson(): boolean {
@@ -130,6 +201,13 @@ export class LessonPlayer implements OnInit {
   }
 
   loadPreviousLesson(): void {
+    if (this.currentQuiz && this.currentModuleLessons.length > 0) {
+      this.selectLesson(
+        this.currentModuleLessons[this.currentModuleLessons.length - 1],
+      );
+      return;
+    }
+
     if (!this.hasPreviousLesson()) return;
     const index = this.currentModuleLessons.findIndex(
       (l) => l.id === this.currentLesson.id,
@@ -142,15 +220,73 @@ export class LessonPlayer implements OnInit {
     const index = this.currentModuleLessons.findIndex(
       (l) => l.id === this.currentLesson.id,
     );
-    return index >= 0 && index < this.currentModuleLessons.length - 1;
+    return (
+      index >= 0 &&
+      (index < this.currentModuleLessons.length - 1 || !!this.currentModuleQuiz)
+    );
   }
 
   loadNextLesson(): void {
-    if (!this.hasNextLesson()) return;
-    const index = this.currentModuleLessons.findIndex(
-      (l) => l.id === this.currentLesson.id,
+    const activeModule = this.modules.find((m) => m.id === this.activeModuleId);
+    const lessons = activeModule?.lessons || this.currentModuleLessons || [];
+
+    const quizzes: any[] =
+      activeModule?.quizzes ||
+      (this.currentModuleQuizzes
+        ? this.currentModuleQuizzes
+        : activeModule?.quiz
+          ? [activeModule.quiz]
+          : this.currentModuleQuiz
+            ? [this.currentModuleQuiz]
+            : []);
+
+    if (this.currentQuiz) {
+      const currentQuizIndex = quizzes.findIndex(
+        (q: any) => q.id === this.currentQuiz?.id,
+      );
+
+      if (currentQuizIndex !== -1 && currentQuizIndex < quizzes.length - 1) {
+        this.selectQuiz(quizzes[currentQuizIndex + 1]);
+        return;
+      }
+
+      this.navigateToNextModule();
+      return;
+    }
+
+    if (this.currentLesson && lessons.length > 0) {
+      const currentLessonIndex = lessons.findIndex(
+        (l: any) => l.id === this.currentLesson?.id,
+      );
+
+      if (
+        currentLessonIndex !== -1 &&
+        currentLessonIndex < lessons.length - 1
+      ) {
+        this.selectLesson(lessons[currentLessonIndex + 1]);
+        return;
+      }
+
+      if (currentLessonIndex === lessons.length - 1 && quizzes.length > 0) {
+        this.selectQuiz(quizzes[0]);
+        return;
+      }
+
+      this.navigateToNextModule();
+    }
+  }
+
+  private navigateToNextModule(): void {
+    const currentModuleIndex = this.modules.findIndex(
+      (m) => m.id === this.activeModuleId,
     );
-    this.selectLesson(this.currentModuleLessons[index + 1]);
+    if (
+      currentModuleIndex !== -1 &&
+      currentModuleIndex < this.modules.length - 1
+    ) {
+      const nextModule = this.modules[currentModuleIndex + 1];
+      this.toggleModule(nextModule.id);
+    }
   }
 
   markAsCompleted(): void {

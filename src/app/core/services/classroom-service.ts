@@ -4,6 +4,7 @@ import { delay, tap } from 'rxjs/operators';
 import { Classroom, ClassroomDetail } from '../models/classroom.model';
 import { ClassroomRosterModel, Student } from '../models/student.model';
 import { HttpClient } from '@angular/common/http';
+import { ClassroomMetricsResponse } from '../../features/classrooms/models/classroom-metrics.model';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +39,9 @@ export class ClassroomService {
 
   // POST: Unirse por código
   joinClassroomByCode(code: string): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(`${this.apiUrl}/join`, { code });
+    return this.http
+      .post<{ message: string }>(`${this.apiUrl}/join`, { code })
+      .pipe(tap(() => this.classroomChangedSubject.next()));
   }
 
   //Lista de estudiantes
@@ -49,14 +52,13 @@ export class ClassroomService {
   }
 
   removeStudentFromClassroom(
-  classroomId: string,
-  studentId: string,
-): Observable<{ message: string }> {
-
-  return this.http.delete<{ message: string }>(
-    `${this.apiUrl}/${classroomId}/students/${studentId}`,
-  );
-}
+    classroomId: string,
+    studentId: string,
+  ): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(
+      `${this.apiUrl}/${classroomId}/students/${studentId}`,
+    );
+  }
 
   deleteClassroom(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
@@ -73,8 +75,14 @@ export class ClassroomService {
   }
 
   getClassroomMetrics(classroomId: string): Observable<any> {
-  return this.http.get<any>(
-    `${this.apiUrl}/${classroomId}/metrics`
-  );
-}
+    return this.http.get<any>(`${this.apiUrl}/${classroomId}/metrics`);
+  }
+
+  getClassroomMetricsTA(
+    classroomId: string,
+  ): Observable<ClassroomMetricsResponse> {
+    return this.http.get<ClassroomMetricsResponse>(
+      `${this.apiUrl}/${classroomId}/metrics`,
+    );
+  }
 }
