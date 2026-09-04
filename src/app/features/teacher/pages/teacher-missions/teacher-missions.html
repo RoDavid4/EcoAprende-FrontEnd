@@ -1,0 +1,292 @@
+<div class="teacher-missions">
+  <!-- HEADER -->
+  <section class="page-header">
+    <div>
+      <span class="eyebrow">GESTIÓN DOCENTE</span>
+
+      <h1>Misiones</h1>
+
+      <p>Crea y gestiona las misiones que realizarán tus estudiantes.</p>
+    </div>
+
+    <div class="header-actions">
+      <button class="secondary-button" type="button" (click)="reloadMissions()">
+        <mat-icon>refresh</mat-icon>
+        Actualizar
+      </button>
+
+      <button class="primary-button" type="button" (click)="openCreateForm()">
+        <mat-icon>add</mat-icon>
+        Nueva misión
+      </button>
+    </div>
+  </section>
+
+  <!-- MODAL CREAR MISIÓN -->
+  @if (showCreateForm) {
+    <div class="modal-overlay" (click)="closeCreateForm()">
+      <div class="mission-modal" (click)="$event.stopPropagation()">
+        <!-- HEADER DEL MODAL -->
+        <div class="modal-header">
+          <div>
+            <span class="section-eyebrow">
+              {{ editingMission ? "EDITAR MISIÓN" : "NUEVA MISIÓN" }}
+            </span>
+
+            <h2>
+              {{ editingMission ? "Editar misión" : "Crear misión" }}
+            </h2>
+
+            <p>
+              {{
+                editingMission
+                  ? "Modifica los datos de la misión para tus estudiantes."
+                  : "Completa los datos de la misión para tus estudiantes."
+              }}
+            </p>
+          </div>
+
+          <button
+            class="modal-close"
+            type="button"
+            (click)="closeCreateForm()"
+            [disabled]="creating"
+            aria-label="Cerrar"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <!-- FORMULARIO -->
+        <div class="mission-form">
+          <!-- TÍTULO -->
+          <mat-form-field appearance="outline">
+            <mat-label>Título</mat-label>
+
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="newMission.title"
+              placeholder="Ej: Separar residuos correctamente"
+              maxlength="100"
+            />
+          </mat-form-field>
+
+          <!-- DESCRIPCIÓN -->
+          <mat-form-field appearance="outline">
+            <mat-label>Descripción</mat-label>
+
+            <textarea
+              matInput
+              [(ngModel)]="newMission.description"
+              placeholder="Describe brevemente la misión..."
+              rows="3"
+              maxlength="500"
+            ></textarea>
+          </mat-form-field>
+
+          <!-- TIPO + XP -->
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de misión</mat-label>
+
+              <mat-select [(ngModel)]="newMission.type">
+                <mat-option value="DIGITAL"> Digital </mat-option>
+
+                <mat-option value="PRACTICAL"> Práctica </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Recompensa XP</mat-label>
+
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="newMission.pointsReward"
+                min="1"
+              />
+            </mat-form-field>
+          </div>
+
+          <!-- INSTRUCCIONES -->
+          <mat-form-field appearance="outline">
+            <mat-label>Instrucciones</mat-label>
+
+            <textarea
+              matInput
+              [(ngModel)]="newMission.instructions"
+              placeholder="Indica qué debe hacer el estudiante..."
+              rows="3"
+            ></textarea>
+          </mat-form-field>
+
+          <!-- IMAGEN -->
+          <mat-form-field appearance="outline">
+            <mat-label>URL de imagen (opcional)</mat-label>
+
+            <input
+              matInput
+              type="url"
+              [(ngModel)]="newMission.imageUrl"
+              placeholder="https://..."
+            />
+          </mat-form-field>
+
+          <!-- ESTADO -->
+          <div class="active-toggle">
+            <mat-slide-toggle [(ngModel)]="newMission.isActive">
+              Misión activa
+            </mat-slide-toggle>
+
+            <span>
+              Las misiones activas estarán disponibles para los estudiantes.
+            </span>
+          </div>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="modal-actions">
+          <button
+            class="secondary-button"
+            type="button"
+            (click)="closeCreateForm()"
+            [disabled]="creating"
+          >
+            Cancelar
+          </button>
+
+          <button
+            class="primary-button"
+            type="button"
+            (click)="editingMission ? updateMission() : createMission()"
+            [disabled]="creating"
+          >
+            @if (creating) {
+              <mat-icon>hourglass_empty</mat-icon>
+              Guardando...
+            } @else {
+              <mat-icon>
+                {{ editingMission ? "save" : "add" }}
+              </mat-icon>
+
+              {{ editingMission ? "Guardar cambios" : "Crear misión" }}
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ERROR -->
+  @if (errorMessage) {
+    <div class="error-message">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  <!-- LOADING -->
+  @if (loading) {
+    <div class="loading-state">
+      <mat-icon>hourglass_empty</mat-icon>
+      <p>Cargando misiones...</p>
+    </div>
+  }
+
+  <!-- MISIONES -->
+  @if (!loading && missions.length > 0) {
+    <section class="missions-section">
+      <div class="section-heading">
+        <div>
+          <span class="section-eyebrow">CONTENIDO</span>
+          <h2>Misiones disponibles</h2>
+          <p>
+            Estas son las misiones actualmente registradas en la plataforma.
+          </p>
+        </div>
+
+        <span class="count-badge">
+          {{ missions.length }}
+        </span>
+      </div>
+
+      <div class="missions-grid">
+        @for (mission of missions; track mission.id) {
+          <article class="mission-card">
+            <!-- ICONO -->
+            <div class="mission-icon">
+              <mat-icon>
+                {{ mission.type === "DIGITAL" ? "computer" : "eco" }}
+              </mat-icon>
+            </div>
+
+            <!-- CONTENIDO -->
+            <div class="mission-content">
+              <div class="mission-top">
+                <span
+                  class="mission-type"
+                  [class.digital]="mission.type === 'DIGITAL'"
+                  [class.practical]="mission.type === 'PRACTICAL'"
+                >
+                  {{ mission.type === "DIGITAL" ? "DIGITAL" : "PRÁCTICA" }}
+                </span>
+
+                <span class="mission-status" [class.active]="mission.isActive">
+                  {{ mission.isActive ? "ACTIVA" : "INACTIVA" }}
+                </span>
+              </div>
+
+              <h3>{{ mission.title }}</h3>
+
+              <p>
+                {{ mission.description }}
+              </p>
+
+              <div class="mission-footer">
+                <div class="mission-points">
+                  <mat-icon>stars</mat-icon>
+                  <strong>{{ mission.pointsReward }} XP</strong>
+                </div>
+
+                <button
+                  class="icon-button"
+                  type="button"
+                  (click)="openEditForm(mission)"
+                  aria-label="Editar misión"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                <button
+                  class="icon-button"
+                  type="button"
+                  (click)="deleteMission(mission)"
+                  aria-label="Eliminar misión"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    </section>
+  } @else if (!loading && missions.length === 0) {
+    <!-- EMPTY STATE -->
+    <section class="empty-state">
+      <div class="empty-icon">
+        <mat-icon>task_alt</mat-icon>
+      </div>
+
+      <h2>No hay misiones todavía</h2>
+
+      <p>Cuando crees una misión aparecerá en esta sección.</p>
+
+      <button class="primary-button" type="button">
+        <mat-icon>add</mat-icon>
+        Crear primera misión
+      </button>
+    </section>
+  }
+</div>

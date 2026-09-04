@@ -1,0 +1,627 @@
+.teacher-missions {
+  min-height: 100vh;
+  padding: 2rem;
+  background: var(--eco-background);
+  color: var(--eco-text-main);
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.eyebrow,
+.section-eyebrow {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--eco-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin: 0.5rem 0 0;
+  color: var(--eco-text-secondary);
+  font-size: 0.95rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* ========================================
+   BUTTONS
+======================================== */
+
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 42px;
+  padding: 0.65rem 1rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.primary-button {
+  background: var(--eco-primary);
+  color: #ffffff;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12);
+}
+
+.secondary-button {
+  background: var(--eco-surface);
+  color: var(--eco-text-main);
+  border: 1px solid #e5e7eb;
+}
+
+.secondary-button:hover {
+  background: #f8fafc;
+}
+
+.primary-button mat-icon,
+.secondary-button mat-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+}
+
+/* ========================================
+   ERROR
+======================================== */
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.error-message mat-icon {
+  flex-shrink: 0;
+}
+
+/* ========================================
+   LOADING
+======================================== */
+
+.loading-state {
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--eco-text-secondary);
+}
+
+.loading-state mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.loading-state p {
+  margin: 0;
+}
+
+/* ========================================
+   SECTION
+======================================== */
+
+.missions-section {
+  margin-top: 1rem;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.section-heading p {
+  margin: 0.35rem 0 0;
+  color: var(--eco-text-secondary);
+  font-size: 0.9rem;
+}
+
+.count-badge {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--eco-primary);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ========================================
+   MISSIONS GRID
+======================================== */
+
+.missions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.mission-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--eco-surface);
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.mission-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ========================================
+   MISSION ICON
+======================================== */
+
+.mission-icon {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #ecfdf5;
+  color: var(--eco-primary);
+}
+
+.mission-icon mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+/* ========================================
+   MISSION CONTENT
+======================================== */
+
+.mission-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.mission-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.mission-type,
+.mission-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.mission-type.digital {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.mission-type.practical {
+  background: #ecfdf5;
+  color: #15803d;
+}
+
+.mission-status {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.mission-status.active {
+  background: #ecfdf5;
+  color: #15803d;
+}
+
+.mission-content h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.mission-content > p {
+  margin: 0.5rem 0 1rem;
+  color: var(--eco-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ========================================
+   MISSION FOOTER
+======================================== */
+
+.mission-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.mission-points {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-right: auto;
+  color: var(--eco-primary);
+  font-size: 0.85rem;
+}
+
+.mission-points mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.icon-button {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: var(--eco-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.icon-button:hover {
+  background: #e0f2fe;
+  color: #2563eb;
+}
+
+.icon-button.delete:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.icon-button mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
+.empty-state {
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background: var(--eco-surface);
+  border: 1px dashed #d1d5db;
+  border-radius: 16px;
+}
+
+.empty-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  border-radius: 16px;
+  background: #ecfdf5;
+  color: var(--eco-primary);
+}
+
+.empty-icon mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.empty-state h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.empty-state p {
+  max-width: 450px;
+  margin: 0.5rem 0 1.25rem;
+  color: var(--eco-text-secondary);
+}
+
+
+/* ========================================
+   MODAL CREAR MISIÓN
+======================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1.5rem;
+
+  background: rgba(15, 23, 42, 0.55);
+
+  backdrop-filter: blur(4px);
+}
+
+.mission-modal {
+  width: min(680px, 100%);
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  background: var(--eco-surface);
+  border-radius: 18px;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+
+  animation: modal-enter 0.2s ease-out;
+}
+
+@keyframes modal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* HEADER */
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  padding: 1.5rem;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h2 {
+  margin: 0;
+
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.modal-header p {
+  margin: 0.4rem 0 0;
+
+  color: var(--eco-text-secondary);
+
+  font-size: 0.9rem;
+}
+
+.modal-close {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: var(--eco-text-secondary);
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #f1f5f9;
+  color: var(--eco-text-main);
+}
+
+/* FORMULARIO */
+
+.mission-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.75rem;
+
+  padding: 1.5rem;
+}
+
+.mission-form mat-form-field {
+  width: 100%;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 1rem;
+}
+
+.active-toggle {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.35rem;
+
+  padding: 0.75rem 0;
+}
+
+.active-toggle span {
+  color: var(--eco-text-secondary);
+
+  font-size: 0.8rem;
+}
+
+/* ACCIONES */
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 0.75rem;
+
+  padding: 1rem 1.5rem 1.5rem;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+  .modal-overlay {
+    padding: 0.75rem;
+  }
+
+  .mission-modal {
+    max-height: 95vh;
+    border-radius: 14px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .modal-header,
+  .mission-form {
+    padding: 1.25rem;
+  }
+
+  .modal-actions {
+    padding: 1rem 1.25rem 1.25rem;
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 900px) {
+  .missions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .teacher-missions {
+    padding: 1.25rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+  }
+
+  .mission-card {
+    padding: 1rem;
+  }
+
+  .mission-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

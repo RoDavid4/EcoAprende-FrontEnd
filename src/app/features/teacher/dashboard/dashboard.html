@@ -115,7 +115,9 @@
           <p>Consulta estudiantes y revisa su progreso.</p>
         </div>
 
-        <mat-icon class="quick-access-arrow"  routerLink="/teacher/students"> arrow_forward </mat-icon>
+        <mat-icon class="quick-access-arrow" routerLink="/teacher/students">
+          arrow_forward
+        </mat-icon>
       </article>
 
       <!-- ENTREGAS -->
@@ -147,11 +149,30 @@
           <p>Analiza el avance académico de tus estudiantes.</p>
         </div>
 
-        <mat-icon class="quick-access-arrow" routerLink="/teacher/progress"> arrow_forward </mat-icon>
+        <mat-icon class="quick-access-arrow" routerLink="/teacher/progress">
+          arrow_forward
+        </mat-icon>
       </article>
+      <!-- MISIONES -->
+  <article class="quick-access-card">
+    <div class="quick-access-icon missions">
+      <mat-icon>task_alt</mat-icon>
+    </div>
+
+    <div class="quick-access-content">
+      <h3>Misiones</h3>
+      <p>Crea y gestiona las misiones para tus estudiantes.</p>
+    </div>
+
+    <mat-icon class="quick-access-arrow" routerLink="/teacher/missions">
+      arrow_forward
+    </mat-icon>
+  </article>
+
     </div>
   </section>
 
+  
   <!-- CONTENIDO PRINCIPAL -->
 
   <section class="dashboard-content">
@@ -257,133 +278,90 @@
       }
     </article>
     <!-- ESTUDIANTES -->
-<article class="dashboard-card students-card">
+    <article class="dashboard-card students-card">
+      <div class="card-header">
+        <div>
+          <span class="card-eyebrow">SEGUIMIENTO</span>
 
-  <div class="card-header">
-
-    <div>
-      <span class="card-eyebrow">SEGUIMIENTO</span>
-
-      <h2>Mis estudiantes</h2>
-    </div>
-
-    <span class="count-badge">
-      {{ students.length }}
-    </span>
-
-  </div>
-
-  @if (students.length > 0) {
-
-    <div class="students-list">
-
-      @for (student of students.slice(0, 5); track student.id) {
-
-        <div class="student-item">
-
-          <!-- AVATAR -->
-          <div class="student-avatar">
-
-            @if (student.avatarUrl) {
-
-              <img
-                [src]="student.avatarUrl"
-                [alt]="student.firstName"
-              />
-
-            } @else {
-
-              <mat-icon>person</mat-icon>
-
-            }
-
-          </div>
-
-          <!-- INFORMACIÓN -->
-          <div class="student-info">
-
-            <strong>
-              {{ student.firstName }}
-              {{ student.lastName }}
-            </strong>
-
-            <span>
-              Nivel {{ student.level }}
-              · {{ student.totalXp }} XP
-            </span>
-
-          </div>
-
-          <!-- PROGRESO -->
-          <div class="student-progress">
-
-            <div class="progress-header">
-
-              <span>Progreso</span>
-
-              <strong>
-                {{ student.progressPercentage }}%
-              </strong>
-
-            </div>
-
-            <div class="progress-bar">
-
-              <div
-                class="progress-fill"
-                [style.width.%]="student.progressPercentage"
-              ></div>
-
-            </div>
-
-          </div>
-
-          <!-- ESTADO -->
-          <span
-            class="student-status"
-            [class.completed]="student.isCompleted"
-          >
-            {{ student.isCompleted ? 'COMPLETADO' : 'EN PROGRESO' }}
-          </span>
-
+          <h2>Mis estudiantes</h2>
         </div>
 
+        <span class="count-badge">
+          {{ students.length }}
+        </span>
+      </div>
+
+      @if (students.length > 0) {
+        <div class="students-list">
+          @for (student of students.slice(0, 5); track student.id) {
+            <div class="student-item">
+              <!-- AVATAR -->
+              <div class="student-avatar">
+                @if (student.avatarUrl) {
+                  <img [src]="student.avatarUrl" [alt]="student.firstName" />
+                } @else {
+                  <mat-icon>person</mat-icon>
+                }
+              </div>
+
+              <!-- INFORMACIÓN -->
+              <div class="student-info">
+                <strong>
+                  {{ student.firstName }}
+                  {{ student.lastName }}
+                </strong>
+
+                <span>
+                  Nivel {{ student.level }} · {{ student.totalXp }} XP
+                </span>
+              </div>
+
+              <!-- PROGRESO -->
+              <div class="student-progress">
+                <div class="progress-header">
+                  <span>Progreso</span>
+
+                  <strong> {{ student.progressPercentage }}% </strong>
+                </div>
+
+                <div class="progress-bar">
+                  <div
+                    class="progress-fill"
+                    [style.width.%]="student.progressPercentage"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- ESTADO -->
+              <span
+                class="student-status"
+                [class.completed]="student.isCompleted"
+              >
+                {{ student.isCompleted ? "COMPLETADO" : "EN PROGRESO" }}
+              </span>
+            </div>
+          }
+        </div>
+
+        @if (students.length > 5) {
+          <div class="students-more">
+            Mostrando 5 de {{ students.length }} estudiantes
+          </div>
+        }
+      } @else {
+        <div class="empty-state">
+          <div class="empty-icon">
+            <mat-icon>groups</mat-icon>
+          </div>
+
+          <h3>No tienes estudiantes todavía</h3>
+
+          <p>
+            Los estudiantes que se incorporen a tus aulas aparecerán en esta
+            sección.
+          </p>
+        </div>
       }
-
-    </div>
-
-    @if (students.length > 5) {
-
-      <div class="students-more">
-
-        Mostrando 5 de {{ students.length }} estudiantes
-
-      </div>
-
-    }
-
-  } @else {
-
-    <div class="empty-state">
-
-      <div class="empty-icon">
-
-        <mat-icon>groups</mat-icon>
-
-      </div>
-
-      <h3>No tienes estudiantes todavía</h3>
-
-      <p>
-        Los estudiantes que se incorporen a tus aulas
-        aparecerán en esta sección.
-      </p>
-
-    </div>
-
-  }
-
-</article>
+    </article>
   </section>
-  
 </div>
