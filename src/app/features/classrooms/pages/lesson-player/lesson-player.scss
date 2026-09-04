@@ -1,9 +1,8 @@
-$bg-color: #f8fafc;
 $border-color: #e2e8f0;
 
 .player-container {
   min-height: 100vh;
-  background-color: $bg-color;
+  background-color: var(--eco-background);
   color: var(--eco-text-main);
   padding: 1.5rem;
   box-sizing: border-box;

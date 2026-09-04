@@ -1,7 +1,15 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--eco-background);
+}
+
 .classroom-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
+  background-color: inherit;
 
   .page-header {
     display: flex;

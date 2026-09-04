@@ -31,6 +31,8 @@ export class QuizPlayer implements OnInit, OnChanges {
   errorMessage: string = '';
   quizResult: any = null;
   hasReachedMaxAttempts: boolean = false;
+  isRetrying: boolean = false;
+  lastAttempt: any = null;
 
   constructor(private quizService: QuizService) {}
 
@@ -50,6 +52,7 @@ export class QuizPlayer implements OnInit, OnChanges {
     this.quizResult = null;
     this.errorMessage = '';
     this.hasReachedMaxAttempts = false;
+    this.isRetrying = false;
 
     this.checkAttemptsLimit();
 
@@ -59,6 +62,7 @@ export class QuizPlayer implements OnInit, OnChanges {
   }
 
   private checkAttemptsLimit(): void {
+    const attempts = this.quiz?.myAttempts || [];
     const attemptsCount = this.quiz?.myAttempts?.length || 0;
     const maxAttempts = this.quiz?.maxAttempts || 1;
 
@@ -66,6 +70,12 @@ export class QuizPlayer implements OnInit, OnChanges {
       this.hasReachedMaxAttempts = true;
       this.errorMessage =
         'Has alcanzado el límite máximo de intentos permitidos para esta evaluación.';
+    }
+
+    if (attemptsCount > 0) {
+      this.lastAttempt = attempts[attempts.length - 1];
+    } else {
+      this.lastAttempt = null;
     }
   }
 
@@ -127,6 +137,7 @@ export class QuizPlayer implements OnInit, OnChanges {
     this.quizResult = null;
     this.errorMessage = '';
     this.hasReachedMaxAttempts = false;
+    this.isRetrying = true;
   }
 
   onContinue(): void {
@@ -163,6 +174,9 @@ export class QuizPlayer implements OnInit, OnChanges {
             this.quiz.myAttempts = [];
           }
           this.quiz.myAttempts.push(result);
+
+          this.lastAttempt = result;
+          this.isRetrying = false;
 
           this.checkAttemptsLimit();
           this.quizCompleted.emit(result);
