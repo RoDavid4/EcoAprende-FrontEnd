@@ -30,6 +30,7 @@ export class Login {
 
   email = '';
   password = '';
+  showPassword = false;
 
   loading = false;
   errorMessage = '';
@@ -92,6 +93,10 @@ export class Login {
         },
       });
   }
+
+  togglePasswordVisibility(): void {
+  this.showPassword = !this.showPassword;
+}
 
   private isValidEmail(email: string): boolean {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);

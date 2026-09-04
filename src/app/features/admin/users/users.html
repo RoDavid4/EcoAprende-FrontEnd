@@ -199,7 +199,7 @@
                 class="user-actions-menu"
                 *ngIf="selectedUser?.id === user.id"
               >
-                <button type="button" (click)="viewUser(user)" >
+                <button type="button" (click)="viewUser(user)">
                   <mat-icon>visibility</mat-icon>
                   Ver detalles
                 </button>
@@ -210,17 +210,17 @@
                 </button>
 
                 <button
-  type="button"
-  [class.activate-action]="!user.isActive"
-  [class.deactivate-action]="user.isActive"
-  (click)="toggleUserStatus(user)"
->
-  <mat-icon>
-    {{ user.isActive ? 'block' : 'check_circle' }}
-  </mat-icon>
+                  type="button"
+                  [class.activate-action]="!user.isActive"
+                  [class.deactivate-action]="user.isActive"
+                  (click)="toggleUserStatus(user)"
+                >
+                  <mat-icon>
+                    {{ user.isActive ? "block" : "check_circle" }}
+                  </mat-icon>
 
-  {{ user.isActive ? 'Desactivar usuario' : 'Activar usuario' }}
-</button>
+                  {{ user.isActive ? "Desactivar usuario" : "Activar usuario" }}
+                </button>
               </div>
             </td>
           </tr>
@@ -263,80 +263,220 @@
       </button>
     </div>
     <!-- Modal cambiar rol -->
-<div
-  class="modal-overlay"
-  *ngIf="showRoleModal"
-  (click)="closeRoleModal()"
->
-  <div
-    class="role-modal"
-    (click)="$event.stopPropagation()"
-  >
-    <div class="role-modal-header">
-      <div>
-        <h2>Cambiar rol</h2>
-        <p>
-          Modifica el rol de
-          <strong>{{ selectedUser?.fullName }}</strong>
-        </p>
+    <div class="modal-overlay" *ngIf="showRoleModal" (click)="closeRoleModal()">
+      <div class="role-modal" (click)="$event.stopPropagation()">
+        <div class="role-modal-header">
+          <div>
+            <h2>Cambiar rol</h2>
+            <p>
+              Modifica el rol de
+              <strong>{{ selectedUser?.fullName }}</strong>
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="modal-close"
+            (click)="closeRoleModal()"
+            title="Cerrar"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <div class="role-modal-body">
+          <label for="role-select"> Seleccionar nuevo rol </label>
+
+          <select id="role-select" [(ngModel)]="selectedRoleId">
+            <option [ngValue]="3">Estudiante</option>
+
+            <option [ngValue]="2">Docente</option>
+
+            <option [ngValue]="1">Administrador</option>
+          </select>
+        </div>
+
+        <div class="role-modal-footer">
+          <button type="button" class="modal-cancel" (click)="closeRoleModal()">
+            Cancelar
+          </button>
+
+          <button
+            type="button"
+            class="modal-save"
+            [disabled]="savingRole"
+            (click)="saveUserRole()"
+          >
+            <mat-icon>
+              {{ savingRole ? "hourglass_empty" : "save" }}
+            </mat-icon>
+
+            {{ savingRole ? "Guardando..." : "Guardar cambios" }}
+          </button>
+        </div>
       </div>
-
-      <button
-        type="button"
-        class="modal-close"
-        (click)="closeRoleModal()"
-        title="Cerrar"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
     </div>
 
-    <div class="role-modal-body">
+    <!-- Modal detalles del usuario -->
+    <div
+      class="modal-overlay"
+      *ngIf="showUserDetailsModal"
+      (click)="closeUserDetails()"
+    >
+      <div class="details-modal" (click)="$event.stopPropagation()">
+        <!-- Header -->
+        <div class="details-modal-header">
+          <div class="details-user-info">
+            <div class="details-avatar">
+              {{ selectedUser?.fullName?.charAt(0)?.toUpperCase() }}
+            </div>
 
-      <label for="role-select">
-        Seleccionar nuevo rol
-      </label>
+            <div>
+              <h2>{{ selectedUser?.fullName }}</h2>
+              <p>{{ selectedUser?.email }}</p>
+            </div>
+          </div>
 
-      <select
-        id="role-select"
-        [(ngModel)]="selectedRoleId"
-      >
-        <option [ngValue]="3">
-          Estudiante
-        </option>
+          <button
+            type="button"
+            class="modal-close"
+            (click)="closeUserDetails()"
+            title="Cerrar"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
 
-        <option [ngValue]="2">
-          Docente
-        </option>
+        <!-- Body -->
+        <div class="details-modal-body">
+          <!-- Información general -->
+          <div class="details-section">
+            <h3>Información general</h3>
 
-        <option [ngValue]="1">
-          Administrador
-        </option>
-      </select>
+            <div class="details-grid">
+              <div class="detail-item">
+                <span>Rol</span>
 
+                <strong>
+                  {{ selectedUser?.role?.name }}
+                </strong>
+              </div>
+
+              <div class="detail-item">
+                <span>Estado</span>
+
+                <strong
+                  [class.detail-active]="selectedUser?.isActive"
+                  [class.detail-inactive]="!selectedUser?.isActive"
+                >
+                  {{ selectedUser?.isActive ? "Activo" : "Inactivo" }}
+                </strong>
+              </div>
+
+              <div class="detail-item">
+                <span>Fecha de registro</span>
+
+                <strong>
+                  {{ selectedUser?.createdAt | date: "dd/MM/yyyy" }}
+                </strong>
+              </div>
+
+              <div class="detail-item">
+                <span>Última actualización</span>
+
+                <strong>
+                  {{ selectedUser?.updatedAt | date: "dd/MM/yyyy" }}
+                </strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gamificación -->
+          <div class="details-section">
+            <h3>Gamificación</h3>
+
+            <div class="details-grid">
+              <div class="detail-stat">
+                <mat-icon>star</mat-icon>
+
+                <div>
+                  <span>XP total</span>
+                  <strong>{{ selectedUser?.totalXp }}</strong>
+                </div>
+              </div>
+
+              <div class="detail-stat">
+                <mat-icon>military_tech</mat-icon>
+
+                <div>
+                  <span>Nivel</span>
+                  <strong>{{ selectedUser?.level }}</strong>
+                </div>
+              </div>
+
+              <div class="detail-stat">
+                <mat-icon>local_fire_department</mat-icon>
+
+                <div>
+                  <span>Racha actual</span>
+                  <strong>{{ selectedUser?.currentStreak }} días</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actividad -->
+          <div class="details-section">
+            <h3>Actividad</h3>
+
+            <div class="details-grid">
+              <div class="detail-stat">
+                <mat-icon>menu_book</mat-icon>
+
+                <div>
+                  <span>Lecciones completadas</span>
+                  <strong>
+                    {{ selectedUser?.lessonsCompleted }}
+                  </strong>
+                </div>
+              </div>
+
+              <div class="detail-stat">
+                <mat-icon>quiz</mat-icon>
+
+                <div>
+                  <span>Quizzes aprobados</span>
+                  <strong>
+                    {{ selectedUser?.quizzesPassed }}
+                  </strong>
+                </div>
+              </div>
+
+              <div class="detail-stat">
+                <mat-icon>emoji_events</mat-icon>
+
+                <div>
+                  <span>Misiones aprobadas</span>
+                  <strong>
+                    {{ selectedUser?.missionsApproved }}
+                  </strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="details-modal-footer">
+          <button
+            type="button"
+            class="modal-cancel"
+            (click)="closeUserDetails()"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
     </div>
-
-    <div class="role-modal-footer">
-
-      <button
-        type="button"
-        class="modal-cancel"
-        (click)="closeRoleModal()"
-      >
-        Cancelar
-      </button>
-
-      <button
-        type="button"
-        class="modal-save"
-        (click)="saveUserRole()"
-      >
-        <mat-icon>save</mat-icon>
-        Guardar cambios
-      </button>
-
-    </div>
-  </div>
-</div>
   </section>
 </div>

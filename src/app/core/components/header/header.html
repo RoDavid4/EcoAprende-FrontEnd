@@ -31,8 +31,12 @@
     <div class="profile-info">
       <span class="user-name">{{ userName }}</span>
       <span class="user-badge">{{
-        userRole === "STUDENT" ? "Estudiante" : "Docente"
-      }}</span>
+  userRole === "STUDENT"
+    ? "Estudiante"
+    : userRole === "TEACHER"
+      ? "Docente"
+      : "Admin"
+}}</span>
     </div>
 
     <button

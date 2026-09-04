@@ -56,9 +56,11 @@ export class AdminUsers implements OnInit {
   selectedUser: AdminUser | null = null;
   showRoleModal = false;
 selectedRoleId = 3;
+showUserDetailsModal = false;
 
   loading = true;
   errorMessage = '';
+  savingRole = false;
 
   currentPage = 1;
   pageSize = 10;
@@ -130,7 +132,13 @@ openUserMenu(user: AdminUser): void {
 }
 
 viewUser(user: AdminUser): void {
-  console.log('Ver usuario:', user);
+  this.selectedUser = user;
+  this.showUserDetailsModal = true;
+}
+
+closeUserDetails(): void {
+  this.showUserDetailsModal = false;
+  this.selectedUser = null;
 }
 
 changeUserRole(user: AdminUser): void {
@@ -140,9 +148,11 @@ changeUserRole(user: AdminUser): void {
 }
 
 saveUserRole(): void {
-  if (!this.selectedUser) {
+  if (!this.selectedUser || this.savingRole) {
     return;
   }
+
+  this.savingRole = true;
 
   this.adminService.updateUserRole(
     this.selectedUser.id,
@@ -151,6 +161,7 @@ saveUserRole(): void {
     next: (response) => {
       console.log('Rol actualizado:', response);
 
+      this.savingRole = false;
       this.showRoleModal = false;
       this.selectedUser = null;
 
@@ -161,6 +172,8 @@ saveUserRole(): void {
         'Error al actualizar el rol:',
         error
       );
+
+      this.savingRole = false;
 
       this.errorMessage =
         'No se pudo actualizar el rol del usuario.';

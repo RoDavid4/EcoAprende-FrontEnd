@@ -145,13 +145,15 @@ getXpProgress(): number {
     return 100;
   }
 
-  return Math.min(
+  return Math.floor(
+  Math.min(
     Math.max(
       (xpInLevel / xpRequiredForLevel) * 100,
       0
     ),
     100
-  );
+  )
+);
 }
 
 getXpToNextLevel(): number {

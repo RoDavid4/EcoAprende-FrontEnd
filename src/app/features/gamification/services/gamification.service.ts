@@ -26,6 +26,28 @@ export interface BadgeIcon {
   url: string;
 }
 
+export interface CreateBadgeRequest {
+  code: string;
+  name: string;
+  description: string;
+  iconUrl: string;
+  xpValue?: number;
+  category?:
+    | 'ECOLOGY'
+    | 'ACADEMIC'
+    | 'COMMUNITY'
+    | 'STREAK'
+    | 'SPECIAL';
+  triggerEvent?:
+    | 'STREAK'
+    | 'TOTAL_XP'
+    | 'LESSONS_COMPLETED'
+    | 'QUIZZES_PASSED'
+    | 'MISSIONS_APPROVED'
+    | 'MANUAL';
+  triggerValue?: number;
+}
+
 export interface GamificationProfile {
   totalXp: number;
   level: number;
@@ -79,6 +101,13 @@ export class GamificationService {
   getBadgeIcons(): Observable<BadgeIcon[]> {
   return this.http.get<BadgeIcon[]>(
     `${this.apiUrl}/gamification/badges/icons`
+  );
+}
+
+createBadge(badge: CreateBadgeRequest): Observable<Badge> {
+  return this.http.post<Badge>(
+    `${this.apiUrl}/gamification/badges`,
+    badge
   );
 }
 

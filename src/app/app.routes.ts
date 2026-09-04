@@ -27,6 +27,9 @@ import { StudentDetail } from './features/teacher/pages/student-detail/student-d
 import { Students } from './features/teacher/pages/students/students';
 import { AdminUsers } from './features/admin/users/users';
 import { QuizCreator } from './features/quizzes/pages/quiz-creator/quiz-creator';
+import { AdminAudit } from './features/admin/audit/audit';
+import { AdminGamification } from './features/admin/gamification/gamification';
+import { TeacherMissions } from './features/teacher/pages/teacher-missions/teacher-missions';
 
 export const routes: Routes = [
   {
@@ -86,6 +89,11 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard(['TEACHER'])],
   },
   {
+  path: 'teacher/missions',
+  component: TeacherMissions,
+  canActivate: [authGuard, roleGuard(['TEACHER'])],
+},
+  {
     path: 'teacher/submissions/:id',
     component: SubmissionReview,
     canActivate: [authGuard, roleGuard(['TEACHER'])],
@@ -100,6 +108,16 @@ export const routes: Routes = [
     component: AdminUsers,
     canActivate: [authGuard, roleGuard(['ADMIN'])],
   },
+  {
+  path: 'admin/audit',
+  component: AdminAudit,
+  canActivate: [authGuard, roleGuard(['ADMIN'])]
+},
+{
+  path: 'admin/gamification',
+  component: AdminGamification,
+  canActivate: [authGuard, roleGuard(['ADMIN'])]
+},
   {
     path: 'classrooms',
     component: ClassroomManagement,
