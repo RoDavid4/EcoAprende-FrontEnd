@@ -1,3 +1,10 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--eco-background);
+}
+
 .courses-panel {
   display: flex;
   flex-direction: column;
@@ -5,6 +12,7 @@
   padding: 2rem 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  background-color: inherit;
 
   .panel-header {
     display: flex;

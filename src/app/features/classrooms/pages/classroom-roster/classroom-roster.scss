@@ -1,9 +1,17 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--eco-background);
+}
+
 .roster-page {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 1.5rem 2rem;
   box-sizing: border-box;
+  background-color: inherit;
 
   .header-actions {
     margin-bottom: 1.25rem;

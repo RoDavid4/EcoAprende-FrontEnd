@@ -1,5 +1,14 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--eco-background);
+}
+
 .assignments-container {
   padding: 24px;
+
+  background-color: inherit;
 
   .assignments-header {
     display: flex;
