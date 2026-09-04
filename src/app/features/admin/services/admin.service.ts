@@ -98,5 +98,30 @@ updateUserRole(
     { roleId }
   );
 }
+
+getAuditLogs(
+  page: number = 1,
+  limit: number = 10,
+  userId: string = '',
+  action: string = '',
+  resource: string = ''
+): Observable<any> {
+  let url =
+    `${this.apiUrl}/audit-logs?page=${page}&limit=${limit}`;
+
+  if (userId.trim()) {
+    url += `&userId=${encodeURIComponent(userId.trim())}`;
+  }
+
+  if (action.trim()) {
+    url += `&action=${encodeURIComponent(action.trim())}`;
+  }
+
+  if (resource.trim()) {
+    url += `&resource=${encodeURIComponent(resource.trim())}`;
+  }
+
+  return this.http.get<any>(url);
+}
 }
 

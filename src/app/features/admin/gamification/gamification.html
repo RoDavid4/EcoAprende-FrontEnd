@@ -1,0 +1,474 @@
+<div class="gamification-page">
+
+  <header class="page-header">
+    <div>
+      <div class="title-row">
+        <mat-icon>emoji_events</mat-icon>
+        <h1>Gestión de gamificación</h1>
+      </div>
+
+      <p>
+        Administra las insignias y recompensas disponibles en EcoAprende.
+      </p>
+    </div>
+
+    <button
+  class="create-button"
+  (click)="openCreateForm()"
+>
+      <mat-icon>add</mat-icon>
+      Crear insignia
+    </button>
+  </header>
+
+
+  @if (loading) {
+    <div class="state-container">
+      <mat-icon>hourglass_empty</mat-icon>
+      <p>Cargando insignias...</p>
+    </div>
+  }
+
+
+  @if (!loading && errorMessage) {
+    <div class="state-container error">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ errorMessage }}</p>
+    </div>
+  }
+
+
+  @if (!loading && !errorMessage) {
+
+    <section class="summary-card">
+
+      <div class="summary-icon">
+        <mat-icon>military_tech</mat-icon>
+      </div>
+
+      <div>
+        <span class="summary-label">Insignias disponibles</span>
+        <strong>{{ badges.length }}</strong>
+      </div>
+
+    </section>
+
+
+    <section class="badges-section">
+
+      <div class="section-header">
+        <div>
+          <h2>Insignias</h2>
+          <p>
+            Recompensas que los usuarios pueden desbloquear durante su progreso.
+          </p>
+        </div>
+      </div>
+
+
+      @if (badges.length === 0) {
+
+        <div class="empty-state">
+          <mat-icon>emoji_events</mat-icon>
+          <h3>No hay insignias</h3>
+          <p>
+            Todavía no se han creado insignias en la plataforma.
+          </p>
+        </div>
+
+      } @else {
+
+        <div class="badges-grid">
+
+          @for (badge of badges; track badge.id) {
+
+            <article class="badge-card">
+
+              <div class="badge-card-header">
+
+                <div class="badge-icon">
+
+                  @if (getBadgeIconUrl(badge.iconUrl)) {
+                    <img
+                      [src]="getBadgeIconUrl(badge.iconUrl)"
+                      [alt]="badge.name"
+                    />
+                  } @else {
+                    <mat-icon>emoji_events</mat-icon>
+                  }
+
+                </div>
+
+                <span
+                  class="status-badge"
+                  [class.inactive]="!badge.isActive"
+                >
+                  {{ badge.isActive ? 'Activa' : 'Inactiva' }}
+                </span>
+
+              </div>
+
+
+              <div class="badge-content">
+
+                <span class="badge-code">
+                  {{ badge.code }}
+                </span>
+
+                <h3>{{ badge.name }}</h3>
+
+                <p>
+                  {{ badge.description }}
+                </p>
+
+              </div>
+
+
+              <div class="badge-footer">
+
+                <div class="badge-xp">
+                  <mat-icon>star</mat-icon>
+                  <strong>{{ badge.xpValue }} XP</strong>
+                </div>
+
+                <span class="category">
+                  {{ badge.category }}
+                </span>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+  }
+
+  @if (showCreateForm) {
+  <div class="modal-backdrop" (click)="closeCreateForm()">
+
+    <div
+      class="create-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">
+            <mat-icon>emoji_events</mat-icon>
+            <h2>Crear insignia</h2>
+          </div>
+
+          <p>
+            Configurá una nueva recompensa para los usuarios.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeCreateForm()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+
+      <form
+        class="badge-form"
+        (ngSubmit)="createBadge()"
+      >
+
+        <!-- DATOS BÁSICOS -->
+
+        <div class="form-section">
+
+          <h3>Información básica</h3>
+
+          <div class="form-grid">
+
+            <div class="form-field">
+              <label for="badge-code">
+                Código *
+              </label>
+
+              <input
+                id="badge-code"
+                type="text"
+                name="code"
+                [(ngModel)]="newBadge.code"
+                placeholder="Ej: ECO_WARRIOR"
+                required
+              />
+
+              <span>
+                Identificador único de la insignia.
+              </span>
+            </div>
+
+
+            <div class="form-field">
+              <label for="badge-name">
+                Nombre *
+              </label>
+
+              <input
+                id="badge-name"
+                type="text"
+                name="name"
+                [(ngModel)]="newBadge.name"
+                placeholder="Ej: Guerrero Ecológico"
+                required
+              />
+            </div>
+
+          </div>
+
+
+          <div class="form-field">
+            <label for="badge-description">
+              Descripción *
+            </label>
+
+            <textarea
+              id="badge-description"
+              name="description"
+              [(ngModel)]="newBadge.description"
+              placeholder="Describe cómo se obtiene esta insignia..."
+              rows="3"
+              required
+            ></textarea>
+          </div>
+
+        </div>
+
+
+        <!-- ICONO -->
+
+        <div class="form-section">
+
+          <h3>Ícono de la insignia</h3>
+
+          <div class="icon-grid">
+
+            @for (icon of badgeIcons; track icon.id) {
+
+              <button
+                type="button"
+                class="icon-option"
+                [class.selected]="newBadge.iconUrl === icon.id"
+                (click)="newBadge.iconUrl = icon.id"
+                [title]="icon.name"
+              >
+
+                <img
+                  [src]="icon.url"
+                  [alt]="icon.name"
+                />
+
+                <span>
+                  {{ icon.name }}
+                </span>
+
+              </button>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- RECOMPENSA -->
+
+        <div class="form-section">
+
+          <h3>Recompensa y desbloqueo</h3>
+
+          <div class="form-grid">
+
+            <div class="form-field">
+              <label for="badge-xp">
+                XP otorgado
+              </label>
+
+              <input
+                id="badge-xp"
+                type="number"
+                name="xpValue"
+                [(ngModel)]="newBadge.xpValue"
+                min="0"
+              />
+
+              <span>
+                Cantidad de experiencia que otorga la insignia.
+              </span>
+            </div>
+
+
+            <div class="form-field">
+
+              <label for="badge-category">
+                Categoría
+              </label>
+
+              <select
+                id="badge-category"
+                name="category"
+                [(ngModel)]="newBadge.category"
+              >
+                <option value="ECOLOGY">
+                  Ecología
+                </option>
+
+                <option value="ACADEMIC">
+                  Académica
+                </option>
+
+                <option value="COMMUNITY">
+                  Comunidad
+                </option>
+
+                <option value="STREAK">
+                  Racha
+                </option>
+
+                <option value="SPECIAL">
+                  Especial
+                </option>
+              </select>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <div class="form-field">
+
+              <label for="badge-trigger">
+                Condición de desbloqueo
+              </label>
+
+              <select
+                id="badge-trigger"
+                name="triggerEvent"
+                [(ngModel)]="newBadge.triggerEvent"
+              >
+
+                <option value="MANUAL">
+                  Manual
+                </option>
+
+                <option value="TOTAL_XP">
+                  XP acumulado
+                </option>
+
+                <option value="LESSONS_COMPLETED">
+                  Lecciones completadas
+                </option>
+
+                <option value="QUIZZES_PASSED">
+                  Cuestionarios aprobados
+                </option>
+
+                <option value="MISSIONS_APPROVED">
+                  Misiones aprobadas
+                </option>
+
+                <option value="STREAK">
+                  Días consecutivos
+                </option>
+
+              </select>
+
+            </div>
+
+
+            @if (newBadge.triggerEvent !== 'MANUAL') {
+
+              <div class="form-field">
+
+                <label for="badge-trigger-value">
+                  Valor requerido
+                </label>
+
+                <input
+                  id="badge-trigger-value"
+                  type="number"
+                  name="triggerValue"
+                  [(ngModel)]="newBadge.triggerValue"
+                  min="0"
+                />
+
+                <span>
+                  Cantidad necesaria para desbloquear la insignia.
+                </span>
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        @if (createErrorMessage) {
+
+          <div class="form-error">
+            <mat-icon>error_outline</mat-icon>
+
+            <span>
+              {{ createErrorMessage }}
+            </span>
+          </div>
+
+        }
+
+
+        <!-- ACTIONS -->
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="closeCreateForm()"
+            [disabled]="creatingBadge"
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="save-button"
+            [disabled]="creatingBadge"
+          >
+
+            @if (creatingBadge) {
+              <mat-icon>hourglass_empty</mat-icon>
+              Creando...
+            } @else {
+              <mat-icon>add</mat-icon>
+              Crear insignia
+            }
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+}
+
+</div>

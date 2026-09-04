@@ -1,0 +1,290 @@
+<div class="audit-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Registro de auditoría</h1>
+      <p>Consulta las acciones realizadas dentro de la plataforma.</p>
+    </div>
+
+    <div class="total-logs">
+      <mat-icon>history</mat-icon>
+      <span>{{ totalLogs }} registros</span>
+    </div>
+  </div>
+
+  
+
+  <!-- Loading -->
+  <div class="state-card" *ngIf="loading">
+    <mat-icon>hourglass_empty</mat-icon>
+
+    <p>Cargando registros...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="state-card error-state" *ngIf="!loading && errorMessage">
+    <mat-icon>error_outline</mat-icon>
+
+    <p>
+      {{ errorMessage }}
+    </p>
+  </div>
+
+  <!-- Empty -->
+  <div
+    class="state-card"
+    *ngIf="!loading && !errorMessage && logs.length === 0"
+  >
+    <mat-icon>history</mat-icon>
+
+    <p>No se encontraron registros de auditoría.</p>
+  </div>
+
+  <!-- Tabla -->
+  <div class="logs-card" *ngIf="!loading && !errorMessage && logs.length > 0">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Acción</th>
+            <th>Recurso</th>
+            <th>ID recurso</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            *ngFor="let log of logs"
+            class="audit-row"
+            (click)="viewLogDetails(log)"
+          >
+            <!-- Fecha -->
+            <td>
+              <div class="audit-date">
+                <strong>
+                  {{ log.createdAt | date: "dd/MM/yyyy" }}
+                </strong>
+                <span>
+                  {{ log.createdAt | date: "HH:mm" }}
+                </span>
+              </div>
+            </td>
+
+            <!-- Usuario que realizó la acción -->
+            <td>
+              <div class="audit-user">
+                <div class="audit-avatar">
+                  {{ log.user?.fullName?.charAt(0)?.toUpperCase() || "S" }}
+                </div>
+
+                <div>
+                  <strong>
+                    {{ log.user?.fullName || "Sistema" }}
+                  </strong>
+
+                  <span>
+                    {{ log.user?.email || "Sin información" }}
+                  </span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Acción -->
+            <td>
+              <div class="audit-action">
+                <span class="action-badge">
+                  {{ getActionLabel(log) }}
+                </span>
+
+                <span class="action-description">
+                  {{ getAuditDescription(log) }}
+                </span>
+              </div>
+            </td>
+
+            <!-- Recurso -->
+            <td>
+              <span class="resource-badge">
+                {{ log.resource }}
+              </span>
+            </td>
+
+            <!-- ID afectado -->
+            <td>
+              <code>
+                {{ log.resourceId || "-" }}
+              </code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación -->
+    <div class="pagination">
+      <button
+        type="button"
+        class="pagination-button"
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)"
+      >
+        <mat-icon>chevron_left</mat-icon>
+        Anterior
+      </button>
+
+      <div class="pagination-info">
+        <span> Página </span>
+
+        <strong>
+          {{ currentPage }}
+        </strong>
+
+        <span> de {{ totalPages }} </span>
+      </div>
+
+      <button
+        type="button"
+        class="pagination-button"
+        [disabled]="currentPage === totalPages"
+        (click)="onPageChange(currentPage + 1)"
+      >
+        Siguiente
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+  <!-- Modal de detalles -->
+  <div
+    class="modal-overlay"
+    *ngIf="showDetailsModal"
+    (click)="closeDetailsModal()"
+  >
+    <div class="details-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="details-modal-header">
+        <div class="details-user-info">
+          <div class="details-avatar">
+            {{ selectedLog?.user?.fullName?.charAt(0)?.toUpperCase() || "S" }}
+          </div>
+
+          <div>
+            <h2>Detalle de auditoría</h2>
+
+            <p>
+              {{ selectedLog?.user?.fullName || "Sistema" }}
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeDetailsModal()"
+          title="Cerrar"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="details-modal-body">
+        <!-- Acción -->
+        <div class="details-section">
+          <h3>Acción realizada</h3>
+
+          <div class="audit-detail-action">
+            <span class="action-badge">
+              {{ getActionLabel(selectedLog!) }}
+            </span>
+
+            <p>
+              <strong>
+                {{ selectedLog?.user?.fullName || "Sistema" }}
+              </strong>
+
+              {{ getAuditDescription(selectedLog!) }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Información -->
+        <div class="details-section">
+          <h3>Información del registro</h3>
+
+          <div class="details-grid">
+            <div class="detail-item">
+              <span>Fecha</span>
+              <strong>
+                {{ selectedLog?.createdAt | date: "dd/MM/yyyy HH:mm" }}
+              </strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Recurso</span>
+              <strong>
+                {{ selectedLog?.resource }}
+              </strong>
+            </div>
+
+            <div class="detail-item">
+              <span>ID del recurso</span>
+              <strong class="detail-id">
+                {{ selectedLog?.resourceId || "-" }}
+              </strong>
+            </div>
+
+            <div class="detail-item">
+              <span>ID del registro</span>
+              <strong class="detail-id">
+                {{ selectedLog?.id }}
+              </strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conexión -->
+        <div class="details-section">
+          <h3>Información de conexión</h3>
+
+          <div class="details-grid">
+            <div class="detail-item">
+              <span>Dirección IP</span>
+              <strong>
+                {{ selectedLog?.ipAddress || "-" }}
+              </strong>
+            </div>
+
+            <div class="detail-item detail-item-wide">
+              <span>Navegador</span>
+              <strong class="user-agent">
+                {{ selectedLog?.userAgent || "-" }}
+              </strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payload -->
+        <div class="details-section">
+          <h3>Datos de la acción</h3>
+
+          <div class="payload-box">
+            <pre>{{ selectedLog?.payload | json }}</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="details-modal-footer">
+        <button
+          type="button"
+          class="modal-cancel"
+          (click)="closeDetailsModal()"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
